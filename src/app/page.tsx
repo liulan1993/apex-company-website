@@ -1,15 +1,15 @@
-"use client"; // 声明这是一个客户端组件，因为我们使用了hooks
+"use client";
 
-import React, { useState, useEffect, useMemo, forwardRef, useRef, FC } from 'react';
-import Image from 'next/image'; // 使用Next.js的Image组件以优化图片
+import React, { useState, useEffect, useMemo, forwardRef, useRef } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 // --- 工具函数 ---
 function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 // --- 图标组件 (本地定义) ---
@@ -48,7 +48,6 @@ const Brain = (props: React.SVGProps<SVGSVGElement>) => (
         <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08A2.5 2.5 0 0 1 5 13.5V8c0-1.9.83-3.63 2.16-4.84A2.5 2.5 0 0 1 9.5 2Z" /><path d="M14.5 2a2.5 2.5 0 0 0-2.5 2.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08A2.5 2.5 0 0 0 19 13.5V8c0-1.9-.83-3.63-2.16-4.84A2.5 2.5 0 0 0 14.5 2Z" />
     </svg>
 );
-
 
 // --- 通用 UI 组件 ---
 
