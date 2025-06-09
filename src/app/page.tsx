@@ -1,6 +1,7 @@
 "use client"; // 声明这是一个客户端组件，因为我们使用了hooks
 
 import React, { useState, useEffect, useMemo, forwardRef, useRef } from 'react';
+import Image from 'next/image'; // 使用Next.js的Image组件以优化图片
 import { motion } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx"
@@ -10,26 +11,6 @@ import { twMerge } from "tailwind-merge"
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
-const cvaFn = (base: string, config: any) => {
-  return (props: any) => {
-    if (!props) props = {};
-    const variants = config.variants || {};
-    const defaultVariants = config.defaultVariants || {};
-
-    let classes = [];
-
-    for (const variantType in variants) {
-      const variantKey = props[variantType] === undefined ? defaultVariants[variantType] : props[variantType];
-      if (variants[variantType] && variants[variantType][variantKey]) {
-        classes.push(variants[variantType][variantKey]);
-      }
-    }
-    
-    return cn(base, ...classes, props.className);
-  };
-};
-
 
 // --- 图标组件 (本地定义) ---
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -71,7 +52,7 @@ const Brain = (props: React.SVGProps<SVGSVGElement>) => (
 
 // --- 通用 UI 组件 ---
 
-const buttonVariants = cvaFn(
+const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
@@ -108,7 +89,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant,
 });
 Button.displayName = "Button";
 
-const badgeVariants = cvaFn(
+const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
     variants: {
@@ -330,9 +311,11 @@ function ComponentSix() {
                   feature.isLarge && "lg:col-span-2 lg:aspect-auto"
                 )}
               >
-                <img 
+                <Image 
                     src={feature.imageUrl} 
-                    alt={feature.title} 
+                    alt={feature.title}
+                    width={800}
+                    height={600}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-black/50" />
@@ -491,7 +474,7 @@ function ComponentEight() {
                     </div>
                     <div className="relative order-1 max-w-lg mx-auto lg:order-2">
                         <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative">
-                            <img
+                            <Image
                                 className="rounded-2xl border dark:border-none border-gray-50 shadow-lg dark:drop-shadow-lg object-cover w-full h-full"
                                 src={sampleFeatures[currentFeature].image}
                                 alt={sampleFeatures[currentFeature].title}
