@@ -1,6 +1,6 @@
 "use client"; // 声明这是一个客户端组件，因为我们使用了hooks
 
-import React, { useState, useEffect, useMemo, forwardRef, useRef } from 'react';
+import React, { useState, useEffect, useMemo, forwardRef, useRef, FC } from 'react';
 import Image from 'next/image'; // 使用Next.js的Image组件以优化图片
 import { motion } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
@@ -11,27 +11,6 @@ import { twMerge } from "tailwind-merge"
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
-const cvaFn = (base: string, config: any) => {
-  return (props: any) => {
-    if (!props) props = {};
-    const variants = config.variants || {};
-    const defaultVariants = config.defaultVariants || {};
-
-    let classes = [];
-
-    // 循环处理所有变体类型（如 'variant', 'size'）
-    for (const variantType in variants) {
-      const variantKey = props[variantType] === undefined ? defaultVariants[variantType] : props[variantType];
-      if (variants[variantType] && variants[variantType][variantKey]) {
-        classes.push(variants[variantType][variantKey]);
-      }
-    }
-    
-    return cn(base, ...classes, props.className);
-  };
-};
-
 
 // --- 图标组件 (本地定义) ---
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -73,7 +52,7 @@ const Brain = (props: React.SVGProps<SVGSVGElement>) => (
 
 // --- 通用 UI 组件 ---
 
-const buttonVariants = cvaFn(
+const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
@@ -110,7 +89,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant,
 });
 Button.displayName = "Button";
 
-const badgeVariants = cvaFn(
+const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
     variants: {
