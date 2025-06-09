@@ -12,6 +12,27 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+const cvaFn = (base: string, config: any) => {
+  return (props: any) => {
+    if (!props) props = {};
+    const variants = config.variants || {};
+    const defaultVariants = config.defaultVariants || {};
+
+    let classes = [];
+
+    // 循环处理所有变体类型（如 'variant', 'size'）
+    for (const variantType in variants) {
+      const variantKey = props[variantType] === undefined ? defaultVariants[variantType] : props[variantType];
+      if (variants[variantType] && variants[variantType][variantKey]) {
+        classes.push(variants[variantType][variantKey]);
+      }
+    }
+    
+    return cn(base, ...classes, props.className);
+  };
+};
+
+
 // --- 图标组件 (本地定义) ---
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -52,7 +73,7 @@ const Brain = (props: React.SVGProps<SVGSVGElement>) => (
 
 // --- 通用 UI 组件 ---
 
-const buttonVariants = cva(
+const buttonVariants = cvaFn(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
@@ -89,7 +110,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant,
 });
 Button.displayName = "Button";
 
-const badgeVariants = cva(
+const badgeVariants = cvaFn(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
     variants: {
@@ -169,7 +190,7 @@ function FloatingPaths({ position }: { position: number }) {
     }));
     return (
         <div className="absolute inset-0 pointer-events-none">
-            <svg className="w-full h-full text-slate-950 dark:text-white" viewBox="0 0 696 316" fill="none">
+            <svg className="w-full h-full text-black" viewBox="0 0 696 316" fill="none">
                 <title>Apex</title>
                 {paths.map((path) => (
                     <motion.path
@@ -191,7 +212,7 @@ function FloatingPaths({ position }: { position: number }) {
 function ComponentOne({ title = "Apex" }: { title?: string }) {
     const words = title.split(" ");
     return (
-        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-neutral-950">
+        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white">
             <div className="absolute inset-0"><FloatingPaths position={1} /><FloatingPaths position={-1} /></div>
             <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2 }} className="max-w-4xl mx-auto">
@@ -204,7 +225,7 @@ function ComponentOne({ title = "Apex" }: { title?: string }) {
                                         initial={{ y: 100, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
                                         transition={{ delay: wordIndex * 0.1 + letterIndex * 0.03, type: "spring", stiffness: 150, damping: 25 }}
-                                        className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700/80 dark:from-white dark:to-white/80"
+                                        className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700"
                                     >{letter}</motion.span>
                                 ))}
                             </span>
@@ -380,8 +401,7 @@ function ComponentEight() {
 
     const primaryColor = "sky";
     const progressGradientLight = "bg-gradient-to-r from-sky-400 to-sky-500";
-    const progressGradientDark = "dark:bg-gradient-to-r from-sky-300 to-sky-400";
-
+    
     useEffect(() => {
         const startProgress = () => {
             clearInterval(intervalRef.current);
@@ -428,13 +448,13 @@ function ComponentEight() {
     };
 
     return (
-        <div className="min-h-screen py-16 px-4 bg-gray-50 dark:bg-neutral-900">
+        <div className="min-h-screen py-16 px-4 bg-white">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
-                    <span className={`text-${primaryColor}-500 dark:text-${primaryColor}-400 font-semibold text-sm uppercase tracking-wider`}>
+                    <span className={`text-${primaryColor}-500 font-semibold text-sm uppercase tracking-wider`}>
                         Apex
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-white mt-4 mb-6">
+                    <h2 className="text-4xl md:text-5xl font-bold text-black mt-4 mb-6">
                         留学教育 (Study Abroad Education)
                     </h2>
                 </div>
@@ -445,21 +465,21 @@ function ComponentEight() {
                             const isActive = currentFeature === index;
                             return (
                                 <div key={feature.id} ref={(el) => { if (el) featureRefs.current[index] = el; }} className="relative cursor-pointer flex-shrink-0" onClick={() => handleFeatureClick(index)}>
-                                    <div className={cn("flex lg:flex-row flex-col items-start space-x-4 p-3 max-w-sm md:max-w-sm lg:max-w-2xl transition-all duration-300", isActive ? "bg-white dark:bg-black/80 md:shadow-xl dark:drop-shadow-lg rounded-xl md:border dark:border-none border-gray-200" : "")}>
-                                        <div className={cn("p-3 hidden md:block rounded-full transition-all duration-300", isActive ? `bg-${primaryColor}-500 text-white` : `bg-${primaryColor}-500/10 dark:bg-black/80 text-${primaryColor}-500`)}>
+                                    <div className={cn("flex lg:flex-row flex-col items-start space-x-4 p-3 max-w-sm md:max-w-sm lg:max-w-2xl transition-all duration-300", isActive ? "bg-gray-100 shadow-xl rounded-xl border border-gray-200" : "")}>
+                                        <div className={cn("p-3 hidden md:block rounded-full transition-all duration-300", isActive ? `bg-${primaryColor}-500 text-white` : `bg-gray-200 text-${primaryColor}-500`)}>
                                             <Icon size={24} />
                                         </div>
                                         <div className="flex-1">
-                                            <h3 className={cn("text-lg md:mt-4 lg:mt-0 font-semibold mb-2 transition-colors duration-300", isActive ? "text-gray-900 dark:text-white" : "text-gray-700 dark:text-white/80")}>
+                                            <h3 className={cn("text-lg md:mt-4 lg:mt-0 font-semibold mb-2 transition-colors duration-300 text-black")}>
                                                 {feature.title}
                                             </h3>
-                                            <p className={cn("transition-colors duration-300 text-sm", isActive ? "text-gray-600 dark:text-white/60" : "text-gray-500 dark:text-white/40")}>
+                                            <p className={cn("transition-colors duration-300 text-sm text-gray-600")}>
                                                 {feature.description}
                                             </p>
-                                            <div className="mt-4 bg-white dark:bg-black/80 rounded-sm h-1 overflow-hidden">
+                                            <div className="mt-4 bg-gray-200 rounded-sm h-1 overflow-hidden">
                                                 {isActive && (
                                                     <motion.div
-                                                        className={`h-full ${progressGradientLight} ${progressGradientDark}`}
+                                                        className={`h-full ${progressGradientLight}`}
                                                         initial={{ width: 0 }}
                                                         animate={{ width: `${progress}%` }}
                                                         transition={{ duration: 0.1, ease: "linear" }}
@@ -475,7 +495,7 @@ function ComponentEight() {
                     <div className="relative order-1 max-w-lg mx-auto lg:order-2">
                         <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative">
                             <Image
-                                className="rounded-2xl border dark:border-none border-gray-50 shadow-lg dark:drop-shadow-lg object-cover w-full h-full"
+                                className="rounded-2xl border border-gray-100 shadow-lg object-cover w-full h-full"
                                 src={sampleFeatures[currentFeature].image}
                                 alt={sampleFeatures[currentFeature].title}
                                 width={600}
