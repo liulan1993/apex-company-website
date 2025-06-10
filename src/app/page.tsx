@@ -691,6 +691,13 @@ function ComponentTen() {
   );
 }
 
+const linearGradients = [
+    "linear-gradient(to bottom right, rgb(6, 182, 212), rgb(16, 185, 129))",
+    "linear-gradient(to bottom right, rgb(236, 72, 153), rgb(99, 102, 241))",
+    "linear-gradient(to bottom right, rgb(249, 115, 22), rgb(234, 179, 8))",
+    "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
+];
+
 const StickyScroll = ({ content, contentClassName, }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
   const [activeCard, setActiveCard] = React.useState(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -708,17 +715,11 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
   });
 
   const backgroundColors = ["rgb(255, 255, 255)"];
-  const linearGradients = [
-    "linear-gradient(to bottom right, rgb(6, 182, 212), rgb(16, 185, 129))",
-    "linear-gradient(to bottom right, rgb(236, 72, 153), rgb(99, 102, 241))",
-    "linear-gradient(to bottom right, rgb(249, 115, 22), rgb(234, 179, 8))",
-    "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
-  ];
   const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
 
   useEffect(() => {
     setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
-  }, [activeCard, linearGradients]);
+  }, [activeCard]);
 
   return (
     <motion.div animate={{ backgroundColor: backgroundColors[0], }} className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-10" ref={ref} style={{ backgroundColor: 'white' }}>
@@ -993,6 +994,7 @@ export default function ApexPage() {
         <div className="bg-white">
           <NavBar items={navItems} activeTab={activeTab} onNavItemClick={handleNavItemClick} />
           <div id="home" ref={sectionRefs.home}><ComponentOne /></div>
+          <ComponentTwo />
           <div id="about" ref={sectionRefs.about}><ComponentSix /></div>
           <ComponentEight />
           <ComponentTwentyMedicalHealth />
@@ -1004,4 +1006,3 @@ export default function ApexPage() {
         </div>
     )
 }
-
