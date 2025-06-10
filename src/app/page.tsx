@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, forwardRef, useRef } from 'react';
+import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, animate } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -13,44 +13,65 @@ function cn(...inputs: ClassValue[]) {
 }
 
 // --- 图标组件 (本地定义) ---
+// 原有图标
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
   </svg>
 );
-
 const UserIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
   </svg>
 );
-
 const SettingsIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2.12l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2.12l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" />
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2.12l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2.12l.15.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" />
   </svg>
 );
-
 const MailIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
 );
-
 const BrainCog = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 2a4.5 4.5 0 0 1 4.5 4.5c0 1.06-.38 2.04-.98 2.85"/><path d="M12 2a4.5 4.5 0 0 0-4.5 4.5c0 1.06.38 2.04.98 2.85"/><path d="M12 13.5a4.5 4.5 0 0 1 4.5-4.5c1.06 0 2.04.38 2.85.98"/><path d="M12 13.5a4.5 4.5 0 0 0-4.5-4.5c-1.06 0-2.04.38-2.85.98"/><path d="M3.03 16.5a4.5 4.5 0 0 0 6.42.04"/><path d="M14.55 16.54a4.5 4.5 0 0 0 6.42-.04"/><circle cx="12" cy="12" r=".5"/><path d="M21.97 16.5a4.5 4.5 0 0 1-6.42.04"/><path d="M9.45 16.54a4.5 4.5 0 0 1-6.42-.04"/><path d="M12 13.5V22"/><path d="M12 2v2.5"/><path d="M19.14 4.86 17.5 6.5"/><path d="m4.86 19.14 1.64-1.64"/><path d="m19.14 19.14-1.64-1.64"/><path d="m4.86 4.86 1.64 1.64"/>
     </svg>
 );
-
 const Brain = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08A2.5 2.5 0 0 1 5 13.5V8c0-1.9.83-3.63 2.16-4.84A2.5 2.5 0 0 1 9.5 2Z" /><path d="M14.5 2a2.5 2.5 0 0 0-2.5 2.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08A2.5 2.5 0 0 0 19 13.5V8c0-1.9-.83-3.63-2.16-4.84A2.5 2.5 0 0 0 14.5 2Z" />
     </svg>
 );
+// 为 ComponentTen 新增的图标
+const Box = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+    <line x1="12" y1="22.08" x2="12" y2="12" />
+  </svg>
+);
+const Lock = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+const Sparkles = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+  </svg>
+);
+const Search = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+);
 
 // --- 通用 UI 组件 ---
-
+// ... (Button 和 Badge 组件保持不变)
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
@@ -76,18 +97,15 @@ const buttonVariants = cva(
     },
   }
 );
-
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
-
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant, size, ...props }, ref) => {
     return (
       <button className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
     );
 });
 Button.displayName = "Button";
-
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
@@ -104,17 +122,17 @@ const badgeVariants = cva(
     },
   }
 );
-
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
-
 function Badge({ className, variant, ...props }: BadgeProps) {
   return <div className={cn(badgeVariants({ variant, className }))} {...props} />;
 }
 
+// --- 页面组件 ---
 
-// --- 第三组件 (导航栏) ---
+// 第三组件 (导航栏)
+// ... (NavBar 组件保持不变)
 interface NavItem {
     name: string;
     url: string;
@@ -160,7 +178,8 @@ function NavBar({ items, className }: { items: NavItem[], className?: string }) 
 }
 
 
-// --- 第一组件 ---
+// 第一组件
+// ... (ComponentOne 组件保持不变)
 function FloatingPaths({ position }: { position: number }) {
     const paths = Array.from({ length: 36 }, (_, i) => ({
         id: i,
@@ -186,7 +205,6 @@ function FloatingPaths({ position }: { position: number }) {
         </div>
     );
 }
-
 function ComponentOne({ title = "Apex" }: { title?: string }) {
     const words = title.split(" ");
     return (
@@ -215,7 +233,8 @@ function ComponentOne({ title = "Apex" }: { title?: string }) {
     );
 }
 
-// --- 第二组件 ---
+// 第二组件
+// ... (ComponentTwo 组件保持不变)
 function ComponentTwo() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(() => ["医疗健康", "商务咨询", "企业服务", "视野拓展", "留学教育"],[]);
@@ -255,7 +274,8 @@ function ComponentTwo() {
   );
 }
 
-// --- 第六组件 ---
+// 第六组件
+// ... (ComponentSix 组件保持不变)
 function ComponentSix() {
   const features = [
     {
@@ -336,8 +356,8 @@ function ComponentSix() {
   );
 }
 
-
-// --- 第八组件 ---
+// 第八组件
+// ... (ComponentEight 组件保持不变)
 interface FeatureItem {
     id: number;
     icon: React.ElementType;
@@ -345,7 +365,6 @@ interface FeatureItem {
     description: string;
     image: string;
 }
-
 function ComponentEight() {
     const sampleFeatures: FeatureItem[] = [
         {
@@ -487,6 +506,212 @@ function ComponentEight() {
     );
 }
 
+// --- 新增: 第十组件 (ComponentTen) 及其依赖 ---
+
+// 辉光效果组件
+interface GlowingEffectProps {
+    blur?: number;
+    inactiveZone?: number;
+    proximity?: number;
+    spread?: number;
+    variant?: "default" | "white";
+    glow?: boolean;
+    className?: string;
+    disabled?: boolean;
+    movementDuration?: number;
+    borderWidth?: number;
+}
+const GlowingEffect = memo(
+  ({
+    blur = 0,
+    inactiveZone = 0.7,
+    proximity = 0,
+    spread = 20,
+    variant = "default",
+    glow = false,
+    className,
+    movementDuration = 2,
+    borderWidth = 1,
+    disabled = false,
+  }: GlowingEffectProps) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const lastPosition = useRef({ x: 0, y: 0 });
+    const animationFrameRef = useRef<number>(0);
+
+    const handleMove = useCallback(
+      (e?: MouseEvent | { x: number; y: number }) => {
+        if (!containerRef.current) return;
+        if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+
+        animationFrameRef.current = requestAnimationFrame(() => {
+          const element = containerRef.current;
+          if (!element) return;
+          const { left, top, width, height } = element.getBoundingClientRect();
+          const mouseX = e?.x ?? lastPosition.current.x;
+          const mouseY = e?.y ?? lastPosition.current.y;
+          if (e) lastPosition.current = { x: mouseX, y: mouseY };
+
+          const center = [left + width * 0.5, top + height * 0.5];
+          const distanceFromCenter = Math.hypot(mouseX - center[0], mouseY - center[1]);
+          const inactiveRadius = 0.5 * Math.min(width, height) * inactiveZone;
+
+          if (distanceFromCenter < inactiveRadius) {
+            element.style.setProperty("--active", "0");
+            return;
+          }
+
+          const isActive =
+            mouseX > left - proximity &&
+            mouseX < left + width + proximity &&
+            mouseY > top - proximity &&
+            mouseY < top + height + proximity;
+
+          element.style.setProperty("--active", isActive ? "1" : "0");
+          if (!isActive) return;
+
+          const currentAngle = parseFloat(element.style.getPropertyValue("--start")) || 0;
+          let targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
+          const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
+          const newAngle = currentAngle + angleDiff;
+
+          animate(currentAngle, newAngle, {
+            duration: movementDuration,
+            ease: [0.16, 1, 0.3, 1],
+            onUpdate: (value) => element.style.setProperty("--start", String(value)),
+          });
+        });
+      },
+      [inactiveZone, proximity, movementDuration]
+    );
+
+    useEffect(() => {
+      if (disabled) return;
+      const handleScroll = () => handleMove();
+      const handlePointerMove = (e: PointerEvent) => handleMove(e);
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      document.body.addEventListener("pointermove", handlePointerMove, { passive: true });
+      return () => {
+        if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+        window.removeEventListener("scroll", handleScroll);
+        document.body.removeEventListener("pointermove", handlePointerMove);
+      };
+    }, [handleMove, disabled]);
+
+    return (
+      <>
+        <div
+          className={cn(
+            "pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity",
+            glow && "opacity-100", variant === "white" && "border-white", disabled && "!block"
+          )}
+        />
+        <div
+          ref={containerRef}
+          style={
+            {
+              "--blur": `${blur}px`, "--spread": spread, "--start": "0", "--active": "0", "--glowingeffect-border-width": `${borderWidth}px`,
+              "--repeating-conic-gradient-times": "5",
+              "--gradient": `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%),
+                radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%),
+                radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), 
+                radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%),
+                repeating-conic-gradient(from 236.84deg at 50% 50%, #dd7bbb 0%, #d79f1e calc(25% / var(--repeating-conic-gradient-times)),
+                  #5a922c calc(50% / var(--repeating-conic-gradient-times)), #4c7894 calc(75% / var(--repeating-conic-gradient-times)),
+                  #dd7bbb calc(100% / var(--repeating-conic-gradient-times)))`,
+            } as React.CSSProperties
+          }
+          className={cn("pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity", glow && "opacity-100", blur > 0 && "blur-[var(--blur)] ", className, disabled && "!hidden")}
+        >
+          <div
+            className={cn("glow rounded-[inherit]",
+              'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]',
+              "after:[border:var(--glowingeffect-border-width)_solid_transparent]", "after:[background:var(--gradient)] after:[background-attachment:fixed]",
+              "after:opacity-[var(--active)] after:transition-opacity after:duration-300", "after:[mask-clip:padding-box,border-box]",
+              "after:[mask-composite:intersect]", "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]"
+            )}
+          />
+        </div>
+      </>
+    );
+  }
+);
+GlowingEffect.displayName = "GlowingEffect";
+
+// 网格项组件
+interface GridItemProps {
+  area: string;
+  icon: React.ReactNode;
+  title: string;
+  description: React.ReactNode;
+}
+const GridItem = ({ area, icon, title, description }: GridItemProps) => {
+  return (
+    <li className={cn("min-h-[14rem] list-none", area)}>
+      <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-gray-200 p-2 md:rounded-[1.5rem] md:p-3">
+        <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={3} />
+        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-gray-200 bg-white p-6 shadow-sm md:p-6">
+          <div className="relative flex flex-1 flex-col justify-between gap-3">
+            <div className="w-fit rounded-lg border-[0.75px] border-gray-200 bg-gray-50 p-2 text-gray-800">
+              {icon}
+            </div>
+            <div className="space-y-3">
+              <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
+                {title}
+              </h3>
+              <h2 className="font-sans text-sm leading-[1.125rem] md:text-base md:leading-[1.375rem] text-gray-600">
+                {description}
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+};
+
+// 第十组件
+function ComponentTen() {
+  return (
+    <div className="bg-white text-black w-full py-20 lg:py-40 px-4 md:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">我们的核心优势</h2>
+            <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
+              <GridItem
+                area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
+                icon={<Box className="h-4 w-4" />}
+                title="以正确的方式做事"
+                description="我们的所有服务都以合规和专业为基础，确保您的业务安全稳健。"
+              />
+              <GridItem
+                area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
+                icon={<SettingsIcon className="h-4 w-4" />}
+                title="最顶尖的AI辅助工具"
+                description="我们利用最先进的人工智能技术，为您提供高效、精准的解决方案。"
+              />
+              <GridItem
+                area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
+                icon={<Lock className="h-4 w-4" />}
+                title="您的数据，绝对安全"
+                description="我们采用银行级的安全措施，确保您的数据和隐私得到最高级别的保护。"
+              />
+              <GridItem
+                area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]"
+                icon={<Sparkles className="h-4 w-4" />}
+                title="持续创新，追求卓越"
+                description="我们的团队不断探索新技术，致力于为您提供超越期待的卓越服务。"
+              />
+              <GridItem
+                area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
+                icon={<Search className="h-4 w-4" />}
+                title="深度洞察，抢占先机"
+                description="我们为您提供深入的市场分析和前瞻性的战略建议，助您在竞争中脱颖而出。"
+              />
+            </ul>
+        </div>
+    </div>
+  );
+}
+
 // --- 主 App 组件 ---
 export default function ApexPage() {
     const navItems: NavItem[] = [
@@ -503,6 +728,7 @@ export default function ApexPage() {
           <ComponentTwo />
           <ComponentSix />
           <ComponentEight />
+          <ComponentTen /> {/* <-- 新增的组件放在这里 */}
         </main>
     )
 }
