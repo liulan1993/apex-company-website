@@ -255,7 +255,7 @@ function ComponentTwo() {
   return (
     <div className="w-full text-black bg-white">
       <div className="container mx-auto px-4">
-        <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
+        <div className="flex gap-8 py-16 lg:py-24 items-center justify-center flex-col">
           <div className="flex gap-4 flex-col items-center">
             <h1 className="text-5xl md:text-7xl tracking-tighter text-center font-regular flex flex-col items-center">
               <span className="text-black whitespace-nowrap">领航狮城，Apex为您规划事业与未来。</span>
@@ -310,7 +310,7 @@ function ComponentSix() {
   ];
 
   return (
-    <div className="w-full py-20 lg:py-40 bg-white">
+    <div className="w-full py-16 lg:py-24 bg-white">
       <div className="container mx-auto">
         <div className="flex flex-col gap-10">
           <div className="flex gap-4 flex-col items-start">
@@ -529,7 +529,7 @@ function ComponentTwentyMedicalHealth() {
   const handleMouseUp = () => setIsDragging(false);
 
   return (
-    <div className="w-full py-20 lg:py-40 bg-white">
+    <div className="w-full py-16 lg:py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-4">
           <div>
@@ -608,7 +608,6 @@ const GlowingEffect = memo(
           element.style.setProperty("--active", isActive ? "1" : "0");
           if (!isActive) return;
           const currentAngle = parseFloat(element.style.getPropertyValue("--start")) || 0;
-          // [FIX] Use const for targetAngle as it's never reassigned
           const targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
@@ -674,7 +673,7 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
 
 function ComponentTen() {
   return (
-    <div className="bg-white text-black w-full py-20 lg:py-40 px-4 md:px-8 lg:px-12">
+    <div className="bg-white text-black w-full py-16 lg:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
             <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">我们的核心优势</h2>
             <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
@@ -759,9 +758,9 @@ function Component30() {
 
 function Feature() {
   return (
-    <div className="w-full py-20 lg:py-40 bg-white text-black">
+    <div className="w-full py-16 lg:py-24 bg-white text-black">
       <div className="container mx-auto">
-        <div className="flex gap-4 py-20 lg:py-40 flex-col items-start">
+        <div className="flex gap-4 py-16 lg:py-24 flex-col items-start">
           <div><Badge>Platform</Badge></div>
           <div className="flex gap-2 flex-col">
             <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular">Something new!</h2>
@@ -842,7 +841,7 @@ const testimonialsData = [
 
 function ComponentTestimonialsMarquee() {
   return (
-    <section className={cn("bg-white text-gray-900", "py-12 sm:py-24 md:py-32 px-0")}>
+    <section className={cn("bg-white text-gray-900", "py-16 lg:py-24")}>
       <MarqueeStyles />
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-center sm:gap-16">
         <div className="flex flex-col items-center gap-4 px-4 sm:gap-8">
@@ -887,7 +886,7 @@ const footerData = {
 
 const SiteFooter = ({ logo, tagline, menuItems, copyright, bottomLinks, }: typeof footerData) => {
   return (
-    <section className="py-20 sm:py-32 bg-white text-black">
+    <section className="py-16 sm:py-24 bg-white text-black">
       <div className="container mx-auto px-4">
         <footer className="border-t border-gray-200 pt-16">
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
@@ -940,8 +939,7 @@ export default function ApexPage() {
     ];
     
     return (
-        <main className="bg-white">
-          {/* [修正] 移除了不兼容的 Head 组件，以解决构建错误 */}
+        <div className="bg-white">
           <NavBar items={navItems} />
           <ComponentOne />
           <ComponentTwo />
@@ -953,6 +951,6 @@ export default function ApexPage() {
           <FeatureDemoComponent />
           <ComponentTestimonialsMarquee />
           <SiteFooter {...footerData} />
-        </main>
+        </div>
     )
 }
