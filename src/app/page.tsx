@@ -77,25 +77,11 @@ const GripVertical = (props: React.SVGProps<SVGSVGElement>) => (
     <circle cx="15" cy="19" r="1" />
   </svg>
 );
-
-// Inline SVG for the Check icon, replacing `lucide-react` import
 const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 6 9 17l-5-5" />
   </svg>
 );
-
 
 // --- 通用 UI 组件 ---
 const buttonVariants = cva(
@@ -133,7 +119,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant,
 });
 Button.displayName = "Button";
 
-// Badge Component, originally from badge.tsx (moved here for consolidation)
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
@@ -150,20 +135,16 @@ const badgeVariants = cva(
     },
   },
 );
-
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
-
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
     <div className={cn(badgeVariants({ variant }), className)} {...props} />
   );
 }
 
-
 // --- 页面组件 ---
-
 interface NavItem {
     name: string;
     url: string;
@@ -290,7 +271,7 @@ function ComponentTwo() {
                 ))}
               </span>
             </h1>
-            <p className="text-lg md:text-xl leading-relaxed tracking-tight text-gray-600 max-w-4xl text-center"> 
+            <p className="text-lg md:text-xl leading-relaxed tracking-tight text-gray-600 max-w-4xl text-center">
               我们Apex是一家总部位于新加坡的综合性专业服务机构，致力于为全球高净值人士、家庭及企业，提供从商业拓展到家庭发展的无缝衔接解决方案。我们深知远赴重洋、开创未来的机遇与挑战，因此矢志成为您在新加坡最值得信赖的伙伴，为您提供一切全方位一站式服务。
             </p>
           </div>
@@ -354,7 +335,6 @@ function ComponentSix() {
                   feature.isLarge && "lg:col-span-2 lg:aspect-auto"
                 )}
               >
-                {/* Image component replaced with standard img tag for Vercel deployment */}
                 <img 
                     src={feature.imageUrl} 
                     alt={feature.title}
@@ -391,7 +371,7 @@ interface FeatureItem {
 function ComponentEight() {
     const [currentFeature, setCurrentFeature] = useState(0);
     const [progress, setProgress] = useState(0);
-    const sampleFeatures: FeatureItem[] = useMemo(() => [ // Wrapped in useMemo
+    const sampleFeatures: FeatureItem[] = useMemo(() => [
         {
             id: 1,
             icon: BrainCog,
@@ -413,7 +393,7 @@ function ComponentEight() {
             description: "提供从生活安顿到学业规划的一站式海外服务，涵盖住宿、课程辅导及低龄监护，确保学生无缝衔接、快速融入全新的学习与生活环境。",
             image: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         },
-    ],[]); // Added dependency array for useMemo
+    ],[]);
     const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const intervalRef = useRef<number | undefined>(undefined);
@@ -513,7 +493,6 @@ function ComponentEight() {
                     </div>
                     <div className="relative order-1 max-w-lg mx-auto lg:order-2">
                         <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative">
-                            {/* Image component replaced with standard img tag for Vercel deployment */}
                             <img
                                 className="rounded-2xl border border-gray-100 shadow-lg object-cover w-full h-full"
                                 src={sampleFeatures[currentFeature].image}
@@ -529,23 +508,19 @@ function ComponentEight() {
     );
 }
 
-// --- 第二十组件 (医疗健康)，已适配生产环境 ---
 function ComponentTwentyMedicalHealth() {
   const [inset, setInset] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     if (!isDragging) return;
-
     const rect = e.currentTarget.getBoundingClientRect();
     let x = 0;
-
     if ('touches' in e && e.touches.length > 0) {
       x = e.touches[0].clientX - rect.left;
     } else if ('clientX' in e) {
       x = e.clientX - rect.left;
     }
-    
     const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
     setInset(percentage);
   };
@@ -571,42 +546,23 @@ function ComponentTwentyMedicalHealth() {
           <div className="pt-12 w-full">
             <div
               className="relative aspect-video w-full h-full overflow-hidden rounded-2xl select-none"
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              onTouchMove={handleMouseMove}
-              onTouchEnd={handleMouseUp}
-              onMouseDown={handleMouseDown}
-              onTouchStart={handleMouseDown}
+              onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}
+              onTouchMove={handleMouseMove} onTouchEnd={handleMouseUp}
+              onMouseDown={handleMouseDown} onTouchStart={handleMouseDown}
             >
-              <div
-                className="bg-white h-full w-1 absolute z-20 top-0 -ml-0.5 select-none"
-                style={{ left: `${inset}%` }}
-              >
-                <div
-                  className="bg-white rounded-full hover:scale-110 transition-all w-8 h-8 select-none -translate-y-1/2 absolute top-1/2 -ml-4 z-30 cursor-ew-resize flex justify-center items-center shadow-lg border"
-                >
+              <div className="bg-white h-full w-1 absolute z-20 top-0 -ml-0.5 select-none" style={{ left: `${inset}%` }}>
+                <div className="bg-white rounded-full hover:scale-110 transition-all w-8 h-8 select-none -translate-y-1/2 absolute top-1/2 -ml-4 z-30 cursor-ew-resize flex justify-center items-center shadow-lg border">
                   <GripVertical className="h-5 w-5 text-gray-500 select-none" />
                 </div>
               </div>
-              {/* Image component replaced with standard img tag for Vercel deployment */}
               <img
-                src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75"
-                alt="处理后效果"
-                width="1920"
-                height="1080"
+                src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75" alt="处理后效果" width="1920" height="1080"
                 className="absolute left-0 top-0 z-10 w-full h-full object-cover aspect-video rounded-2xl select-none border"
-                style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }}
-                draggable="false"
+                style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }} draggable="false"
               />
-              {/* Image component replaced with standard img tag for Vercel deployment */}
               <img
-                src="https://www.twblocks.com/_next/image?url=%2Fdarkmode-feature8.png&w=3840&q=75"
-                alt="处理前原图"
-                width="1920"
-                height="1080"
-                className="absolute left-0 top-0 w-full h-full object-cover aspect-video rounded-2xl select-none border"
-                draggable="false"
+                src="https://www.twblocks.com/_next/image?url=%2Fdarkmode-feature8.png&w=3840&q=75" alt="处理前原图" width="1920" height="1080"
+                className="absolute left-0 top-0 w-full h-full object-cover aspect-video rounded-2xl select-none border" draggable="false"
               />
             </div>
           </div>
@@ -616,42 +572,23 @@ function ComponentTwentyMedicalHealth() {
   );
 }
 
-
-// --- 辉光效果组件等... ---
 interface GlowingEffectProps {
-    blur?: number;
-    inactiveZone?: number;
-    proximity?: number;
-    spread?: number;
-    variant?: "default" | "white";
-    glow?: boolean;
-    className?: string;
-    disabled?: boolean;
-    movementDuration?: number;
-    borderWidth?: number;
+    blur?: number; inactiveZone?: number; proximity?: number; spread?: number;
+    variant?: "default" | "white"; glow?: boolean; className?: string;
+    disabled?: boolean; movementDuration?: number; borderWidth?: number;
 }
 const GlowingEffect = memo(
   ({
-    blur = 0,
-    inactiveZone = 0.7,
-    proximity = 0,
-    spread = 20,
-    variant = "default",
-    glow = false,
-    className,
-    movementDuration = 2,
-    borderWidth = 1,
-    disabled = false,
+    blur = 0, inactiveZone = 0.7, proximity = 0, spread = 20, variant = "default",
+    glow = false, className, movementDuration = 2, borderWidth = 1, disabled = false,
   }: GlowingEffectProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const lastPosition = useRef({ x: 0, y: 0 });
     const animationFrameRef = useRef<number>(0);
 
-    const handleMove = useCallback(
-      (e?: MouseEvent | { x: number; y: number }) => {
+    const handleMove = useCallback((e?: MouseEvent | { x: number; y: number }) => {
         if (!containerRef.current) return;
         if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-
         animationFrameRef.current = requestAnimationFrame(() => {
           const element = containerRef.current;
           if (!element) return;
@@ -659,39 +596,28 @@ const GlowingEffect = memo(
           const mouseX = e?.x ?? lastPosition.current.x;
           const mouseY = e?.y ?? lastPosition.current.y;
           if (e) lastPosition.current = { x: mouseX, y: mouseY };
-
           const center = [left + width * 0.5, top + height * 0.5];
           const distanceFromCenter = Math.hypot(mouseX - center[0], mouseY - center[1]);
           const inactiveRadius = 0.5 * Math.min(width, height) * inactiveZone;
-
           if (distanceFromCenter < inactiveRadius) {
             element.style.setProperty("--active", "0");
             return;
           }
-
-          const isActive =
-            mouseX > left - proximity &&
-            mouseX < left + width + proximity &&
-            mouseY > top - proximity &&
-            mouseY < top + height + proximity;
-
+          const isActive = mouseX > left - proximity && mouseX < left + width + proximity &&
+                           mouseY > top - proximity && mouseY < top + height + proximity;
           element.style.setProperty("--active", isActive ? "1" : "0");
           if (!isActive) return;
-
           const currentAngle = parseFloat(element.style.getPropertyValue("--start")) || 0;
-          // targetAngle can be a const as it's not reassigned within this scope.
           const targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
-
           animate(currentAngle, newAngle, {
             duration: movementDuration,
             ease: [0.16, 1, 0.3, 1],
             onUpdate: (value) => element.style.setProperty("--start", String(value)),
           });
         });
-      },
-      [inactiveZone, proximity, movementDuration]
+      }, [inactiveZone, proximity, movementDuration]
     );
 
     useEffect(() => {
@@ -709,37 +635,9 @@ const GlowingEffect = memo(
 
     return (
       <>
-        <div
-          className={cn(
-            "pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity",
-            glow && "opacity-100", variant === "white" && "border-white", disabled && "!block"
-          )}
-        />
-        <div
-          ref={containerRef}
-          style={
-            {
-              "--blur": `${blur}px`, "--spread": spread, "--start": "0", "--active": "0", "--glowingeffect-border-width": `${borderWidth}px`,
-              "--repeating-conic-gradient-times": "5",
-              "--gradient": `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%),
-                radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%),
-                radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), 
-                radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%),
-                repeating-conic-gradient(from 236.84deg at 50% 50%, #dd7bbb 0%, #d79f1e calc(25% / var(--repeating-conic-gradient-times)),
-                  #5a922c calc(50% / var(--repeating-conic-gradient-times)), #4c7894 calc(75% / var(--repeating-conic-gradient-times)),
-                  #dd7bbb calc(100% / var(--repeating-conic-gradient-times)))`,
-            } as React.CSSProperties
-          }
-          className={cn("pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity", glow && "opacity-100", blur > 0 && "blur-[var(--blur)] ", className, disabled && "!hidden")}
-        >
-          <div
-            className={cn("glow rounded-[inherit]",
-              'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]',
-              "after:[border:var(--glowingeffect-border-width)_solid_transparent]", "after:[background:var(--gradient)] after:[background-attachment:fixed]",
-              "after:opacity-[var(--active)] after:transition-opacity after:duration-300", "after:[mask-clip:padding-box,border-box]",
-              "after:[mask-composite:intersect]", "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]"
-            )}
-          />
+        <div className={cn("pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity", glow && "opacity-100", variant === "white" && "border-white", disabled && "!block")}/>
+        <div ref={containerRef} style={{ "--blur": `${blur}px`, "--spread": spread, "--start": "0", "--active": "0", "--glowingeffect-border-width": `${borderWidth}px`, "--repeating-conic-gradient-times": "5", "--gradient": `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%), radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%), radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%), repeating-conic-gradient(from 236.84deg at 50% 50%, #dd7bbb 0%, #d79f1e calc(25% / var(--repeating-conic-gradient-times)), #5a922c calc(50% / var(--repeating-conic-gradient-times)), #4c7894 calc(75% / var(--repeating-conic-gradient-times)), #dd7bbb calc(100% / var(--repeating-conic-gradient-times)))`} as React.CSSProperties} className={cn("pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity", glow && "opacity-100", blur > 0 && "blur-[var(--blur)] ", className, disabled && "!hidden")}>
+          <div className={cn("glow rounded-[inherit]", 'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]', "after:[border:var(--glowingeffect-border-width)_solid_transparent]", "after:[background:var(--gradient)] after:[background-attachment:fixed]", "after:opacity-[var(--active)] after:transition-opacity after:duration-300", "after:[mask-clip:padding-box,border-box]", "after:[mask-composite:intersect]", "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]")}/>
         </div>
       </>
     );
@@ -747,12 +645,7 @@ const GlowingEffect = memo(
 );
 GlowingEffect.displayName = "GlowingEffect";
 
-interface GridItemProps {
-  area: string;
-  icon: React.ReactNode;
-  title: string;
-  description: React.ReactNode;
-}
+interface GridItemProps { area: string; icon: React.ReactNode; title: string; description: React.ReactNode; }
 const GridItem = ({ area, icon, title, description }: GridItemProps) => {
   return (
     <li className={cn("min-h-[14rem] list-none", area)}>
@@ -784,132 +677,137 @@ function ComponentTen() {
         <div className="max-w-7xl mx-auto">
             <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">我们的核心优势</h2>
             <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
-              <GridItem
-                area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
-                icon={<Box className="h-4 w-4" />}
-                title="以正确的方式做事"
-                description="我们的所有服务都以合规和专业为基础，确保您的业务安全稳健。"
-              />
-              <GridItem
-                area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
-                icon={<SettingsIcon className="h-4 w-4" />}
-                title="最顶尖的AI辅助工具"
-                description="我们利用最先进的人工智能技术，为您提供高效、精准的解决方案。"
-              />
-              <GridItem
-                area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
-                icon={<Lock className="h-4 w-4" />}
-                title="您的数据，绝对安全"
-                description="我们采用银行级的安全措施，确保您的数据和隐私得到最高级别的保护。"
-              />
-              <GridItem
-                area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]"
-                icon={<Sparkles className="h-4 w-4" />}
-                title="持续创新，追求卓越"
-                description="我们的团队不断探索新技术，致力于为您提供超越期待的卓越服务。"
-              />
-              <GridItem
-                area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
-                icon={<Search className="h-4 w-4" />}
-                title="深度洞察，抢占先机"
-                description="我们为您提供深入的市场分析和前瞻性的战略建议，助您在竞争中脱颖而出。"
-              />
+              <GridItem area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]" icon={<Box className="h-4 w-4" />} title="以正确的方式做事" description="我们的所有服务都以合规和专业为基础，确保您的业务安全稳健。" />
+              <GridItem area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]" icon={<SettingsIcon className="h-4 w-4" />} title="最顶尖的AI辅助工具" description="我们利用最先进的人工智能技术，为您提供高效、精准的解决方案。" />
+              <GridItem area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]" icon={<Lock className="h-4 w-4" />} title="您的数据，绝对安全" description="我们采用银行级的安全措施，确保您的数据和隐私得到最高级别的保护。" />
+              <GridItem area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]" icon={<Sparkles className="h-4 w-4" />} title="持续创新，追求卓越" description="我们的团队不断探索新技术，致力于为您提供超越期待的卓越服务。" />
+              <GridItem area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]" icon={<Search className="h-4 w-4" />} title="深度洞察，抢占先机" description="我们为您提供深入的市场分析和前瞻性的战略建议，助您在竞争中脱颖而出。" />
             </ul>
         </div>
     </div>
   );
 }
 
-// --- StickyScroll Component from component-30 ---
-// Updated to use plain RGB values for backgroundColors and direct gradient strings for linearGradients
-// to ensure compatibility with Tailwind JIT mode in Next.js production.
-// Changed from export const to const to avoid being treated as a page export.
-const StickyScroll = ({ // Removed 'export' keyword
-  content,
-  contentClassName,
-}: {
-  content: {
-    title: string;
-    description: string;
-    content?: React.ReactNode; // Changed from React.ReactNode | any to React.ReactNode
-  }[];
-  contentClassName?: string;
-}) => {
+// --- START: 新增的用户评价跑马灯组件 ---
+const MarqueeStyles = () => (
+  <style>{`
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(-100% - var(--gap))); }
+    }
+    .animate-marquee {
+      animation: marquee var(--duration) linear infinite;
+    }
+    .group:hover .animate-marquee {
+      animation-play-state: paused;
+    }
+  `}</style>
+);
+
+const TestimonialAvatar = forwardRef(({ className, ...props }: React.HTMLAttributes<HTMLDivElement>, ref) => (
+  <div ref={ref as React.Ref<HTMLDivElement>} className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)} {...props} />
+));
+TestimonialAvatar.displayName = "TestimonialAvatar";
+
+const TestimonialAvatarImage = forwardRef(({ className, src, alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>, ref) => (
+  <img ref={ref as React.Ref<HTMLImageElement>} src={src} alt={alt} className={cn("aspect-square h-full w-full", className)} {...props} />
+));
+TestimonialAvatarImage.displayName = "TestimonialAvatarImage";
+
+function TestimonialCard({ author, text, href, className }: {author: {name:string; handle:string; avatar:string;}; text:string; href?:string; className?: string}) {
+  const CardComponent = href ? 'a' : 'div';
+  return (
+    <CardComponent {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})} className={cn( "flex flex-col rounded-lg border", "bg-white", "p-4 text-start sm:p-6", "hover:bg-gray-50", "max-w-[320px] sm:max-w-[320px]", "transition-colors duration-300", "border-gray-200", className )}>
+      <div className="flex items-center gap-3">
+        <TestimonialAvatar className="h-12 w-12">
+          <TestimonialAvatarImage src={author.avatar} alt={author.name} />
+        </TestimonialAvatar>
+        <div className="flex flex-col items-start">
+          <h3 className="text-md font-semibold leading-none text-gray-900">{author.name}</h3>
+          <p className="text-sm text-gray-500">{author.handle}</p>
+        </div>
+      </div>
+      <p className="sm:text-md mt-4 text-sm text-gray-600">{text}</p>
+    </CardComponent>
+  );
+}
+
+const testimonialsData = [
+  { author: { name: "Emma Thompson", handle: "@emmaai", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" }, text: "这个 AI 平台彻底改变了我们处理数据分析的方式。速度和准确性都是前所未有的。", href: "#" },
+  { author: { name: "David Park", handle: "@davidtech", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }, text: "API 集成完美无瑕。自从实施这个解决方案以来，我们的开发时间减少了 60%。", href: "#" },
+  { author: { name: "Sofia Rodriguez", handle: "@sofiaml", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" }, text: "终于有了一个真正理解上下文的 AI 工具！自然语言处理的准确性令人印象深刻。" },
+  { author: { name: "Michael Chen", handle: "@mchen_dev", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face" }, text: "出色的客户支持和详尽的文档。我们的团队在几小时内就上手并开始运行了。" }
+];
+
+function ComponentTestimonialsMarquee() {
+  return (
+    <section className={cn("bg-white text-gray-900", "py-12 sm:py-24 md:py-32 px-0")}>
+      <MarqueeStyles />
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-center sm:gap-16">
+        <div className="flex flex-col items-center gap-4 px-4 sm:gap-8">
+          <h2 className="max-w-[720px] text-3xl font-semibold leading-tight sm:text-5xl sm:leading-tight text-black">
+            全球开发者信赖
+          </h2>
+          <p className="text-md max-w-[600px] font-medium text-gray-600 sm:text-xl">
+            加入成千上万的开发者行列，使用我们的 AI 平台构建未来
+          </p>
+        </div>
+        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+          <div className="group flex overflow-hidden p-2 [--gap:1rem] [gap:var(--gap)] flex-row [--duration:40s]" style={{'--gap': '1rem', '--duration': '40s'} as React.CSSProperties}>
+            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row">
+              {[...Array(4)].map((_, setIndex) => (
+                testimonialsData.map((testimonial, i) => ( <TestimonialCard key={`${setIndex}-${i}`} {...testimonial} /> ))
+              ))}
+            </div>
+          </div>
+          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-white sm:block" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-white sm:block" />
+        </div>
+      </div>
+    </section>
+  );
+}
+// --- END: 新增的用户评价跑马灯组件 ---
+
+const StickyScroll = ({ content, contentClassName, }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
   const [activeCard, setActiveCard] = React.useState(0);
-  const ref = useRef<HTMLDivElement>(null); // Explicitly type useRef
-  const { scrollYProgress } = useScroll({
-    container: ref,
-    offset: ["start start", "end start"],
-  });
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ container: ref, offset: ["start start", "end start"], });
   const cardLength = content.length;
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const cardsBreakpoints = content.map((_, index) => index / cardLength);
-    const closestBreakpointIndex = cardsBreakpoints.reduce(
-      (acc, breakpoint, index) => {
+    const closestBreakpointIndex = cardsBreakpoints.reduce((acc, breakpoint, index) => {
         const distance = Math.abs(latest - breakpoint);
-        if (distance < Math.abs(latest - cardsBreakpoints[acc])) {
-          return index;
-        }
+        if (distance < Math.abs(latest - cardsBreakpoints[acc])) { return index; }
         return acc;
-      },
-      0
-    );
+      }, 0 );
     setActiveCard(closestBreakpointIndex);
   });
 
-  // Background colors are now all white, and text will be black
-  const backgroundColors = ["rgb(255, 255, 255)"]; // White
-
-  // Linear gradients are kept for the content background, but the main background is white
+  const backgroundColors = ["rgb(255, 255, 255)"];
   const linearGradients = [
-    "linear-gradient(to bottom right, rgb(6, 182, 212), rgb(16, 185, 129))", // cyan-500 to emerald-500
-    "linear-gradient(to bottom right, rgb(236, 72, 153), rgb(99, 102, 241))", // pink-500 to indigo-500
-    "linear-gradient(to bottom right, rgb(249, 115, 22), rgb(234, 179, 8))", // orange-500 to yellow-500
-    "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))", // slate-500 to slate-400
+    "linear-gradient(to bottom right, rgb(6, 182, 212), rgb(16, 185, 129))",
+    "linear-gradient(to bottom right, rgb(236, 72, 153), rgb(99, 102, 241))",
+    "linear-gradient(to bottom right, rgb(249, 115, 22), rgb(234, 179, 8))",
+    "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
   ];
-
-  const [backgroundGradient, setBackgroundGradient] = useState(
-    linearGradients[0]
-  );
+  const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
 
   useEffect(() => {
     setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
-  }, [activeCard, linearGradients]); // Added linearGradients to dependency array
+  }, [activeCard, linearGradients]);
 
   return (
-    <motion.div
-      animate={{
-        backgroundColor: backgroundColors[0], // Always white background
-      }}
-      className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-10"
-      ref={ref}
-      style={{ backgroundColor: 'white' }} // Ensure main background is white
-    >
+    <motion.div animate={{ backgroundColor: backgroundColors[0], }} className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-10" ref={ref} style={{ backgroundColor: 'white' }}>
       <div className="div relative flex items-start px-4">
         <div className="max-w-2xl">
           {content.map((item, index) => (
             <div key={item.title + index} className="my-20">
-              <motion.h2
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{
-                  opacity: activeCard === index ? 1 : 0.3,
-                }}
-                className="text-2xl font-bold text-black" // Text color changed to black
-              >
+              <motion.h2 initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-2xl font-bold text-black">
                 {item.title}
               </motion.h2>
-              <motion.p
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{
-                  opacity: activeCard === index ? 1 : 0.3,
-                }}
-                className="text-lg text-gray-800 max-w-sm mt-10" // Text color changed to dark gray
-              >
+              <motion.p initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-lg text-gray-800 max-w-sm mt-10">
                 {item.description}
               </motion.p>
             </div>
@@ -917,162 +815,46 @@ const StickyScroll = ({ // Removed 'export' keyword
           <div className="h-40" />
         </div>
       </div>
-      <div
-        style={{ background: backgroundGradient }}
-        className={cn(
-          "hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden",
-          contentClassName
-        )}
-      >
+      <div style={{ background: backgroundGradient }} className={cn("hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden", contentClassName)}>
         {content[activeCard].content ?? null}
       </div>
     </motion.div>
   );
 };
 
-// --- Content array for StickyScroll (Component 30) ---
 const stickyScrollContent = [
-  {
-    title: "协同编辑",
-    description:
-      "与您的团队、客户和利益相关者实时协作。共同处理文档、分享想法并迅速做出决策。通过我们的平台，您可以简化工作流程并提高生产力。",
-    content: (
-      <div className="h-full w-full flex items-center justify-center">
-        <img
-          src="https://placehold.co/600x400/FFD700/000000?text=协同编辑"
-          alt="协同编辑图片"
-          className="h-full w-full object-cover rounded-md"
-        />
-      </div>
-    ),
-  },
-  {
-    title: "实时更改",
-    description:
-      "查看实时发生的变化。通过我们的平台，您可以实时跟踪每一次修改。不再混淆项目的最新版本。告别版本控制的混乱，拥抱实时更新的简单性。",
-    content: (
-      <div className="h-full w-full flex items-center justify-center">
-        <img
-          src="https://placehold.co/600x400/FFA07A/000000?text=实时更改"
-          alt="实时更改图片"
-          className="h-full w-full object-cover rounded-md"
-        />
-      </div>
-    ),
-  },
-  {
-    title: "版本控制",
-    description:
-      "体验实时更新，再也不用担心版本控制。我们的平台确保您始终使用项目的最新版本，无需不断手动更新。保持同步，团队协作，工作流程不中断。",
-    content: (
-      <div className="h-full w-full flex items-center justify-center">
-        <img
-          src="https://placehold.co/600x400/ADD8E6/000000?text=版本控制"
-          alt="版本控制图片"
-          className="h-full w-full object-cover rounded-md"
-        />
-      </div>
-    ),
-  },
-  {
-    title: "内容丰富",
-    description:
-      "我们提供丰富的内容和功能，满足您的各种需求。无论您是需要文档管理、项目协作还是数据分析，我们的平台都能为您提供一站式解决方案。",
-    content: (
-      <div className="h-full w-full flex items-center justify-center">
-        <img
-          src="https://placehold.co/600x400/90EE90/000000?text=内容丰富"
-          alt="内容丰富图片"
-          className="h-full w-full object-cover rounded-md"
-        />
-      </div>
-    ),
-  },
+  { title: "协同编辑", description: "与您的团队、客户和利益相关者实时协作。共同处理文档、分享想法并迅速做出决策。通过我们的平台，您可以简化工作流程并提高生产力。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFD700/000000?text=协同编辑" alt="协同编辑图片" className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "实时更改", description: "查看实时发生的变化。通过我们的平台，您可以实时跟踪每一次修改。不再混淆项目的最新版本。告别版本控制的混乱，拥抱实时更新的简单性。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFA07A/000000?text=实时更改" alt="实时更改图片" className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "版本控制", description: "体验实时更新，再也不用担心版本控制。我们的平台确保您始终使用项目的最新版本，无需不断手动更新。保持同步，团队协作，工作流程不中断。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/ADD8E6/000000?text=版本控制" alt="版本控制图片" className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "内容丰富", description: "我们提供丰富的内容和功能，满足您的各种需求。无论您是需要文档管理、项目协作还是数据分析，我们的平台都能为您提供一站式解决方案。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/90EE90/000000?text=内容丰富" alt="内容丰富图片" className="h-full w-full object-cover rounded-md"/></div>),},
 ];
 
-// --- 第30组件 ---
-// Changed to a regular function as it's not a page component export
 function Component30() {
   return (
-    <div className="p-10" style={{ backgroundColor: 'white' }}> {/* Ensure outer div is also white */}
+    <div className="p-10" style={{ backgroundColor: 'white' }}>
       <StickyScroll content={stickyScrollContent} />
     </div>
   );
 }
 
-// Feature Component, originally from feature-with-advantages.tsx (consolidated)
 function Feature() {
   return (
-    <div className="w-full py-20 lg:py-40 bg-white text-black"> {/* Added bg-white and text-black */}
+    <div className="w-full py-20 lg:py-40 bg-white text-black">
       <div className="container mx-auto">
         <div className="flex gap-4 py-20 lg:py-40 flex-col items-start">
-          <div>
-            <Badge>Platform</Badge>
-          </div>
+          <div><Badge>Platform</Badge></div>
           <div className="flex gap-2 flex-col">
-            <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular">
-              Something new!
-            </h2>
-            <p className="text-lg max-w-xl lg:max-w-xl leading-relaxed tracking-tight text-gray-800"> {/* Changed text-muted-foreground to text-gray-800 */}
-              Managing a small business today is already tough.
-            </p>
+            <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular">Something new!</h2>
+            <p className="text-lg max-w-xl lg:max-w-xl leading-relaxed tracking-tight text-gray-800">Managing a small business today is already tough.</p>
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
             <div className="grid grid-cols-2 items-start lg:grid-cols-3 gap-10">
-              <div className="flex flex-row gap-6 w-full items-start">
-                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
-                <div className="flex flex-col gap-1">
-                  <p>Easy to use</p>
-                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
-                    We&apos;ve made it easy to use and understand.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-6 items-start">
-                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
-                <div className="flex flex-col gap-1">
-                  <p>Fast and reliable</p>
-                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
-                    We&apos;ve made it fast and reliable.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-6 items-start">
-                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
-                <div className="flex flex-col gap-1">
-                  <p>Beautiful and modern</p>
-                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
-                    We&apos;ve made it beautiful and modern.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-6 w-full items-start">
-                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
-                <div className="flex flex-col gap-1">
-                  <p>Easy to use</p>
-                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
-                    We&apos;ve made it easy to use and understand.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-6 items-start">
-                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
-                <div className="flex flex-col gap-1">
-                  <p>Fast and reliable</p>
-                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
-                    We&apos;ve made it fast and reliable.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-6 items-start">
-                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
-                <div className="flex flex-col gap-1">
-                  <p>Beautiful and modern</p>
-                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
-                    We&apos;ve made it beautiful and modern.
-                  </p>
-                </div>
-              </div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-gray-700 text-sm">We&apos;ve made it easy to use and understand.</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-gray-700 text-sm">We&apos;ve made it fast and reliable.</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Beautiful and modern</p><p className="text-gray-700 text-sm">We&apos;ve made it beautiful and modern.</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-gray-700 text-sm">We&apos;ve made it easy to use and understand.</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-gray-700 text-sm">We&apos;ve made it fast and reliable.</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Beautiful and modern</p><p className="text-gray-700 text-sm">We&apos;ve made it beautiful and modern.</p></div></div>
             </div>
           </div>
         </div>
@@ -1081,15 +863,11 @@ function Feature() {
   );
 }
 
-// Main App Component, originally from demo.tsx (consolidated)
 function FeatureDemoComponent() {
   return (
-    <div className="block">
-      <Feature />
-    </div>
+    <div className="block"><Feature /></div>
   );
 }
-
 
 // --- 主 App 组件 ---
 export default function ApexPage() {
@@ -1101,18 +879,18 @@ export default function ApexPage() {
     ];
     
     return (
-        <main>
+        <main className="bg-white">
           <NavBar items={navItems} />
           <ComponentOne />
           <ComponentTwo />
           <ComponentSix />
           <ComponentEight />
-          <ComponentTwentyMedicalHealth /> 
-          {/* Component 30 placed below Medical Health as requested */}
-          <Component30 /> 
-          {/* Feature Demo Component placed below Component 30 as requested */}
-          <FeatureDemoComponent />
+          <ComponentTwentyMedicalHealth />
           <ComponentTen />
+          <Component30 /> 
+          <FeatureDemoComponent />
+          {/* 已将用户评价组件移动到页面最底部 */}
+          <ComponentTestimonialsMarquee />
         </main>
     )
 }
