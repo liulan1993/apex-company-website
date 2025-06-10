@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback } from 'react';
-import Image from 'next/image';
+// 错误修复：移除了 'next/image' 的导入，因为它不是标准React库的一部分。
+// import Image from 'next/image'; 
 import { motion, animate } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
@@ -44,7 +45,6 @@ const Brain = (props: React.SVGProps<SVGSVGElement>) => (
         <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08A2.5 2.5 0 0 1 5 13.5V8c0-1.9.83-3.63 2.16-4.84A2.5 2.5 0 0 1 9.5 2Z" /><path d="M14.5 2a2.5 2.5 0 0 0-2.5 2.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08A2.5 2.5 0 0 0 19 13.5V8c0-1.9-.83-3.63-2.16-4.84A2.5 2.5 0 0 0 14.5 2Z" />
     </svg>
 );
-// 为 ComponentTen 新增的图标
 const Box = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
@@ -69,6 +69,17 @@ const Search = (props: React.SVGProps<SVGSVGElement>) => (
     <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
 );
+const GripVertical = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="9" cy="12" r="1" />
+    <circle cx="9" cy="5" r="1" />
+    <circle cx="9" cy="19" r="1" />
+    <circle cx="15" cy="12" r="1" />
+    <circle cx="15" cy="5" r="1" />
+    <circle cx="15" cy="19" r="1" />
+  </svg>
+);
+
 
 // --- 通用 UI 组件 ---
 const buttonVariants = cva(
@@ -320,7 +331,8 @@ function ComponentSix() {
                   feature.isLarge && "lg:col-span-2 lg:aspect-auto"
                 )}
               >
-                <Image 
+                {/* 错误修复: 将 Next.js 的 Image 组件替换为标准的 img 标签 */}
+                <img 
                     src={feature.imageUrl} 
                     alt={feature.title}
                     width={800}
@@ -479,7 +491,8 @@ function ComponentEight() {
                     </div>
                     <div className="relative order-1 max-w-lg mx-auto lg:order-2">
                         <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative">
-                            <Image
+                            {/* 错误修复: 将 Next.js 的 Image 组件替换为标准的 img 标签 */}
+                            <img
                                 className="rounded-2xl border border-gray-100 shadow-lg object-cover w-full h-full"
                                 src={sampleFeatures[currentFeature].image}
                                 alt={sampleFeatures[currentFeature].title}
@@ -494,9 +507,95 @@ function ComponentEight() {
     );
 }
 
-// --- 新增: 第十组件 (ComponentTen) 及其依赖 ---
+// --- 第二十组件 (医疗健康)，已适配生产环境 ---
+function ComponentTwentyMedicalHealth() {
+  const [inset, setInset] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
 
-// 辉光效果组件
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    let x = 0;
+
+    if ('touches' in e && e.touches.length > 0) {
+      x = e.touches[0].clientX - rect.left;
+    } else if ('clientX' in e) {
+      x = e.clientX - rect.left;
+    }
+    
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    setInset(percentage);
+  };
+
+  const handleMouseDown = () => setIsDragging(true);
+  const handleMouseUp = () => setIsDragging(false);
+
+  return (
+    <div className="w-full py-20 lg:py-40 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col gap-4">
+          <div>
+            <Badge>Apex</Badge>
+          </div>
+          <div className="flex gap-2 flex-col">
+            <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular text-black">
+              医疗健康 (Medical Health)
+            </h2>
+            <p className="text-lg max-w-xl lg:max-w-xl leading-relaxed tracking-tight text-gray-500">
+              我们利用新加坡顶级的医疗资源，为海内外客户提供无缝对接的尊享健康服务。通过与顶尖医院的紧密合作，为您预约权威专家、安排深度体检，并提供全程陪同翻译，让您和家人高效悦享世界一流的医疗保障。
+            </p>
+          </div>
+          <div className="pt-12 w-full">
+            <div
+              className="relative aspect-video w-full h-full overflow-hidden rounded-2xl select-none"
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+              onTouchMove={handleMouseMove}
+              onTouchEnd={handleMouseUp}
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleMouseDown}
+            >
+              <div
+                className="bg-white h-full w-1 absolute z-20 top-0 -ml-0.5 select-none"
+                style={{ left: `${inset}%` }}
+              >
+                <div
+                  className="bg-white rounded-full hover:scale-110 transition-all w-8 h-8 select-none -translate-y-1/2 absolute top-1/2 -ml-4 z-30 cursor-ew-resize flex justify-center items-center shadow-lg border"
+                >
+                  <GripVertical className="h-5 w-5 text-gray-500 select-none" />
+                </div>
+              </div>
+              {/* 错误修复: 将 Next.js 的 Image 组件替换为标准的 img 标签 */}
+              <img
+                src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75"
+                alt="处理后效果"
+                width="1920"
+                height="1080"
+                className="absolute left-0 top-0 z-10 w-full h-full object-cover aspect-video rounded-2xl select-none border"
+                style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }}
+                draggable="false"
+              />
+              {/* 错误修复: 将 Next.js 的 Image 组件替换为标准的 img 标签 */}
+              <img
+                src="https://www.twblocks.com/_next/image?url=%2Fdarkmode-feature8.png&w=3840&q=75"
+                alt="处理前原图"
+                width="1920"
+                height="1080"
+                className="absolute left-0 top-0 w-full h-full object-cover aspect-video rounded-2xl select-none border"
+                draggable="false"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+// --- 辉光效果组件等... ---
 interface GlowingEffectProps {
     blur?: number;
     inactiveZone?: number;
@@ -625,7 +724,6 @@ const GlowingEffect = memo(
 );
 GlowingEffect.displayName = "GlowingEffect";
 
-// 网格项组件
 interface GridItemProps {
   area: string;
   icon: React.ReactNode;
@@ -657,7 +755,6 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
   );
 };
 
-// 第十组件
 function ComponentTen() {
   return (
     <div className="bg-white text-black w-full py-20 lg:py-40 px-4 md:px-8 lg:px-12">
@@ -716,7 +813,8 @@ export default function ApexPage() {
           <ComponentTwo />
           <ComponentSix />
           <ComponentEight />
-          <ComponentTen /> {/* <-- 新增的组件放在这里 */}
+          <ComponentTwentyMedicalHealth /> 
+          <ComponentTen />
         </main>
     )
 }
