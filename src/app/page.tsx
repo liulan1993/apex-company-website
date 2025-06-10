@@ -147,22 +147,25 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 // --- 页面组件 ---
 interface NavItem {
     name: string;
-    url: string;
+    id: string; // [修正] 改为 id，用于内部逻辑
     icon: React.ElementType;
 }
-function NavBar({ items, className }: { items: NavItem[], className?: string }) {
-  const [activeTab, setActiveTab] = useState(items[0].name);
+
+function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavItem[], activeTab: string, onNavItemClick: (id: string) => void, className?: string }) {
   return (
     <div className={cn("fixed top-0 left-1/2 -translate-x-1/2 z-50 mt-6", className)}>
       <div className="flex items-center gap-3 bg-white/50 border border-gray-200 backdrop-blur-lg py-1 px-1 rounded-full shadow-lg">
         {items.map((item) => {
           const Icon = item.icon;
-          const isActive = activeTab === item.name;
+          const isActive = activeTab === item.id;
           return (
             <a
               key={item.name}
-              href={item.url}
-              onClick={(e) => { e.preventDefault(); setActiveTab(item.name) }}
+              href={`#${item.id}`}
+              onClick={(e) => { 
+                e.preventDefault();
+                onNavItemClick(item.id);
+              }}
               className={cn("relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors", "text-black/60 hover:text-black", isActive && "text-black")}
             >
               <span className="hidden md:inline">{item.name}</span>
@@ -931,26 +934,74 @@ const SiteFooter = ({ logo, tagline, menuItems, copyright, bottomLinks, }: typeo
 
 // --- 主 App 组件 ---
 export default function ApexPage() {
+    const [activeTab, setActiveTab] = useState('home');
+
     const navItems: NavItem[] = [
-        { name: "主页", url: "#", icon: HomeIcon },
-        { name: "关于", url: "#", icon: UserIcon },
-        { name: "服务", url: "#", icon: SettingsIcon },
-        { name: "联系", url: "#", icon: MailIcon },
+        { name: "主页", id: "home", icon: HomeIcon },
+        { name: "关于", id: "about", icon: UserIcon },
+        { name: "服务", id: "services", icon: SettingsIcon },
+        { name: "联系", id: "contact", icon: MailIcon },
     ];
-    
+
+    const sectionRefs = {
+      home: useRef<HTMLDivElement>(null),
+      about: useRef<HTMLDivElement>(null),
+      services: useRef<HTMLDivElement>(null),
+      contact: useRef<HTMLDivElement>(null),
+    };
+
+    const handleNavItemClick = (id: string) => {
+        setActiveTab(id);
+        sectionRefs[id]?.current?.scrollIntoView({
+            behavior: 'smooth'
+        });
+    };
+
+    useEffect(() => {
+        const observerOptions = {
+            root: null,
+            rootMargin: '-50% 0px -50% 0px',
+            threshold: 0
+        };
+
+        const observerCallback = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActiveTab(entry.target.id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        Object.values(sectionRefs).forEach(ref => {
+            if (ref.current) {
+                observer.observe(ref.current);
+            }
+        });
+
+        return () => {
+            Object.values(sectionRefs).forEach(ref => {
+                if (ref.current) {
+                    observer.unobserve(ref.current);
+                }
+            });
+        };
+    }, []);
+
     return (
         <div className="bg-white">
-          <NavBar items={navItems} />
-          <ComponentOne />
-          <ComponentTwo />
-          <ComponentSix />
+          <NavBar items={navItems} activeTab={activeTab} onNavItemClick={handleNavItemClick} />
+          <div id="home" ref={sectionRefs.home}><ComponentOne /></div>
+          <div id="about" ref={sectionRefs.about}><ComponentSix /></div>
           <ComponentEight />
           <ComponentTwentyMedicalHealth />
-          <ComponentTen />
+          <div id="services" ref={sectionRefs.services}><ComponentTen /></div>
           <Component30 /> 
           <FeatureDemoComponent />
-          <ComponentTestimonialsMarquee />
+          <div id="contact" ref={sectionRefs.contact}><ComponentTestimonialsMarquee /></div>
           <SiteFooter {...footerData} />
         </div>
     )
 }
+
