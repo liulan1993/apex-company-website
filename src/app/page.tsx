@@ -78,6 +78,24 @@ const GripVertical = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+// Inline SVG for the Check icon, replacing `lucide-react` import
+const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M20 6 9 17l-5-5" />
+  </svg>
+);
+
 
 // --- 通用 UI 组件 ---
 const buttonVariants = cva(
@@ -114,28 +132,35 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant,
     );
 });
 Button.displayName = "Button";
+
+// Badge Component, originally from badge.tsx (moved here for consolidation)
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
     variants: {
       variant: {
-        default: "border-transparent bg-black text-white",
-        secondary: "border-transparent bg-gray-200 text-black",
-        destructive: "border-transparent bg-red-500 text-white",
-        outline: "text-black",
+        default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
+        secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
+        outline: "text-foreground",
       },
     },
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
+
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
+
 function Badge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant, className }))} {...props} />;
+  return (
+    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+  );
 }
+
 
 // --- 页面组件 ---
 
@@ -975,6 +1000,96 @@ function Component30() {
   );
 }
 
+// Feature Component, originally from feature-with-advantages.tsx (consolidated)
+function Feature() {
+  return (
+    <div className="w-full py-20 lg:py-40">
+      <div className="container mx-auto">
+        <div className="flex gap-4 py-20 lg:py-40 flex-col items-start">
+          <div>
+            <Badge>Platform</Badge>
+          </div>
+          <div className="flex gap-2 flex-col">
+            <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular">
+              Something new!
+            </h2>
+            <p className="text-lg max-w-xl lg:max-w-xl leading-relaxed tracking-tight text-muted-foreground">
+              Managing a small business today is already tough.
+            </p>
+          </div>
+          <div className="flex gap-10 pt-12 flex-col w-full">
+            <div className="grid grid-cols-2 items-start lg:grid-cols-3 gap-10">
+              <div className="flex flex-row gap-6 w-full items-start">
+                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
+                <div className="flex flex-col gap-1">
+                  <p>Easy to use</p>
+                  <p className="text-muted-foreground text-sm">
+                    We&apos;ve made it easy to use and understand.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row gap-6 items-start">
+                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
+                <div className="flex flex-col gap-1">
+                  <p>Fast and reliable</p>
+                  <p className="text-muted-foreground text-sm">
+                    We&apos;ve made it fast and reliable.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row gap-6 items-start">
+                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
+                <div className="flex flex-col gap-1">
+                  <p>Beautiful and modern</p>
+                  <p className="text-muted-foreground text-sm">
+                    We&apos;ve made it beautiful and modern.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row gap-6 w-full items-start">
+                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
+                <div className="flex flex-col gap-1">
+                  <p>Easy to use</p>
+                  <p className="text-muted-foreground text-sm">
+                    We&apos;ve made it easy to use and understand.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row gap-6 items-start">
+                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
+                <div className="flex flex-col gap-1">
+                  <p>Fast and reliable</p>
+                  <p className="text-muted-foreground text-sm">
+                    We&apos;ve made it fast and reliable.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row gap-6 items-start">
+                <CheckIcon className="w-4 h-4 mt-2 text-primary" />
+                <div className="flex flex-col gap-1">
+                  <p>Beautiful and modern</p>
+                  <p className="text-muted-foreground text-sm">
+                    We&apos;ve made it beautiful and modern.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main App Component, originally from demo.tsx (consolidated)
+function FeatureDemoComponent() {
+  return (
+    <div className="block">
+      <Feature />
+    </div>
+  );
+}
+
 
 // --- 主 App 组件 ---
 export default function ApexPage() {
@@ -995,6 +1110,8 @@ export default function ApexPage() {
           <ComponentTwentyMedicalHealth /> 
           {/* Component 30 placed below Medical Health as requested */}
           <Component30 /> 
+          {/* Feature Demo Component placed below Component 30 as requested */}
+          <FeatureDemoComponent />
           <ComponentTen />
         </main>
     )
