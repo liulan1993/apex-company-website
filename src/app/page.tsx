@@ -71,7 +71,6 @@ const Search = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 // --- 通用 UI 组件 ---
-// ... (Button 和 Badge 组件保持不变)
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
@@ -131,8 +130,6 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 
 // --- 页面组件 ---
 
-// 第三组件 (导航栏)
-// ... (NavBar 组件保持不变)
 interface NavItem {
     name: string;
     url: string;
@@ -177,9 +174,6 @@ function NavBar({ items, className }: { items: NavItem[], className?: string }) 
   );
 }
 
-
-// 第一组件
-// ... (ComponentOne 组件保持不变)
 function FloatingPaths({ position }: { position: number }) {
     const paths = Array.from({ length: 36 }, (_, i) => ({
         id: i,
@@ -233,8 +227,6 @@ function ComponentOne({ title = "Apex" }: { title?: string }) {
     );
 }
 
-// 第二组件
-// ... (ComponentTwo 组件保持不变)
 function ComponentTwo() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(() => ["医疗健康", "商务咨询", "企业服务", "视野拓展", "留学教育"],[]);
@@ -274,8 +266,6 @@ function ComponentTwo() {
   );
 }
 
-// 第六组件
-// ... (ComponentSix 组件保持不变)
 function ComponentSix() {
   const features = [
     {
@@ -356,8 +346,6 @@ function ComponentSix() {
   );
 }
 
-// 第八组件
-// ... (ComponentEight 组件保持不变)
 interface FeatureItem {
     id: number;
     icon: React.ElementType;
@@ -570,7 +558,7 @@ const GlowingEffect = memo(
           if (!isActive) return;
 
           const currentAngle = parseFloat(element.style.getPropertyValue("--start")) || 0;
-          let targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
+          const targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
 
