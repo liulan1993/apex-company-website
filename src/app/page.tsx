@@ -946,7 +946,9 @@ export default function ApexPage() {
         { name: "联系", id: "contact", icon: MailIcon },
     ];
     
-    const sectionRefs: Record<SectionId, React.RefObject<HTMLDivElement>> = {
+    // FIX: Removed the explicit type annotation to let TypeScript infer the type.
+    // This resolves the type mismatch error during compilation.
+    const sectionRefs = {
       home: useRef<HTMLDivElement>(null),
       about: useRef<HTMLDivElement>(null),
       services: useRef<HTMLDivElement>(null),
