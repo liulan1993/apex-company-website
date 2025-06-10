@@ -1003,7 +1003,7 @@ function Component30() {
 // Feature Component, originally from feature-with-advantages.tsx (consolidated)
 function Feature() {
   return (
-    <div className="w-full py-20 lg:py-40">
+    <div className="w-full py-20 lg:py-40 bg-white text-black"> {/* Added bg-white and text-black */}
       <div className="container mx-auto">
         <div className="flex gap-4 py-20 lg:py-40 flex-col items-start">
           <div>
@@ -1013,7 +1013,7 @@ function Feature() {
             <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular">
               Something new!
             </h2>
-            <p className="text-lg max-w-xl lg:max-w-xl leading-relaxed tracking-tight text-muted-foreground">
+            <p className="text-lg max-w-xl lg:max-w-xl leading-relaxed tracking-tight text-gray-800"> {/* Changed text-muted-foreground to text-gray-800 */}
               Managing a small business today is already tough.
             </p>
           </div>
@@ -1023,7 +1023,7 @@ function Feature() {
                 <CheckIcon className="w-4 h-4 mt-2 text-primary" />
                 <div className="flex flex-col gap-1">
                   <p>Easy to use</p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
                     We&apos;ve made it easy to use and understand.
                   </p>
                 </div>
@@ -1032,7 +1032,7 @@ function Feature() {
                 <CheckIcon className="w-4 h-4 mt-2 text-primary" />
                 <div className="flex flex-col gap-1">
                   <p>Fast and reliable</p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
                     We&apos;ve made it fast and reliable.
                   </p>
                 </div>
@@ -1041,7 +1041,7 @@ function Feature() {
                 <CheckIcon className="w-4 h-4 mt-2 text-primary" />
                 <div className="flex flex-col gap-1">
                   <p>Beautiful and modern</p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
                     We&apos;ve made it beautiful and modern.
                   </p>
                 </div>
@@ -1050,7 +1050,7 @@ function Feature() {
                 <CheckIcon className="w-4 h-4 mt-2 text-primary" />
                 <div className="flex flex-col gap-1">
                   <p>Easy to use</p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
                     We&apos;ve made it easy to use and understand.
                   </p>
                 </div>
@@ -1059,7 +1059,7 @@ function Feature() {
                 <CheckIcon className="w-4 h-4 mt-2 text-primary" />
                 <div className="flex flex-col gap-1">
                   <p>Fast and reliable</p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
                     We&apos;ve made it fast and reliable.
                   </p>
                 </div>
@@ -1068,7 +1068,7 @@ function Feature() {
                 <CheckIcon className="w-4 h-4 mt-2 text-primary" />
                 <div className="flex flex-col gap-1">
                   <p>Beautiful and modern</p>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-gray-700 text-sm"> {/* Changed text-muted-foreground to text-gray-700 */}
                     We&apos;ve made it beautiful and modern.
                   </p>
                 </div>
