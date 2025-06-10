@@ -147,7 +147,7 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 // --- 页面组件 ---
 interface NavItem {
     name: string;
-    id: string; // [修正] 改为 id，用于内部逻辑
+    id: string; 
     icon: React.ElementType;
 }
 
@@ -933,9 +933,11 @@ const SiteFooter = ({ logo, tagline, menuItems, copyright, bottomLinks, }: typeo
 };
 // --- END: 网站页脚组件 ---
 
+type SectionId = 'home' | 'about' | 'services' | 'contact';
+
 // --- 主 App 组件 ---
 export default function ApexPage() {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState<SectionId>('home');
 
     const navItems: NavItem[] = [
         { name: "主页", id: "home", icon: HomeIcon },
@@ -943,15 +945,16 @@ export default function ApexPage() {
         { name: "服务", id: "services", icon: SettingsIcon },
         { name: "联系", id: "contact", icon: MailIcon },
     ];
-
-    const sectionRefs = {
+    
+    // [修正] 使用 Record 类型来创建 refs 对象，以解决 TypeScript 类型问题
+    const sectionRefs: Record<SectionId, React.RefObject<HTMLDivElement>> = {
       home: useRef<HTMLDivElement>(null),
       about: useRef<HTMLDivElement>(null),
       services: useRef<HTMLDivElement>(null),
       contact: useRef<HTMLDivElement>(null),
     };
 
-    const handleNavItemClick = (id: string) => {
+    const handleNavItemClick = (id: SectionId) => {
         setActiveTab(id);
         sectionRefs[id]?.current?.scrollIntoView({
             behavior: 'smooth'
@@ -968,7 +971,7 @@ export default function ApexPage() {
         const observerCallback = (entries: IntersectionObserverEntry[]) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    setActiveTab(entry.target.id);
+                    setActiveTab(entry.target.id as SectionId);
                 }
             });
         };
@@ -988,6 +991,7 @@ export default function ApexPage() {
                 }
             });
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
