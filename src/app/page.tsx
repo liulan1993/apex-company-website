@@ -151,7 +151,7 @@ interface NavItem {
     icon: React.ElementType;
 }
 
-function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavItem[], activeTab: string, onNavItemClick: (id: string) => void, className?: string }) {
+function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavItem[], activeTab: string, onNavItemClick: (id: SectionId) => void, className?: string }) {
   return (
     <div className={cn("fixed top-0 left-1/2 -translate-x-1/2 z-50 mt-6", className)}>
       <div className="flex items-center gap-3 bg-white/50 border border-gray-200 backdrop-blur-lg py-1 px-1 rounded-full shadow-lg">
@@ -164,7 +164,7 @@ function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavIte
               href={`#${item.id}`}
               onClick={(e) => { 
                 e.preventDefault();
-                onNavItemClick(item.id);
+                onNavItemClick(item.id as SectionId);
               }}
               className={cn("relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors", "text-black/60 hover:text-black", isActive && "text-black")}
             >
@@ -808,13 +808,13 @@ const MarqueeStyles = () => (
   `}</style>
 );
 
-const TestimonialAvatar = forwardRef(({ className, ...props }: React.HTMLAttributes<HTMLDivElement>, ref) => (
-  <div ref={ref as React.Ref<HTMLDivElement>} className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)} {...props} />
+const TestimonialAvatar = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)} {...props} />
 ));
 TestimonialAvatar.displayName = "TestimonialAvatar";
 
-const TestimonialAvatarImage = forwardRef(({ className, src, alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>, ref) => (
-  <img ref={ref as React.Ref<HTMLImageElement>} src={src} alt={alt} className={cn("aspect-square h-full w-full", className)} {...props} />
+const TestimonialAvatarImage = forwardRef<HTMLImageElement, React.ImgHTMLAttributes<HTMLImageElement>>(({ className, src, alt, ...props }, ref) => (
+  <img ref={ref} src={src} alt={alt} className={cn("aspect-square h-full w-full", className)} {...props} />
 ));
 TestimonialAvatarImage.displayName = "TestimonialAvatarImage";
 
@@ -823,7 +823,7 @@ function TestimonialCard({ author, text, href, className }: {author: {name:strin
   return (
     <CardComponent {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})} className={cn( "flex flex-col rounded-lg border", "bg-white", "p-4 text-start sm:p-6", "hover:bg-gray-50", "max-w-[320px] sm:max-w-[320px]", "transition-colors duration-300", "border-gray-200", className )}>
       <div className="flex items-center gap-3">
-        <TestimonialAvatar className="h-12 w-12">
+        <TestimonialAvatar>
           <TestimonialAvatarImage src={author.avatar} alt={author.name} />
         </TestimonialAvatar>
         <div className="flex flex-col items-start">
@@ -946,7 +946,6 @@ export default function ApexPage() {
         { name: "联系", id: "contact", icon: MailIcon },
     ];
     
-    // [修正] 使用 Record 类型来创建 refs 对象，以解决 TypeScript 类型问题
     const sectionRefs: Record<SectionId, React.RefObject<HTMLDivElement>> = {
       home: useRef<HTMLDivElement>(null),
       about: useRef<HTMLDivElement>(null),
@@ -978,14 +977,15 @@ export default function ApexPage() {
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-        Object.values(sectionRefs).forEach(ref => {
+        const refs = Object.values(sectionRefs);
+        refs.forEach(ref => {
             if (ref.current) {
                 observer.observe(ref.current);
             }
         });
 
         return () => {
-            Object.values(sectionRefs).forEach(ref => {
+             refs.forEach(ref => {
                 if (ref.current) {
                     observer.unobserve(ref.current);
                 }
