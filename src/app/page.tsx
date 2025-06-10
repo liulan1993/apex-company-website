@@ -398,7 +398,7 @@ function ComponentEight() {
         },
     ],[]);
     const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const containerRef = useRef<HTMLDivElement | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null); // <-- FIX: Changed useRef<HTMLDivElement | null>(null) to useRef<HTMLDivElement>(null)
     const intervalRef = useRef<number | undefined>(undefined);
 
     const primaryColor = "sky";
