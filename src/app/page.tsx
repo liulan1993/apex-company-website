@@ -739,6 +739,7 @@ const testimonialsData = [
   { author: { name: "Michael Chen", handle: "@mchen_dev", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face" }, text: "出色的客户支持和详尽的文档。我们的团队在几小时内就上手并开始运行了。" }
 ];
 
+// --- [修正] 用户评价跑马灯组件 ---
 function ComponentTestimonialsMarquee() {
   return (
     <section className={cn("bg-white text-gray-900", "py-12 sm:py-24 md:py-32 px-0")}>
@@ -753,11 +754,21 @@ function ComponentTestimonialsMarquee() {
           </p>
         </div>
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
-          <div className="group flex overflow-hidden p-2 [--gap:1rem] [gap:var(--gap)] flex-row [--duration:40s]" style={{'--gap': '1rem', '--duration': '40s'} as React.CSSProperties}>
-            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row">
-              {[...Array(4)].map((_, setIndex) => (
-                testimonialsData.map((testimonial, i) => ( <TestimonialCard key={`${setIndex}-${i}`} {...testimonial} /> ))
-              ))}
+          <div 
+            className="group flex w-full overflow-hidden p-2"
+            style={{'--gap': '1rem', '--duration': '40s'} as React.CSSProperties}
+          >
+            {/* 第一个滚动块 */}
+            <div className="flex shrink-0 animate-marquee justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]">
+                {testimonialsData.map((testimonial, i) => (
+                    <TestimonialCard key={`marquee-1-${i}`} {...testimonial} />
+                ))}
+            </div>
+            {/* 第二个（复制的）滚动块，用于无缝效果 */}
+            <div className="flex shrink-0 animate-marquee justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]" aria-hidden="true">
+                {testimonialsData.map((testimonial, i) => (
+                    <TestimonialCard key={`marquee-2-${i}`} {...testimonial} />
+                ))}
             </div>
           </div>
           <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-white sm:block" />
@@ -767,7 +778,8 @@ function ComponentTestimonialsMarquee() {
     </section>
   );
 }
-// --- END: 新增的用户评价跑马灯组件 ---
+// --- END: 用户评价跑马灯组件 ---
+
 
 const StickyScroll = ({ content, contentClassName, }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
   const [activeCard, setActiveCard] = React.useState(0);
@@ -889,7 +901,6 @@ export default function ApexPage() {
           <ComponentTen />
           <Component30 /> 
           <FeatureDemoComponent />
-          {/* 已将用户评价组件移动到页面最底部 */}
           <ComponentTestimonialsMarquee />
         </main>
     )
