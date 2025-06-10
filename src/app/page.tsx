@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback } from 'react';
-// 错误修复：移除了 'next/image' 的导入，因为它不是标准React库的一部分。
-// import Image from 'next/image'; 
 import { motion, animate } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { useMotionValueEvent, useScroll } from "framer-motion"; // Ensure these are imported for StickyScroll
 
 // --- 工具函数 ---
 function cn(...inputs: ClassValue[]) {
@@ -14,7 +13,6 @@ function cn(...inputs: ClassValue[]) {
 }
 
 // --- 图标组件 (本地定义) ---
-// 原有图标
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -331,7 +329,7 @@ function ComponentSix() {
                   feature.isLarge && "lg:col-span-2 lg:aspect-auto"
                 )}
               >
-                {/* 错误修复: 将 Next.js 的 Image 组件替换为标准的 img 标签 */}
+                {/* Image component replaced with standard img tag for Vercel deployment */}
                 <img 
                     src={feature.imageUrl} 
                     alt={feature.title}
@@ -491,7 +489,7 @@ function ComponentEight() {
                     </div>
                     <div className="relative order-1 max-w-lg mx-auto lg:order-2">
                         <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative">
-                            {/* 错误修复: 将 Next.js 的 Image 组件替换为标准的 img 标签 */}
+                            {/* Image component replaced with standard img tag for Vercel deployment */}
                             <img
                                 className="rounded-2xl border border-gray-100 shadow-lg object-cover w-full h-full"
                                 src={sampleFeatures[currentFeature].image}
@@ -567,7 +565,7 @@ function ComponentTwentyMedicalHealth() {
                   <GripVertical className="h-5 w-5 text-gray-500 select-none" />
                 </div>
               </div>
-              {/* 错误修复: 将 Next.js 的 Image 组件替换为标准的 img 标签 */}
+              {/* Image component replaced with standard img tag for Vercel deployment */}
               <img
                 src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75"
                 alt="处理后效果"
@@ -577,7 +575,7 @@ function ComponentTwentyMedicalHealth() {
                 style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }}
                 draggable="false"
               />
-              {/* 错误修复: 将 Next.js 的 Image 组件替换为标准的 img 标签 */}
+              {/* Image component replaced with standard img tag for Vercel deployment */}
               <img
                 src="https://www.twblocks.com/_next/image?url=%2Fdarkmode-feature8.png&w=3840&q=75"
                 alt="处理前原图"
@@ -735,7 +733,7 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
     <li className={cn("min-h-[14rem] list-none", area)}>
       <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-gray-200 p-2 md:rounded-[1.5rem] md:p-3">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={3} />
-        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-gray-200 bg-white p-6 shadow-sm md:p-6">
+        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-[0.75px] border-gray-200 bg-white p-6 shadow-sm md:p-6"> {/* Added missing border to inner div */}
           <div className="relative flex flex-1 flex-col justify-between gap-3">
             <div className="w-fit rounded-lg border-[0.75px] border-gray-200 bg-gray-50 p-2 text-gray-800">
               {icon}
@@ -797,6 +795,176 @@ function ComponentTen() {
   );
 }
 
+// --- StickyScroll Component from component-30 ---
+export const StickyScroll = ({
+  content,
+  contentClassName,
+}) => {
+  const [activeCard, setActiveCard] = React.useState(0);
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    container: ref,
+    offset: ["start start", "end start"],
+  });
+  const cardLength = content.length;
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const cardsBreakpoints = content.map((_, index) => index / cardLength);
+    const closestBreakpointIndex = cardsBreakpoints.reduce(
+      (acc, breakpoint, index) => {
+        const distance = Math.abs(latest - breakpoint);
+        if (distance < Math.abs(latest - cardsBreakpoints[acc])) {
+          return index;
+        }
+        return acc;
+      },
+      0
+    );
+    setActiveCard(closestBreakpointIndex);
+  });
+
+  // Background colors are now all white, and text will be black
+  const backgroundColors = ["rgb(255 255 255)"]; // White
+
+  // Linear gradients are kept for the content background, but the main background is white
+  const linearGradients = [
+    "linear-gradient(to bottom right, rgb(6 182 212), rgb(16 185 129))", // cyan-500 to emerald-500
+    "linear-gradient(to bottom right, rgb(236 72 153), rgb(99 102 241))", // pink-500 to indigo-500
+    "linear-gradient(to bottom right, rgb(249 115 22), rgb(234 179 8))", // orange-500 to yellow-500
+    "linear-gradient(to bottom right, rgb(100 116 139), rgb(148 163 184))", // slate-500 to slate-400
+  ];
+
+  const [backgroundGradient, setBackgroundGradient] = useState(
+    linearGradients[0]
+  );
+
+  useEffect(() => {
+    setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
+  }, [activeCard]);
+
+  return (
+    <motion.div
+      animate={{
+        backgroundColor: backgroundColors[0], // Always white background
+      }}
+      className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-10"
+      ref={ref}
+      style={{ backgroundColor: 'white' }} // Ensure main background is white
+    >
+      <div className="div relative flex items-start px-4">
+        <div className="max-w-2xl">
+          {content.map((item, index) => (
+            <div key={item.title + index} className="my-20">
+              <motion.h2
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{
+                  opacity: activeCard === index ? 1 : 0.3,
+                }}
+                className="text-2xl font-bold text-black" // Text color changed to black
+              >
+                {item.title}
+              </motion.h2>
+              <motion.p
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{
+                  opacity: activeCard === index ? 1 : 0.3,
+                }}
+                className="text-lg text-gray-800 max-w-sm mt-10" // Text color changed to dark gray
+              >
+                {item.description}
+              </motion.p>
+            </div>
+          ))}
+          <div className="h-40" />
+        </div>
+      </div>
+      <div
+        style={{ background: backgroundGradient }}
+        className={cn(
+          "hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden",
+          contentClassName
+        )}
+      >
+        {content[activeCard].content ?? null}
+      </div>
+    </motion.div>
+  );
+};
+
+// --- Content array for StickyScroll (Component 30) ---
+const content = [
+  {
+    title: "协同编辑",
+    description:
+      "与您的团队、客户和利益相关者实时协作。共同处理文档、分享想法并迅速做出决策。通过我们的平台，您可以简化工作流程并提高生产力。",
+    content: (
+      <div className="h-full w-full flex items-center justify-center">
+        <img
+          src="https://placehold.co/600x400/FFD700/000000?text=协同编辑"
+          alt="协同编辑图片"
+          className="h-full w-full object-cover rounded-md"
+        />
+      </div>
+    ),
+  },
+  {
+    title: "实时更改",
+    description:
+      "查看实时发生的变化。通过我们的平台，您可以实时跟踪每一次修改。不再混淆项目的最新版本。告别版本控制的混乱，拥抱实时更新的简单性。",
+    content: (
+      <div className="h-full w-full flex items-center justify-center">
+        <img
+          src="https://placehold.co/600x400/FFA07A/000000?text=实时更改"
+          alt="实时更改图片"
+          className="h-full w-full object-cover rounded-md"
+        />
+      </div>
+    ),
+  },
+  {
+    title: "版本控制",
+    description:
+      "体验实时更新，再也不用担心版本控制。我们的平台确保您始终使用项目的最新版本，无需不断手动更新。保持同步，团队协作，工作流程不中断。",
+    content: (
+      <div className="h-full w-full flex items-center justify-center">
+        <img
+          src="https://placehold.co/600x400/ADD8E6/000000?text=版本控制"
+          alt="版本控制图片"
+          className="h-full w-full object-cover rounded-md"
+        />
+      </div>
+    ),
+  },
+  {
+    title: "内容丰富",
+    description:
+      "我们提供丰富的内容和功能，满足您的各种需求。无论您是需要文档管理、项目协作还是数据分析，我们的平台都能为您提供一站式解决方案。",
+    content: (
+      <div className="h-full w-full flex items-center justify-center">
+        <img
+          src="https://placehold.co/600x400/90EE90/000000?text=内容丰富"
+          alt="内容丰富图片"
+          className="h-full w-full object-cover rounded-md"
+        />
+      </div>
+    ),
+  },
+];
+
+// --- 第30组件 ---
+export function Component30() {
+  return (
+    <div className="p-10" style={{ backgroundColor: 'white' }}> {/* Ensure outer div is also white */}
+      <StickyScroll content={content} />
+    </div>
+  );
+}
+
+
 // --- 主 App 组件 ---
 export default function ApexPage() {
     const navItems: NavItem[] = [
@@ -814,6 +982,8 @@ export default function ApexPage() {
           <ComponentSix />
           <ComponentEight />
           <ComponentTwentyMedicalHealth /> 
+          {/* Component 30 placed below Medical Health as requested */}
+          <Component30 /> 
           <ComponentTen />
         </main>
     )
