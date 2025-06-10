@@ -5,7 +5,7 @@ import { motion, animate } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { useMotionValueEvent, useScroll } from "framer-motion"; // Ensure these are imported for StickyScroll
+import { useMotionValueEvent, useScroll } from "framer-motion";
 
 // --- 工具函数 ---
 function cn(...inputs: ClassValue[]) {
@@ -655,6 +655,7 @@ const GlowingEffect = memo(
           if (!isActive) return;
 
           const currentAngle = parseFloat(element.style.getPropertyValue("--start")) || 0;
+          // targetAngle can be a const as it's not reassigned within this scope.
           const targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
@@ -733,7 +734,7 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
     <li className={cn("min-h-[14rem] list-none", area)}>
       <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-gray-200 p-2 md:rounded-[1.5rem] md:p-3">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={3} />
-        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-[0.75px] border-gray-200 bg-white p-6 shadow-sm md:p-6"> {/* Added missing border to inner div */}
+        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-gray-200 bg-white p-6 shadow-sm md:p-6">
           <div className="relative flex flex-1 flex-col justify-between gap-3">
             <div className="w-fit rounded-lg border-[0.75px] border-gray-200 bg-gray-50 p-2 text-gray-800">
               {icon}
@@ -796,12 +797,21 @@ function ComponentTen() {
 }
 
 // --- StickyScroll Component from component-30 ---
+// Updated to use plain RGB values for backgroundColors and direct gradient strings for linearGradients
+// to ensure compatibility with Tailwind JIT mode in Next.js production.
 export const StickyScroll = ({
   content,
   contentClassName,
+}: {
+  content: {
+    title: string;
+    description: string;
+    content?: React.ReactNode | any;
+  }[];
+  contentClassName?: string;
 }) => {
   const [activeCard, setActiveCard] = React.useState(0);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null); // Explicitly type useRef
   const { scrollYProgress } = useScroll({
     container: ref,
     offset: ["start start", "end start"],
@@ -824,14 +834,14 @@ export const StickyScroll = ({
   });
 
   // Background colors are now all white, and text will be black
-  const backgroundColors = ["rgb(255 255 255)"]; // White
+  const backgroundColors = ["rgb(255, 255, 255)"]; // White
 
   // Linear gradients are kept for the content background, but the main background is white
   const linearGradients = [
-    "linear-gradient(to bottom right, rgb(6 182 212), rgb(16 185 129))", // cyan-500 to emerald-500
-    "linear-gradient(to bottom right, rgb(236 72 153), rgb(99 102 241))", // pink-500 to indigo-500
-    "linear-gradient(to bottom right, rgb(249 115 22), rgb(234 179 8))", // orange-500 to yellow-500
-    "linear-gradient(to bottom right, rgb(100 116 139), rgb(148 163 184))", // slate-500 to slate-400
+    "linear-gradient(to bottom right, rgb(6, 182, 212), rgb(16, 185, 129))", // cyan-500 to emerald-500
+    "linear-gradient(to bottom right, rgb(236, 72, 153), rgb(99, 102, 241))", // pink-500 to indigo-500
+    "linear-gradient(to bottom right, rgb(249, 115, 22), rgb(234, 179, 8))", // orange-500 to yellow-500
+    "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))", // slate-500 to slate-400
   ];
 
   const [backgroundGradient, setBackgroundGradient] = useState(
@@ -896,7 +906,7 @@ export const StickyScroll = ({
 };
 
 // --- Content array for StickyScroll (Component 30) ---
-const content = [
+const stickyScrollContent = [
   {
     title: "协同编辑",
     description:
@@ -956,10 +966,11 @@ const content = [
 ];
 
 // --- 第30组件 ---
-export function Component30() {
+// Changed to a regular function as it's not a page component export
+function Component30() {
   return (
     <div className="p-10" style={{ backgroundColor: 'white' }}> {/* Ensure outer div is also white */}
-      <StickyScroll content={content} />
+      <StickyScroll content={stickyScrollContent} />
     </div>
   );
 }
