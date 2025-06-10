@@ -261,7 +261,7 @@ function ComponentTwo() {
         <div className="flex gap-8 py-16 lg:py-24 items-center justify-center flex-col">
           <div className="flex gap-4 flex-col items-center">
             <h1 className="text-5xl md:text-7xl tracking-tighter text-center font-regular flex flex-col items-center">
-              <span className="text-black whitespace-nowrap">领航狮城，Apex为您规划事业与未来。</span>
+              <span className="text-black whitespace-nowrap">不止梳理万象，更与您共创未来</span>
               <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 pt-4 md:pt-6 h-20 items-center">
                 {titles.map((title, index) => (
                   <motion.span
@@ -275,7 +275,7 @@ function ComponentTwo() {
               </span>
             </h1>
             <p className="text-lg md:text-xl leading-relaxed tracking-tight text-gray-600 max-w-4xl text-center">
-              我们Apex是一家总部位于新加坡的综合性专业服务机构，致力于为全球高净值人士、家庭及企业，提供从商业拓展到家庭发展的无缝衔接解决方案。我们深知远赴重洋、开创未来的机遇与挑战，因此矢志成为您在新加坡最值得信赖的伙伴，为您提供一切全方位一站式服务。
+              Apex是一家总部位于新加坡的综合性专业服务机构。我们深刻理解全球高净值人士与出海企业所面临的机遇与挑战，矢志成为您在新加坡的首席合作伙伴，提供从商业顶层设计、子女教育规划到主动式健康管理的无缝衔接解决方案。
             </p>
           </div>
         </div>
