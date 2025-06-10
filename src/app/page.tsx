@@ -364,7 +364,9 @@ interface FeatureItem {
     image: string;
 }
 function ComponentEight() {
-    const sampleFeatures: FeatureItem[] = [
+    const [currentFeature, setCurrentFeature] = useState(0);
+    const [progress, setProgress] = useState(0);
+    const sampleFeatures: FeatureItem[] = useMemo(() => [ // Wrapped in useMemo
         {
             id: 1,
             icon: BrainCog,
@@ -386,10 +388,7 @@ function ComponentEight() {
             description: "提供从生活安顿到学业规划的一站式海外服务，涵盖住宿、课程辅导及低龄监护，确保学生无缝衔接、快速融入全新的学习与生活环境。",
             image: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         },
-    ];
-
-    const [currentFeature, setCurrentFeature] = useState(0);
-    const [progress, setProgress] = useState(0);
+    ],[]); // Added dependency array for useMemo
     const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const intervalRef = useRef<number | undefined>(undefined);
@@ -799,7 +798,8 @@ function ComponentTen() {
 // --- StickyScroll Component from component-30 ---
 // Updated to use plain RGB values for backgroundColors and direct gradient strings for linearGradients
 // to ensure compatibility with Tailwind JIT mode in Next.js production.
-export const StickyScroll = ({
+// Changed from export const to const to avoid being treated as a page export.
+const StickyScroll = ({ // Removed 'export' keyword
   content,
   contentClassName,
 }: {
