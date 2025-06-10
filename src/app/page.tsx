@@ -6,12 +6,19 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { useMotionValueEvent, useScroll } from "framer-motion";
+import type { Metadata } from 'next'
 
+export const metadata: Metadata = {
+  title: 'Apex - 您的专业服务伙伴',
+  description: '我们Apex是一家总部位于新加坡的综合性专业服务机构，致力于为全球高净值人士、家庭及企业，提供从商业拓展到家庭发展的无缝衔接解决方案。',
+}
+// --- 工具函数 ---
+function cn(...inputs: ClassValue[]) {
+}  
 // --- 工具函数 ---
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
 // --- 图标组件 (本地定义) ---
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
