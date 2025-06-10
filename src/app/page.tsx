@@ -806,7 +806,7 @@ export const StickyScroll = ({
   content: {
     title: string;
     description: string;
-    content?: React.ReactNode | any;
+    content?: React.ReactNode; // Changed from React.ReactNode | any to React.ReactNode
   }[];
   contentClassName?: string;
 }) => {
@@ -850,7 +850,7 @@ export const StickyScroll = ({
 
   useEffect(() => {
     setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
-  }, [activeCard]);
+  }, [activeCard, linearGradients]); // Added linearGradients to dependency array
 
   return (
     <motion.div
