@@ -13,6 +13,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 // --- 图标组件 (本地定义) ---
+// ... (原有图标组件 HomeIcon, UserIcon, 等保持不变)
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -83,6 +84,7 @@ const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+
 // --- 通用 UI 组件 ---
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -145,6 +147,7 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 }
 
 // --- 页面组件 ---
+// ... (ComponentOne, ComponentTwo, etc. anchanged)
 interface NavItem {
     name: string;
     id: string; 
@@ -398,7 +401,7 @@ function ComponentEight() {
         },
     ],[]);
     const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const containerRef = useRef<HTMLDivElement>(null); // <-- FIX: Changed useRef<HTMLDivElement | null>(null) to useRef<HTMLDivElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null);
     const intervalRef = useRef<number | undefined>(undefined);
 
     const primaryColor = "sky";
@@ -611,6 +614,7 @@ const GlowingEffect = memo(
           element.style.setProperty("--active", isActive ? "1" : "0");
           if (!isActive) return;
           const currentAngle = parseFloat(element.style.getPropertyValue("--start")) || 0;
+          // FIX: Use const for targetAngle as it's not reassigned.
           const targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
@@ -874,6 +878,96 @@ function ComponentTestimonialsMarquee() {
 }
 // --- END: 用户评价跑马灯组件 ---
 
+
+// --- START: 新增的二维码按钮组件 ---
+
+/**
+ * QrCodeIcon 组件
+ * 这是一个内联的 SVG 图标，仅用作按钮上的视觉提示。
+ */
+const QrCodeIcon = ({ size = 24, strokeWidth = 2, className = "" }: { size?: number, strokeWidth?: number, className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect width="5" height="5" x="3" y="3" rx="1" />
+    <rect width="5" height="5" x="16" y="3" rx="1" />
+    <rect width="5" height="5" x="3" y="16" rx="1" />
+    <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
+    <path d="M21 21v.01" />
+    <path d="M12 7v3a2 2 0 0 1-2 2H7" />
+    <path d="M3 12h.01" />
+    <path d="M12 3h.01" />
+    <path d="M12 16h.01" />
+    <path d="M16 12h.01" />
+    <path d="M21 12h.01" />
+  </svg>
+);
+
+
+/**
+ * NeonQrButton 组件
+ * 包含一个带有柔和黑光效果的圆形按钮，
+ * 当鼠标悬停时，会弹出一个显示真实二维码的卡片。
+ */
+const NeonQrButton = ({ qrCodeValue = "https://www.google.com" }: { qrCodeValue?: string }) => {
+  const [hovered, setHovered] = useState(false);
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(qrCodeValue)}&qzone=1&margin=0`;
+
+  return (
+    <div
+      className="relative inline-block"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <button
+        aria-label="显示二维码"
+        className="
+          relative rounded-full w-14 h-14 bg-white border-2 border-gray-200
+          shadow-[0_0_15px_4px_rgba(0,0,0,0.1)] flex items-center justify-center
+          text-gray-700 hover:text-black hover:border-gray-400
+          transition-all duration-300 ease-in-out
+          focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-100
+          cursor-pointer select-none
+        "
+      >
+        <QrCodeIcon size={28} strokeWidth={2} />
+      </button>
+      <div
+        className={`
+          absolute left-1/2 bottom-full mb-4 w-52 h-52 -translate-x-1/2
+          rounded-2xl bg-white border border-gray-200
+          shadow-[0_0_30px_8px_rgba(0,0,0,0.1)]
+          flex items-center justify-center transform origin-bottom
+          transition-all duration-300 ease-in-out
+          ${hovered ? "opacity-100 scale-100 visible" : "opacity-0 scale-75 invisible pointer-events-none"}
+        `}
+      >
+        <div className="bg-white rounded-xl p-4 flex items-center justify-center">
+          <img 
+            src={qrApiUrl} 
+            alt="QR Code" 
+            width="140" 
+            height="140" 
+            onError={(e) => { const target = e.target as HTMLImageElement; target.onerror = null; target.src='https://placehold.co/140x140/f8f8f8/e0e0e0?text=Error'; }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+NeonQrButton.displayName = "NeonQrButton";
+// --- END: 新增的二维码按钮组件 ---
+
+
 // --- START: 网站页脚组件 ---
 const footerData = {
   logo: { src: "https://www.shadcnblocks.com/images/block/block-1.svg", alt: "Apex Logo", title: "Apex", url: "#", },
@@ -913,6 +1007,12 @@ const SiteFooter = ({ logo, tagline, menuItems, copyright, bottomLinks, }: typeo
                     </li>
                   ))}
                 </ul>
+                {/* 在“社交媒体”部分下方添加二维码按钮 */}
+                {section.title === "社交媒体" && (
+                  <div className="mt-4">
+                    <NeonQrButton qrCodeValue="https://www.apex.com" />
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -946,8 +1046,7 @@ export default function ApexPage() {
         { name: "联系", id: "contact", icon: MailIcon },
     ];
     
-    // FIX: Removed the explicit type annotation to let TypeScript infer the type.
-    // This resolves the type mismatch error during compilation.
+    // 采用类型推断，避免了显式类型注解可能导致的编译错误
     const sectionRefs = {
       home: useRef<HTMLDivElement>(null),
       about: useRef<HTMLDivElement>(null),
