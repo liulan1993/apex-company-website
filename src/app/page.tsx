@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, animate } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -11,37 +11,6 @@ import { useMotionValueEvent, useScroll } from "framer-motion";
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
-// --- START: 新增的图片悬停组件 ---
-const ImageTooltip = ({ children, imageUrl }: { children: React.ReactNode; imageUrl: string; }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <div
-      className="relative inline-block"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {children}
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-40 p-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
-          >
-            <img src={imageUrl} alt="QR Code" className="w-full h-full rounded-md" />
-            <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
-// --- END: 新增的图片悬停组件 ---
-
 
 // --- 图标组件 (本地定义) ---
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -429,7 +398,7 @@ function ComponentEight() {
         },
     ],[]);
     const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null); // <-- FIX: Changed useRef<HTMLDivElement | null>(null) to useRef<HTMLDivElement>(null)
     const intervalRef = useRef<number | undefined>(undefined);
 
     const primaryColor = "sky";
@@ -906,7 +875,6 @@ function ComponentTestimonialsMarquee() {
 // --- END: 用户评价跑马灯组件 ---
 
 // --- START: 网站页脚组件 ---
-// 更新 footerData 添加新的联系方式
 const footerData = {
   logo: { src: "https://www.shadcnblocks.com/images/block/block-1.svg", alt: "Apex Logo", title: "Apex", url: "#", },
   tagline: "让未来，即刻发生。",
@@ -915,14 +883,6 @@ const footerData = {
     { title: "公司", links: [ { text: "关于我们", url: "#" }, { text: "团队", url: "#" }, { text: "博客", url: "#" }, { text: "招聘", url: "#" }, { text: "联系我们", url: "#" }, { text: "隐私", url: "#" }, ], },
     { title: "资源", links: [ { text: "帮助中心", url: "#" }, { text: "销售", url: "#" }, { text: "广告", url: "#" }, ], },
     { title: "社交媒体", links: [ { text: "Twitter", url: "#" }, { text: "Instagram", url: "#" }, { text: "LinkedIn", url: "#" }, ], },
-    // 新增联系我们部分，包含图片悬停功能
-    { 
-      title: "联系我们", 
-      links: [
-        { text: "WeChat", url: "#", tooltip: { imageUrl: "https://placehold.co/200x200/2dd4bf/ffffff?text=WeChat+QR" } },
-        { text: "Telegram", url: "#", tooltip: { imageUrl: "https://placehold.co/200x200/60a5fa/ffffff?text=Telegram+QR" } },
-      ], 
-    },
   ],
   copyright: "© 2024 Apex. 保留所有权利。",
   bottomLinks: [ { text: "条款与条件", url: "#" }, { text: "隐私政策", url: "#" }, ],
@@ -949,13 +909,7 @@ const SiteFooter = ({ logo, tagline, menuItems, copyright, bottomLinks, }: typeo
                 <ul className="space-y-4 text-gray-600">
                   {section.links.map((link, linkIdx) => (
                     <li key={linkIdx} className="font-medium hover:text-blue-600 transition-colors">
-                      {link.tooltip ? (
-                        <ImageTooltip imageUrl={link.tooltip.imageUrl}>
-                          <a href={link.url} onClick={(e) => e.preventDefault()}>{link.text}</a>
-                        </ImageTooltip>
-                      ) : (
-                        <a href={link.url}>{link.text}</a>
-                      )}
+                      <a href={link.url}>{link.text}</a>
                     </li>
                   ))}
                 </ul>
@@ -992,6 +946,8 @@ export default function ApexPage() {
         { name: "联系", id: "contact", icon: MailIcon },
     ];
     
+    // FIX: Removed the explicit type annotation to let TypeScript infer the type.
+    // This resolves the type mismatch error during compilation.
     const sectionRefs = {
       home: useRef<HTMLDivElement>(null),
       about: useRef<HTMLDivElement>(null),
