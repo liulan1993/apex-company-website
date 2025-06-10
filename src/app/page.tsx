@@ -25,7 +25,7 @@ const UserIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 const SettingsIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2.12l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2.12l.15.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" />
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2.12l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2.12l.15.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" />
   </svg>
 );
 const MailIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -608,6 +608,7 @@ const GlowingEffect = memo(
           element.style.setProperty("--active", isActive ? "1" : "0");
           if (!isActive) return;
           const currentAngle = parseFloat(element.style.getPropertyValue("--start")) || 0;
+          // [FIX] Use const for targetAngle as it's never reassigned
           const targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
@@ -687,99 +688,6 @@ function ComponentTen() {
     </div>
   );
 }
-
-// --- START: 新增的用户评价跑马灯组件 ---
-const MarqueeStyles = () => (
-  <style>{`
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(calc(-100% - var(--gap))); }
-    }
-    .animate-marquee {
-      animation: marquee var(--duration) linear infinite;
-    }
-    .group:hover .animate-marquee {
-      animation-play-state: paused;
-    }
-  `}</style>
-);
-
-const TestimonialAvatar = forwardRef(({ className, ...props }: React.HTMLAttributes<HTMLDivElement>, ref) => (
-  <div ref={ref as React.Ref<HTMLDivElement>} className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)} {...props} />
-));
-TestimonialAvatar.displayName = "TestimonialAvatar";
-
-const TestimonialAvatarImage = forwardRef(({ className, src, alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>, ref) => (
-  <img ref={ref as React.Ref<HTMLImageElement>} src={src} alt={alt} className={cn("aspect-square h-full w-full", className)} {...props} />
-));
-TestimonialAvatarImage.displayName = "TestimonialAvatarImage";
-
-function TestimonialCard({ author, text, href, className }: {author: {name:string; handle:string; avatar:string;}; text:string; href?:string; className?: string}) {
-  const CardComponent = href ? 'a' : 'div';
-  return (
-    <CardComponent {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})} className={cn( "flex flex-col rounded-lg border", "bg-white", "p-4 text-start sm:p-6", "hover:bg-gray-50", "max-w-[320px] sm:max-w-[320px]", "transition-colors duration-300", "border-gray-200", className )}>
-      <div className="flex items-center gap-3">
-        <TestimonialAvatar className="h-12 w-12">
-          <TestimonialAvatarImage src={author.avatar} alt={author.name} />
-        </TestimonialAvatar>
-        <div className="flex flex-col items-start">
-          <h3 className="text-md font-semibold leading-none text-gray-900">{author.name}</h3>
-          <p className="text-sm text-gray-500">{author.handle}</p>
-        </div>
-      </div>
-      <p className="sm:text-md mt-4 text-sm text-gray-600">{text}</p>
-    </CardComponent>
-  );
-}
-
-const testimonialsData = [
-  { author: { name: "Emma Thompson", handle: "@emmaai", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" }, text: "这个 AI 平台彻底改变了我们处理数据分析的方式。速度和准确性都是前所未有的。", href: "#" },
-  { author: { name: "David Park", handle: "@davidtech", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }, text: "API 集成完美无瑕。自从实施这个解决方案以来，我们的开发时间减少了 60%。", href: "#" },
-  { author: { name: "Sofia Rodriguez", handle: "@sofiaml", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" }, text: "终于有了一个真正理解上下文的 AI 工具！自然语言处理的准确性令人印象深刻。" },
-  { author: { name: "Michael Chen", handle: "@mchen_dev", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face" }, text: "出色的客户支持和详尽的文档。我们的团队在几小时内就上手并开始运行了。" }
-];
-
-// --- [修正] 用户评价跑马灯组件 ---
-function ComponentTestimonialsMarquee() {
-  return (
-    <section className={cn("bg-white text-gray-900", "py-12 sm:py-24 md:py-32 px-0")}>
-      <MarqueeStyles />
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-center sm:gap-16">
-        <div className="flex flex-col items-center gap-4 px-4 sm:gap-8">
-          <h2 className="max-w-[720px] text-3xl font-semibold leading-tight sm:text-5xl sm:leading-tight text-black">
-            全球开发者信赖
-          </h2>
-          <p className="text-md max-w-[600px] font-medium text-gray-600 sm:text-xl">
-            加入成千上万的开发者行列，使用我们的 AI 平台构建未来
-          </p>
-        </div>
-        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
-          <div 
-            className="group flex w-full overflow-hidden p-2"
-            style={{'--gap': '1rem', '--duration': '40s'} as React.CSSProperties}
-          >
-            {/* 第一个滚动块 */}
-            <div className="flex shrink-0 animate-marquee justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]">
-                {testimonialsData.map((testimonial, i) => (
-                    <TestimonialCard key={`marquee-1-${i}`} {...testimonial} />
-                ))}
-            </div>
-            {/* 第二个（复制的）滚动块，用于无缝效果 */}
-            <div className="flex shrink-0 animate-marquee justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]" aria-hidden="true">
-                {testimonialsData.map((testimonial, i) => (
-                    <TestimonialCard key={`marquee-2-${i}`} {...testimonial} />
-                ))}
-            </div>
-          </div>
-          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-white sm:block" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-white sm:block" />
-        </div>
-      </div>
-    </section>
-  );
-}
-// --- END: 用户评价跑马灯组件 ---
-
 
 const StickyScroll = ({ content, contentClassName, }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
   const [activeCard, setActiveCard] = React.useState(0);
@@ -881,6 +789,147 @@ function FeatureDemoComponent() {
   );
 }
 
+// --- START: 用户评价跑马灯组件 ---
+const MarqueeStyles = () => (
+  <style>{`
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(-100% - var(--gap))); }
+    }
+    .animate-marquee {
+      animation: marquee var(--duration) linear infinite;
+    }
+    .group:hover .animate-marquee {
+      animation-play-state: paused;
+    }
+  `}</style>
+);
+
+const TestimonialAvatar = forwardRef(({ className, ...props }: React.HTMLAttributes<HTMLDivElement>, ref) => (
+  <div ref={ref as React.Ref<HTMLDivElement>} className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)} {...props} />
+));
+TestimonialAvatar.displayName = "TestimonialAvatar";
+
+const TestimonialAvatarImage = forwardRef(({ className, src, alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>, ref) => (
+  <img ref={ref as React.Ref<HTMLImageElement>} src={src} alt={alt} className={cn("aspect-square h-full w-full", className)} {...props} />
+));
+TestimonialAvatarImage.displayName = "TestimonialAvatarImage";
+
+function TestimonialCard({ author, text, href, className }: {author: {name:string; handle:string; avatar:string;}; text:string; href?:string; className?: string}) {
+  const CardComponent = href ? 'a' : 'div';
+  return (
+    <CardComponent {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})} className={cn( "flex flex-col rounded-lg border", "bg-white", "p-4 text-start sm:p-6", "hover:bg-gray-50", "max-w-[320px] sm:max-w-[320px]", "transition-colors duration-300", "border-gray-200", className )}>
+      <div className="flex items-center gap-3">
+        <TestimonialAvatar className="h-12 w-12">
+          <TestimonialAvatarImage src={author.avatar} alt={author.name} />
+        </TestimonialAvatar>
+        <div className="flex flex-col items-start">
+          <h3 className="text-md font-semibold leading-none text-gray-900">{author.name}</h3>
+          <p className="text-sm text-gray-500">{author.handle}</p>
+        </div>
+      </div>
+      <p className="sm:text-md mt-4 text-sm text-gray-600">{text}</p>
+    </CardComponent>
+  );
+}
+
+const testimonialsData = [
+  { author: { name: "Emma Thompson", handle: "@emmaai", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" }, text: "这个 AI 平台彻底改变了我们处理数据分析的方式。速度和准确性都是前所未有的。", href: "#" },
+  { author: { name: "David Park", handle: "@davidtech", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }, text: "API 集成完美无瑕。自从实施这个解决方案以来，我们的开发时间减少了 60%。", href: "#" },
+  { author: { name: "Sofia Rodriguez", handle: "@sofiaml", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" }, text: "终于有了一个真正理解上下文的 AI 工具！自然语言处理的准确性令人印象深刻。" },
+  { author: { name: "Michael Chen", handle: "@mchen_dev", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face" }, text: "出色的客户支持和详尽的文档。我们的团队在几小时内就上手并开始运行了。" }
+];
+
+function ComponentTestimonialsMarquee() {
+  return (
+    <section className={cn("bg-white text-gray-900", "py-12 sm:py-24 md:py-32 px-0")}>
+      <MarqueeStyles />
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-center sm:gap-16">
+        <div className="flex flex-col items-center gap-4 px-4 sm:gap-8">
+          <h2 className="max-w-[720px] text-3xl font-semibold leading-tight sm:text-5xl sm:leading-tight text-black">
+            全球开发者信赖
+          </h2>
+          <p className="text-md max-w-[600px] font-medium text-gray-600 sm:text-xl">
+            加入成千上万的开发者行列，使用我们的 AI 平台构建未来
+          </p>
+        </div>
+        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+          <div className="group flex w-full overflow-hidden p-2" style={{'--gap': '1rem', '--duration': '40s'} as React.CSSProperties}>
+            <div className="flex shrink-0 animate-marquee justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]">
+                {testimonialsData.map((testimonial, i) => ( <TestimonialCard key={`marquee-1-${i}`} {...testimonial} /> ))}
+            </div>
+            <div className="flex shrink-0 animate-marquee justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]" aria-hidden="true">
+                {testimonialsData.map((testimonial, i) => ( <TestimonialCard key={`marquee-2-${i}`} {...testimonial} /> ))}
+            </div>
+          </div>
+          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-white sm:block" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-white sm:block" />
+        </div>
+      </div>
+    </section>
+  );
+}
+// --- END: 用户评价跑马灯组件 ---
+
+// --- START: 网站页脚组件 ---
+const footerData = {
+  logo: { src: "https://www.shadcnblocks.com/images/block/block-1.svg", alt: "Apex Logo", title: "Apex", url: "#", },
+  tagline: "让未来，即刻发生。",
+  menuItems: [
+    { title: "产品", links: [ { text: "概览", url: "#" }, { text: "定价", url: "#" }, { text: "市场", url: "#" }, { text: "特性", url: "#" }, { text: "集成", url: "#" }, ], },
+    { title: "公司", links: [ { text: "关于我们", url: "#" }, { text: "团队", url: "#" }, { text: "博客", url: "#" }, { text: "招聘", url: "#" }, { text: "联系我们", url: "#" }, { text: "隐私", url: "#" }, ], },
+    { title: "资源", links: [ { text: "帮助中心", url: "#" }, { text: "销售", url: "#" }, { text: "广告", url: "#" }, ], },
+    { title: "社交媒体", links: [ { text: "Twitter", url: "#" }, { text: "Instagram", url: "#" }, { text: "LinkedIn", url: "#" }, ], },
+  ],
+  copyright: "© 2024 Apex. 保留所有权利。",
+  bottomLinks: [ { text: "条款与条件", url: "#" }, { text: "隐私政策", url: "#" }, ],
+};
+
+const SiteFooter = ({ logo, tagline, menuItems, copyright, bottomLinks, }: typeof footerData) => {
+  return (
+    <section className="py-20 sm:py-32 bg-white text-black">
+      <div className="container mx-auto px-4">
+        <footer className="border-t border-gray-200 pt-16">
+          <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
+            <div className="col-span-2 mb-8 lg:mb-0">
+              <div className="flex items-center gap-2 lg:justify-start">
+                <a href={logo.url}>
+                  <img src={logo.src} alt={logo.alt} title={logo.title} className="h-10" />
+                </a>
+                <p className="text-xl font-semibold text-black">{logo.title}</p>
+              </div>
+              <p className="mt-4 font-bold text-gray-800">{tagline}</p>
+            </div>
+            {menuItems.map((section, sectionIdx) => (
+              <div key={sectionIdx}>
+                <h3 className="mb-4 font-bold text-black">{section.title}</h3>
+                <ul className="space-y-4 text-gray-600">
+                  {section.links.map((link, linkIdx) => (
+                    <li key={linkIdx} className="font-medium hover:text-blue-600 transition-colors">
+                      <a href={link.url}>{link.text}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div className="mt-24 flex flex-col justify-between gap-4 border-t border-gray-200 pt-8 text-sm font-medium text-gray-600 md:flex-row md:items-center">
+            <p>{copyright}</p>
+            <ul className="flex gap-4">
+              {bottomLinks.map((link, linkIdx) => (
+                <li key={linkIdx} className="underline hover:text-blue-600 transition-colors">
+                  <a href={link.url}>{link.text}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </footer>
+      </div>
+    </section>
+  );
+};
+// --- END: 网站页脚组件 ---
+
 // --- 主 App 组件 ---
 export default function ApexPage() {
     const navItems: NavItem[] = [
@@ -902,6 +951,7 @@ export default function ApexPage() {
           <Component30 /> 
           <FeatureDemoComponent />
           <ComponentTestimonialsMarquee />
+          <SiteFooter {...footerData} />
         </main>
     )
 }
