@@ -1484,7 +1484,7 @@ function FooterWithQRCode() {
           <div className="relative">
             <h2 className="mb-4 text-3xl font-bold tracking-tight">保持联系</h2>
             <p className="mb-4 text-md sm:text-xl font-medium text-gray-600">
-              扫描下方二维码，关注我们获取最新动态。
+              扫描公众号获取最新动态
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
                <img
