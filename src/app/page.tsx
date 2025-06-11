@@ -13,6 +13,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 // --- 图标组件 (本地定义) ---
+// ... (HomeIcon, UserIcon 等大部分图标保持不变) ...
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -83,31 +84,104 @@ const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// --- 新增：页脚所需的 SVG 图标 ---
-const Facebook = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" >
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-  </svg>
-);
-const Twitter = (props: React.SVGProps<SVGSVGElement>) => (
+// 新增: 用于自动填充失败时的后备图标
+const LinkIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 4s-.7 2.1-2 3.4c1.6 1.4 3.3 4.9 3 7.1 0 .2-.1 .4-.2 .5-.2 .2-.5 .3-.8 .3H3.3c-.3 0-.6-.1-.8-.3-.2-.2-.3-.4-.3-.5 0-2.2 1.4-5.7 3-7.1-1.3-1.3-2-3.4-2-3.4s.8 2.4 3 4.3c1.9-1.3 4.2-2.1 6.5-2.1.3 0 .6.1.8.1.3 0 .6 0 .9-.1 2.3 0 4.6.8 6.5 2.1 2.2-1.9 3-4.3 3-4.3z" />
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72" />
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72" />
   </svg>
 );
-const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-  </svg>
-);
-const Linkedin = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-    <rect width="4" height="12" x="2" y="9" />
-    <circle cx="4" cy="4" r="2" />
-  </svg>
-);
+
+
+// --- START: 自定义链接和二维码的悬浮按钮 (自动图标版) ---
+const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string; onClickUrl: string; }) => {
+  const [hovered, setHovered] = useState(false);
+  const [iconHasError, setIconHasError] = useState(false);
+
+  // 根据链接自动生成图标URL
+  const iconUrl = useMemo(() => {
+    try {
+      const domain = new URL(onClickUrl).hostname;
+      // 使用Google的favicon服务获取图标，尺寸为64x64
+      return `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+    } catch (e) {
+      console.error("Invalid URL for favicon:", onClickUrl);
+      return ''; // 如果URL无效，则返回空字符串
+    }
+  }, [onClickUrl]);
+
+  // 当链接变化时，重置错误状态
+  useEffect(() => {
+    setIconHasError(false);
+  }, [iconUrl]);
+
+  return (
+    <div
+      className="relative inline-block"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <a
+        href={onClickUrl || '#'}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open link and show QR code"
+        className="
+          relative rounded-full w-10 h-10
+          bg-gray-900
+          border-2 border-gray-700
+          shadow-[0_0_10px_3px_rgba(0,0,0,0.3)]
+          flex items-center justify-center
+          text-gray-200
+          hover:bg-gray-700
+          transition-all duration-300 ease-in-out
+          focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2
+          cursor-pointer
+          select-none
+        "
+      >
+        {/* 如果图标加载失败或URL无效，则显示后备的LinkIcon */}
+        {iconHasError || !iconUrl ? (
+          <LinkIcon className="h-5 w-5" />
+        ) : (
+          <img
+            src={iconUrl}
+            alt={`${onClickUrl} icon`}
+            className="h-5 w-5 rounded-sm"
+            onError={() => setIconHasError(true)}
+          />
+        )}
+      </a>
+
+      {/* 悬停时出现的二维码卡片 */}
+      <div
+        className={`
+          absolute left-1/2 bottom-full mb-3
+          w-40 h-40
+          -translate-x-1/2
+          rounded-2xl
+          bg-gradient-to-tr from-gray-900 to-black
+          border border-gray-700
+          shadow-[0_0_25px_5px_rgba(0,0,0,0.25)]
+          flex items-center justify-center
+          p-2
+          transform origin-bottom
+          transition-all duration-300 ease-in-out
+          ${hovered ? "opacity-100 scale-100 visible" : "opacity-0 scale-75 invisible pointer-events-none"}
+        `}
+      >
+        <img 
+            src={imageUrl} 
+            alt="QR Code" 
+            className="w-full h-full object-cover rounded-lg"
+            onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src='https://placehold.co/160x160/ffffff/000000?text=Error'; }}
+        />
+      </div>
+    </div>
+  );
+};
+// --- END: 自定义链接和二维码的悬浮按钮 ---
+
 
 // --- 通用 UI 组件 ---
 const buttonVariants = cva(
@@ -115,7 +189,6 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // 保持 page.tsx 原有的 variant 定义
         default: "bg-black text-white hover:bg-black/90",
         destructive: "bg-red-500 text-white hover:bg-red-600",
         outline: "border border-gray-300 bg-transparent hover:bg-gray-100 text-black",
@@ -171,8 +244,7 @@ function Badge({ className, variant, ...props }: BadgeProps) {
   );
 }
 
-// --- 页面组件 ---
-// ... (ComponentOne, ComponentTwo, etc. anchanged)
+// ... (所有页面组件 ComponentOne, ComponentTwo 等保持不变) ...
 interface NavItem {
     name: string;
     id: string;
@@ -639,7 +711,6 @@ const GlowingEffect = memo(
           element.style.setProperty("--active", isActive ? "1" : "0");
           if (!isActive) return;
           const currentAngle = parseFloat(element.style.getPropertyValue("--start")) || 0;
-          // FIX: Use const for targetAngle as it's not reassigned.
           const targetAngle = (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) / Math.PI + 90;
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
@@ -903,9 +974,29 @@ function ComponentTestimonialsMarquee() {
 }
 // --- END: 用户评价跑马灯组件 ---
 
-// --- START: 新增的页脚组件 (已修复) ---
+// --- 页脚组件 (已修改) ---
 function FooterWithQRCode() {
-  // 移除了主题切换的状态和 useEffect，因为它导致了依赖问题
+  
+  // 数据结构已简化，不再需要手动指定Icon组件
+  const socialButtons = [
+    {
+      href: "https://www.apex-elite-service.com/",
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.facebook.com"
+    },
+    {
+      href: "https://www.twitter.com",
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.twitter.com"
+    },
+    {
+      href: "https://www.instagram.com",
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.instagram.com"
+    },
+    {
+      href: "https://www.linkedin.com",
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.linkedin.com"
+    },
+  ];
+
   return (
     <footer className="relative w-full border-t bg-white text-black">
       <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
@@ -916,7 +1007,6 @@ function FooterWithQRCode() {
               扫描下方二维码，关注我们获取最新动态。
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
-               {/* 使用标准 <img> 标签以提高可移植性 */}
                <img 
                 src="https://placehold.co/128x128/e2e8f0/334155?text=QR+Code" 
                 alt="二维码占位符" 
@@ -946,23 +1036,9 @@ function FooterWithQRCode() {
           <div className="relative">
             <h3 className="mb-4 text-lg font-semibold">关注我们</h3>
             <div className="mb-6 flex space-x-4">
-               {/* 复用 page.tsx 的 Button 组件 */}
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Facebook className="h-4 w-4" />
-                <span className="sr-only">Facebook</span>
-              </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Twitter className="h-4 w-4" />
-                <span className="sr-only">Twitter</span>
-              </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Instagram className="h-4 w-4" />
-                <span className="sr-only">Instagram</span>
-              </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Linkedin className="h-4 w-4" />
-                <span className="sr-only">LinkedIn</span>
-              </Button>
+              {socialButtons.map(({ href, qrUrl }) => (
+                <CustomLinkAndQrHoverButton key={href} imageUrl={qrUrl} onClickUrl={href} />
+              ))}
             </div>
           </div>
         </div>
@@ -980,7 +1056,6 @@ function FooterWithQRCode() {
     </footer>
   );
 }
-// --- END: 页脚组件 ---
 
 
 type SectionId = 'home' | 'about' | 'services' | 'contact';
@@ -1057,7 +1132,6 @@ export default function ApexPage() {
           <FeatureDemoComponent />
           <div id="contact" ref={sectionRefs.contact}><ComponentTestimonialsMarquee /></div>
           
-          {/* 新增的页脚组件 */}
           <FooterWithQRCode />
         </div>
     )
