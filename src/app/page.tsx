@@ -6,8 +6,6 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { useMotionValueEvent, useScroll } from "framer-motion";
-import * as LabelPrimitive from "@radix-ui/react-label";
-import * as SwitchPrimitives from "@radix-ui/react-switch";
 
 // --- 工具函数 (已存在于 page.tsx) ---
 function cn(...inputs: ClassValue[]) {
@@ -15,7 +13,6 @@ function cn(...inputs: ClassValue[]) {
 }
 
 // --- 图标组件 (本地定义) ---
-// ... (原有图标组件 HomeIcon, UserIcon, 等保持不变)
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -111,17 +108,6 @@ const Linkedin = (props: React.SVGProps<SVGSVGElement>) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 );
-const Sun = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
-  </svg>
-);
-const Moon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-  </svg>
-);
-
 
 // --- 通用 UI 组件 ---
 const buttonVariants = cva(
@@ -184,45 +170,6 @@ function Badge({ className, variant, ...props }: BadgeProps) {
     <div className={cn(badgeVariants({ variant }), className)} {...props} />
   );
 }
-
-// --- 新增：页脚所需的 UI 组件 (Label, Switch) ---
-const labelVariants = cva(
-  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-);
-const Label = forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
-    VariantProps<typeof labelVariants>
->(({ className, ...props }, ref) => (
-  <LabelPrimitive.Root
-    ref={ref}
-    className={cn(labelVariants(), className)}
-    {...props}
-  />
-));
-Label.displayName = LabelPrimitive.Root.displayName;
-
-const Switch = forwardRef<
-  React.ElementRef<typeof SwitchPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
->(({ className, ...props }, ref) => (
-  <SwitchPrimitives.Root
-    className={cn(
-      "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-gray-200",
-      className
-    )}
-    {...props}
-    ref={ref}
-  >
-    <SwitchPrimitives.Thumb
-      className={cn(
-        "pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
-      )}
-    />
-  </SwitchPrimitives.Root>
-));
-Switch.displayName = SwitchPrimitives.Root.displayName;
-
 
 // --- 页面组件 ---
 // ... (ComponentOne, ComponentTwo, etc. anchanged)
@@ -956,70 +903,19 @@ function ComponentTestimonialsMarquee() {
 }
 // --- END: 用户评价跑马灯组件 ---
 
-// --- START: 新增的页脚组件 ---
+// --- START: 新增的页脚组件 (已修复) ---
 function FooterWithQRCode() {
-  const [isDarkMode, setIsDarkMode] = useState(false); // 默认设置为浅色模式以匹配页面
-
-  useEffect(() => {
-    // 这个 useEffect 负责动态注入颜色变量，并根据 isDarkMode 状态切换主题。
-    // 在一个完整的 Next.js 应用中，推荐使用 next-themes 等库来管理主题。
-    // 但对于这个独立组件，这种方法可以确保其在任何环境中都能自适应地显示。
-    const root = document.documentElement;
-    if (isDarkMode) {
-        root.classList.add("dark-footer");
-    } else {
-        root.classList.remove("dark-footer");
-    }
-
-    const styleId = "footer-theme-styles";
-    let style = document.getElementById(styleId);
-    if (!style) {
-        style = document.createElement('style');
-        style.id = styleId;
-        style.innerHTML = `
-          :root {
-            --footer-background: 255 100% 100%;
-            --footer-foreground: 222.2 84% 4.9%;
-            --footer-primary: 222.2 47.4% 11.2%;
-            --footer-primary-foreground: 210 40% 98%;
-            --footer-muted-foreground: 215.4 16.3% 46.9%;
-            --footer-input: 214.3 31.8% 91.4%;
-            --footer-accent: 210 40% 96.1%;
-          }
-          .dark-footer {
-            --footer-background: 222.2 84% 4.9%;
-            --footer-foreground: 210 40% 98%;
-            --footer-primary: 210 40% 98%;
-            --footer-primary-foreground: 222.2 47.4% 11.2%;
-            --footer-muted-foreground: 215 20.2% 65.1%;
-            --footer-input: 217.2 32.6% 17.5%;
-            --footer-accent: 217.2 32.6% 17.5%;
-          }
-          .footer-bg-background { background-color: hsl(var(--footer-background)); }
-          .footer-text-foreground { color: hsl(var(--footer-foreground)); }
-          .footer-text-primary { color: hsl(var(--footer-primary)); }
-          .footer-bg-primary { background-color: hsl(var(--footer-primary)); }
-          .footer-text-primary-foreground { color: hsl(var(--footer-primary-foreground)); }
-          .footer-text-muted-foreground { color: hsl(var(--footer-muted-foreground)); }
-          .footer-border-input { border-color: hsl(var(--footer-input)); }
-          .footer-hover\\:bg-accent:hover { background-color: hsl(var(--footer-accent)); }
-          .footer-data-\\[state\\=unchecked\\]\\:bg-input[data-state=unchecked] { background-color: hsl(var(--footer-input)); }
-           .footer-data-\\[state\\=checked\\]\\:bg-primary[data-state=checked] { background-color: hsl(var(--footer-primary)); }
-        `;
-        document.head.appendChild(style);
-    }
-  }, [isDarkMode]);
-
+  // 移除了主题切换的状态和 useEffect，因为它导致了依赖问题
   return (
-    <footer className="relative w-full border-t footer-bg-background footer-text-foreground transition-colors duration-300">
+    <footer className="relative w-full border-t bg-white text-black">
       <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
             <h2 className="mb-4 text-3xl font-bold tracking-tight">保持联系</h2>
-            <p className="mb-4 footer-text-muted-foreground">
+            <p className="mb-4 text-gray-600">
               扫描下方二维码，关注我们获取最新动态。
             </p>
-            <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-200">
+            <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
                {/* 使用标准 <img> 标签以提高可移植性 */}
                <img 
                 src="https://placehold.co/128x128/e2e8f0/334155?text=QR+Code" 
@@ -1031,16 +927,16 @@ function FooterWithQRCode() {
           <div>
             <h3 className="mb-4 text-lg font-semibold">快速链接</h3>
             <nav className="space-y-2 text-sm">
-              <a href="#" className="block transition-colors hover:text-gray-500">首页</a>
-              <a href="#" className="block transition-colors hover:text-gray-500">关于我们</a>
-              <a href="#" className="block transition-colors hover:text-gray-500">服务</a>
-              <a href="#" className="block transition-colors hover:text-gray-500">产品</a>
-              <a href="#" className="block transition-colors hover:text-gray-500">联系我们</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">首页</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">关于我们</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">服务</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">产品</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">联系我们</a>
             </nav>
           </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">联系我们</h3>
-            <address className="space-y-2 text-sm not-italic footer-text-muted-foreground">
+            <address className="space-y-2 text-sm not-italic text-gray-600">
               <p>创新大街123号</p>
               <p>科技城, TC 12345</p>
               <p>电话: (123) 456-7890</p>
@@ -1068,29 +964,16 @@ function FooterWithQRCode() {
                 <span className="sr-only">LinkedIn</span>
               </Button>
             </div>
-            <div className="flex items-center space-x-2">
-              <Sun className="h-4 w-4" />
-              <Switch
-                id="dark-mode"
-                checked={isDarkMode}
-                onCheckedChange={setIsDarkMode}
-                aria-readonly
-              />
-              <Moon className="h-4 w-4" />
-              <Label htmlFor="dark-mode" className="sr-only">
-                切换深色模式
-              </Label>
-            </div>
           </div>
         </div>
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t pt-4 text-center md:flex-row">
-          <p className="text-sm footer-text-muted-foreground">
+          <p className="text-sm text-gray-600">
             © 2024 Apex. 版权所有.
           </p>
           <nav className="flex gap-4 text-sm">
-            <a href="#" className="transition-colors hover:text-gray-500">隐私政策</a>
-            <a href="#" className="transition-colors hover:text-gray-500">服务条款</a>
-            <a href="#" className="transition-colors hover:text-gray-500">Cookie 设置</a>
+            <a href="#" className="transition-colors text-gray-600 hover:text-black">隐私政策</a>
+            <a href="#" className="transition-colors text-gray-600 hover:text-black">服务条款</a>
+            <a href="#" className="transition-colors text-gray-600 hover:text-black">Cookie 设置</a>
           </nav>
         </div>
       </div>
