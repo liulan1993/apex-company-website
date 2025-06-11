@@ -1,5 +1,7 @@
 "use client";
 
+// 注意：由于预览环境的限制，已将 Next.js 的 <Image> 组件改回标准的 <img> 标签以解决编译错误。
+// 在您的实际 Next.js 项目中，建议换回 <Image> 组件以获得更好的性能优化。
 import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback } from 'react';
 import { motion, animate } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
@@ -7,13 +9,14 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 
+
 // --- 工具函数 (已存在于 page.tsx) ---
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 // --- 图标组件 (本地定义) ---
-// ... (HomeIcon, UserIcon 等大部分图标保持不变) ...
+// ... (所有已存在的图标组件，如 HomeIcon, UserIcon 等保持不变) ...
 const HomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -98,19 +101,16 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
   const [hovered, setHovered] = useState(false);
   const [iconHasError, setIconHasError] = useState(false);
 
-  // 根据链接自动生成图标URL
   const iconUrl = useMemo(() => {
     try {
       const domain = new URL(onClickUrl).hostname;
-      // 使用Google的favicon服务获取图标，尺寸为64x64
       return `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
-    } catch (e) {
+    } catch { 
       console.error("Invalid URL for favicon:", onClickUrl);
-      return ''; // 如果URL无效，则返回空字符串
+      return '';
     }
   }, [onClickUrl]);
 
-  // 当链接变化时，重置错误状态
   useEffect(() => {
     setIconHasError(false);
   }, [iconUrl]);
@@ -140,20 +140,20 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
           select-none
         "
       >
-        {/* 如果图标加载失败或URL无效，则显示后备的LinkIcon */}
         {iconHasError || !iconUrl ? (
           <LinkIcon className="h-5 w-5" />
         ) : (
           <img
             src={iconUrl}
             alt={`${onClickUrl} icon`}
-            className="h-5 w-5 rounded-sm"
+            width={20}
+            height={20}
+            className="rounded-sm"
             onError={() => setIconHasError(true)}
           />
         )}
       </a>
 
-      {/* 悬停时出现的二维码卡片 */}
       <div
         className={`
           absolute left-1/2 bottom-full mb-3
@@ -170,11 +170,12 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
           ${hovered ? "opacity-100 scale-100 visible" : "opacity-0 scale-75 invisible pointer-events-none"}
         `}
       >
-        <img 
+        <img
             src={imageUrl} 
             alt="QR Code" 
+            width={160}
+            height={160}
             className="w-full h-full object-cover rounded-lg"
-            onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src='https://placehold.co/160x160/ffffff/000000?text=Error'; }}
         />
       </div>
     </div>
@@ -594,8 +595,8 @@ function ComponentEight() {
                             );
                         })}
                     </div>
-                    <div className="relative order-1 max-w-lg mx-auto lg:order-2">
-                        <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative">
+                    <div className="relative order-1 max-w-lg mx-auto lg:order-2 h-full">
+                        <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative w-full aspect-video">
                             <img
                                 className="rounded-2xl border border-gray-100 shadow-lg object-cover w-full h-full"
                                 src={sampleFeatures[currentFeature].image}
@@ -659,13 +660,13 @@ function ComponentTwentyMedicalHealth() {
                 </div>
               </div>
               <img
-                src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75" alt="处理后效果" width="1920" height="1080"
+                src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75" alt="处理后效果" width={1920} height={1080}
                 className="absolute left-0 top-0 z-10 w-full h-full object-cover aspect-video rounded-2xl select-none border"
-                style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }} draggable="false"
+                style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }} draggable={false}
               />
               <img
-                src="https://www.twblocks.com/_next/image?url=%2Fdarkmode-feature8.png&w=3840&q=75" alt="处理前原图" width="1920" height="1080"
-                className="absolute left-0 top-0 w-full h-full object-cover aspect-video rounded-2xl select-none border" draggable="false"
+                src="https://www.twblocks.com/_next/image?url=%2Fdarkmode-feature8.png&w=3840&q=75" alt="处理前原图" width={1920} height={1080}
+                className="absolute left-0 top-0 w-full h-full object-cover aspect-video rounded-2xl select-none border" draggable={false}
               />
             </div>
           </div>
@@ -846,10 +847,10 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
 };
 
 const stickyScrollContent = [
-  { title: "协同编辑", description: "与您的团队、客户和利益相关者实时协作。共同处理文档、分享想法并迅速做出决策。通过我们的平台，您可以简化工作流程并提高生产力。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFD700/000000?text=协同编辑" alt="协同编辑图片" className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "实时更改", description: "查看实时发生的变化。通过我们的平台，您可以实时跟踪每一次修改。不再混淆项目的最新版本。告别版本控制的混乱，拥抱实时更新的简单性。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFA07A/000000?text=实时更改" alt="实时更改图片" className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "版本控制", description: "体验实时更新，再也不用担心版本控制。我们的平台确保您始终使用项目的最新版本，无需不断手动更新。保持同步，团队协作，工作流程不中断。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/ADD8E6/000000?text=版本控制" alt="版本控制图片" className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "内容丰富", description: "我们提供丰富的内容和功能，满足您的各种需求。无论您是需要文档管理、项目协作还是数据分析，我们的平台都能为您提供一站式解决方案。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/90EE90/000000?text=内容丰富" alt="内容丰富图片" className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "协同编辑", description: "与您的团队、客户和利益相关者实时协作。共同处理文档、分享想法并迅速做出决策。通过我们的平台，您可以简化工作流程并提高生产力。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFD700/000000?text=协同编辑" alt="协同编辑图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "实时更改", description: "查看实时发生的变化。通过我们的平台，您可以实时跟踪每一次修改。不再混淆项目的最新版本。告别版本控制的混乱，拥抱实时更新的简单性。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFA07A/000000?text=实时更改" alt="实时更改图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "版本控制", description: "体验实时更新，再也不用担心版本控制。我们的平台确保您始终使用项目的最新版本，无需不断手动更新。保持同步，团队协作，工作流程不中断。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/ADD8E6/000000?text=版本控制" alt="版本控制图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "内容丰富", description: "我们提供丰富的内容和功能，满足您的各种需求。无论您是需要文档管理、项目协作还是数据分析，我们的平台都能为您提供一站式解决方案。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/90EE90/000000?text=内容丰富" alt="内容丰富图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
 ];
 
 function Component30() {
@@ -913,10 +914,11 @@ const TestimonialAvatar = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
 ));
 TestimonialAvatar.displayName = "TestimonialAvatar";
 
-const TestimonialAvatarImage = forwardRef<HTMLImageElement, React.ImgHTMLAttributes<HTMLImageElement>>(({ className, src, alt, ...props }, ref) => (
-  <img ref={ref} src={src} alt={alt} className={cn("aspect-square h-full w-full", className)} {...props} />
+const TestimonialAvatarImage = forwardRef<HTMLImageElement, React.ImgHTMLAttributes<HTMLImageElement>>(({ className, ...props }, ref) => (
+    <img ref={ref} className={cn("aspect-square h-full w-full", className)} {...props} />
 ));
 TestimonialAvatarImage.displayName = "TestimonialAvatarImage";
+
 
 function TestimonialCard({ author, text, href, className }: {author: {name:string; handle:string; avatar:string;}; text:string; href?:string; className?: string}) {
   const CardComponent = href ? 'a' : 'div';
@@ -924,7 +926,7 @@ function TestimonialCard({ author, text, href, className }: {author: {name:strin
     <CardComponent {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})} className={cn( "flex flex-col rounded-lg border", "bg-white", "p-4 text-start sm:p-6", "hover:bg-gray-50", "max-w-[320px] sm:max-w-[320px]", "transition-colors duration-300", "border-gray-200", className )}>
       <div className="flex items-center gap-3">
         <TestimonialAvatar>
-          <TestimonialAvatarImage src={author.avatar} alt={author.name} />
+          <TestimonialAvatarImage src={author.avatar} alt={author.name} width={40} height={40} />
         </TestimonialAvatar>
         <div className="flex flex-col items-start">
           <h3 className="text-md font-semibold leading-none text-gray-900">{author.name}</h3>
@@ -977,11 +979,10 @@ function ComponentTestimonialsMarquee() {
 // --- 页脚组件 (已修改) ---
 function FooterWithQRCode() {
   
-  // 数据结构已简化，不再需要手动指定Icon组件
   const socialButtons = [
     {
       href: "https://www.apex-elite-service.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.facebook.com"
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.apex-elite-service.com/"
     },
     {
       href: "https://www.twitter.com",
@@ -1007,10 +1008,12 @@ function FooterWithQRCode() {
               扫描下方二维码，关注我们获取最新动态。
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
-               <img 
+               <img
                 src="https://placehold.co/128x128/e2e8f0/334155?text=QR+Code" 
-                alt="二维码占位符" 
-                className="h-full w-full rounded-md object-cover"
+                alt="二维码占位符"
+                width={128}
+                height={128}
+                className="rounded-md object-cover"
               />
             </div>
           </div>
