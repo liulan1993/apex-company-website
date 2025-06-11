@@ -254,6 +254,8 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
                 state: selectedState,
                 submittedAt: new Date()
             });
+            // BUG FIX 4: Set flag in localStorage after successful submission
+            localStorage.setItem('hasSubmittedInfo', 'true');
             onInfoSubmit();
         } catch (err) {
             setError("信息提交失败，请稍后再试。");
@@ -277,29 +279,30 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
                 {error && <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm text-center">{error}</p>}
                 
                 <div className="space-y-4">
-                    <input type="text" placeholder="姓名" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                    <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    {/* BUG FIX 3: Add text-black class */}
+                    <input type="text" placeholder="姓名" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
+                    <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
                         <option value="" disabled>请选择服务领域</option>
                         {services.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                     <div className="flex gap-2">
-                        <select value={selectedEmailProvider} onChange={(e) => setSelectedEmailProvider(e.target.value)} className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                        <select value={selectedEmailProvider} onChange={(e) => setSelectedEmailProvider(e.target.value)} className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
                             <option value="" disabled>请选择邮箱服务商</option>
                             {emailProviders.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
                         </select>
-                        <input type="email" placeholder="邮箱地址" value={email} onChange={(e) => setEmail(e.target.value)} className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                        <input type="email" placeholder="邮箱地址" value={email} onChange={(e) => setEmail(e.target.value)} className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
                     </div>
                     <div className="flex gap-2">
-                         <select value={selectedCountryName} onChange={(e) => handleCountryChange(e.target.value)} className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                         <select value={selectedCountryName} onChange={(e) => handleCountryChange(e.target.value)} className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
                             <option value="" disabled>请选择国家/地区</option>
                             {countryCodes.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
                         </select>
-                         <select value={selectedState} onChange={(e) => setSelectedState(e.target.value)} disabled={!selectedCountryName} className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-100">
+                         <select value={selectedState} onChange={(e) => setSelectedState(e.target.value)} disabled={!selectedCountryName} className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-100 text-black">
                             <option value="" disabled>请选择省/州</option>
                             {statesForCountry.map(state => <option key={state} value={state}>{state}</option>)}
                         </select>
                     </div>
-                    <input type="tel" placeholder="手机号" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    <input type="tel" placeholder="手机号" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
                 </div>
                 <div className="mt-6">
                     <button onClick={handleSubmit} disabled={isLoading} className="w-full bg-black text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-500">
@@ -335,10 +338,10 @@ const PopupContent = ({ items, onItemClick }: { items: LinkDataItem[]; onItemCli
 
     return (
         <div className="flex flex-col items-center p-4 text-gray-800 max-h-80 overflow-y-auto">
-            {items.map(item => {
+            {items.map((item, index) => { // Added index for a unique key
                 const IconComponent = iconMap[item.icon] || FloatingButtonBookOpenTextIcon;
                 return (
-                    <div key={item.name} onClick={() => onItemClick(item.href)} className="flex w-[95%] cursor-pointer items-center gap-4 rounded-2xl p-3 duration-300 hover:bg-gray-100">
+                    <div key={`${item.name}-${index}`} onClick={() => onItemClick(item.href)} className="flex w-[95%] cursor-pointer items-center gap-4 rounded-2xl p-3 duration-300 hover:bg-gray-100">
                         <IconComponent className={cn("h-14 w-14 shrink-0 rounded-xl p-3.5", item.bg, item.fg)} />
                         <div className="flex w-full flex-col items-start">
                             <p className="font-bold text-gray-800">{item.name}</p>
@@ -371,9 +374,30 @@ const DynamicActionBar = forwardRef<HTMLDivElement, { actions: FloatingActionBut
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const activeAction = activeIndex !== null ? actions[activeIndex] : null;
     const BUTTON_BAR_HEIGHT = 56;
+    
+    // BUG FIX 1: Dynamically calculate width based on actions' labels
+    const buttonBarWidth = useMemo(() => {
+        // Create a temporary element to measure text width
+        if (typeof document === 'undefined') return 410; // Default for SSR
+        const totalWidth = actions.reduce((acc, action) => {
+            const span = document.createElement('span');
+            span.style.font = 'bold 1rem sans-serif'; // Rough approximation of font
+            span.style.visibility = 'hidden';
+            span.style.position = 'absolute';
+            span.innerText = action.label;
+            document.body.appendChild(span);
+            const textWidth = span.offsetWidth;
+            document.body.removeChild(span);
+            // width = icon(24px) + gap(8px) + text + padding(32px) + gap-between-buttons(8px)
+            return acc + 24 + 8 + textWidth + 32 + 8; 
+        }, 16); // Initial padding
+        return Math.max(totalWidth, 410); // Ensure a minimum width
+    }, [actions]);
+
     const containerAnimate = activeAction
       ? { width: activeAction.dimensions.width, height: activeAction.dimensions.height + BUTTON_BAR_HEIGHT }
-      : { width: 410, height: BUTTON_BAR_HEIGHT };
+      : { width: buttonBarWidth, height: BUTTON_BAR_HEIGHT };
+    
     const transition = { type: "spring", stiffness: 400, damping: 35 };
 
     return (
@@ -397,8 +421,9 @@ const DynamicActionBar = forwardRef<HTMLDivElement, { actions: FloatingActionBut
             {actions.map((action, index) => {
               const Icon = action.icon;
               return (
-                <button key={action.id} onMouseEnter={() => setActiveIndex(index)} className="flex items-center justify-center gap-2 rounded-2xl py-3 px-4 text-gray-700 transition-colors duration-300 hover:bg-gray-200 hover:text-gray-900">
-                  <Icon className="size-6" />
+                // BUG FIX 1: Add whitespace-nowrap and flexible padding
+                <button key={action.id} onMouseEnter={() => setActiveIndex(index)} className="flex items-center justify-center gap-2 rounded-2xl py-3 px-4 text-gray-700 transition-colors duration-300 hover:bg-gray-200 hover:text-gray-900 whitespace-nowrap">
+                  <Icon className="size-6 shrink-0" />
                   <span className="font-bold">{action.label}</span>
                 </button>
               );
@@ -418,8 +443,15 @@ const FloatingButtonWrapper = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
     const [targetLink, setTargetLink] = useState('');
+    // BUG FIX 4: Add state for submission status
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     useEffect(() => {
+        // BUG FIX 4: Check localStorage on initial load
+        if (localStorage.getItem('hasSubmittedInfo') === 'true') {
+            setHasSubmitted(true);
+        }
+
         const initFirebase = async () => {
             const firebaseConfig = {
               apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -439,7 +471,15 @@ const FloatingButtonWrapper = () => {
                     const querySnapshot = await getDocs(collection(firestoreDb, "link_categories"));
                     const fetchedData: { [key: string]: LinkDataItem[] } = { apps: [], components: [], notes: [] };
                     querySnapshot.forEach((doc) => {
-                        fetchedData[doc.id] = doc.data().links as LinkDataItem[] || [];
+                        // BUG FIX 2: Iterate over all fields and merge arrays
+                        const docData = doc.data();
+                        let allLinks: LinkDataItem[] = [];
+                        for (const key in docData) {
+                            if (Array.isArray(docData[key])) {
+                                allLinks = allLinks.concat(docData[key]);
+                            }
+                        }
+                        fetchedData[doc.id] = allLinks;
                     });
                     setLinkData(fetchedData);
                     
@@ -458,23 +498,29 @@ const FloatingButtonWrapper = () => {
     }, []);
 
     const handleItemClick = useCallback((href: string) => {
-        setTargetLink(href);
-        setModalOpen(true);
-    }, []);
+        // BUG FIX 4: Check submission status before opening modal
+        if (hasSubmitted) {
+            window.open(href, '_blank', 'noopener,noreferrer');
+        } else {
+            setTargetLink(href);
+            setModalOpen(true);
+        }
+    }, [hasSubmitted]);
     
     const handleInfoSubmit = useCallback(() => {
         setModalOpen(false);
+        setHasSubmitted(true); // BUG FIX 4: Update state after submission
         if (targetLink) {
             window.open(targetLink, '_blank', 'noopener,noreferrer');
             setTargetLink('');
         }
     }, [targetLink]);
     
-    const actions: FloatingActionButtonItem[] = [
+    const actions: FloatingActionButtonItem[] = useMemo(() => [
         { id: "apps", label: "企业服务", icon: FloatingButtonAlbumIcon, content: <PopupContent items={linkData.apps || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
         { id: "components", label: "留学教育", icon: FloatingButtonCodeXml, content: <PopupContent items={linkData.components || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
         { id: "notes", label: "医疗健康", icon: FloatingButtonBookText, content: <PopupContent items={linkData.notes || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
-    ];
+    ], [linkData, handleItemClick]);
 
     if (isLoading) {
         return <div className="fixed bottom-8 right-8 z-50 text-xs text-gray-500">加载悬浮窗...</div>;
