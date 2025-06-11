@@ -1429,11 +1429,11 @@ function ComponentTestimonialsMarquee() {
         <div className="flex flex-col items-center gap-4 px-4 sm:gap-8">
           {/* Typography Change Request 1 */}
           <h2 className="max-w-[720px] text-4xl md:text-5xl font-bold leading-tight text-black">
-            Apex公司员工介绍
+            全球开发者信赖
           </h2>
           {/* Reference Style for Request 2 */}
           <p className="text-md max-w-[600px] font-medium text-gray-600 sm:text-xl">
-            这些都是我们优秀的各个领域的员工，他们在各自的领域中都表现出色，为公司带来了巨大的价值。
+            加入成千上万的开发者行列，使用我们的 AI 平台构建未来
           </p>
         </div>
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
@@ -1479,12 +1479,12 @@ function FooterWithQRCode() {
   return (
     <footer className="relative w-full border-t bg-white text-black">
       <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+        {/* Footer Layout Change */}
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-5">
           <div className="relative">
             <h2 className="mb-4 text-3xl font-bold tracking-tight">保持联系</h2>
-            {/* Typography Change Request 2 */}
             <p className="mb-4 text-md sm:text-xl font-medium text-gray-600">
-              扫描下方二维码，关注公众号获取最新动态。
+              扫描下方二维码，关注我们获取最新动态。
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
                <img
@@ -1498,7 +1498,6 @@ function FooterWithQRCode() {
           </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">快速链接</h3>
-            {/* Typography Change Request 2 */}
             <nav className="space-y-2 text-md sm:text-xl font-medium">
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">首页</a>
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">关于我们</a>
@@ -1507,14 +1506,16 @@ function FooterWithQRCode() {
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">联系我们</a>
             </nav>
           </div>
-          <div>
+          {/* Footer Layout Change */}
+          <div className="lg:col-span-2">
             <h3 className="mb-4 text-lg font-semibold">联系我们</h3>
-            {/* Typography Change Request 2 */}
+            {/* Footer Content Update */}
             <address className="space-y-2 text-md sm:text-xl font-medium not-italic text-gray-600">
-              <p>上海市成都北路333号招商局大厦4楼</p>
-              <p>5th Floor, 10 Anson Road,Singapore 077903</p>
-              <p>电话: +86 13585520810</p>
-              <p>邮箱: apex.sara.yue@gmail.com</p>
+                <p>上海市成都市北路333号招商局大厦4楼</p>
+                <p>5th Floor, 10 Anson Road, Singapore 077903</p>
+                <p>电话: +86 13585520810</p>
+                <p>+65 97780123</p>
+                <p>邮箱: apex.sara.yue@gmail.com</p>
             </address>
           </div>
           <div className="relative">
