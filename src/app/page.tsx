@@ -6,8 +6,10 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { useMotionValueEvent, useScroll } from "framer-motion";
+import * as LabelPrimitive from "@radix-ui/react-label";
+import * as SwitchPrimitives from "@radix-ui/react-switch";
 
-// --- 工具函数 ---
+// --- 工具函数 (已存在于 page.tsx) ---
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -84,6 +86,42 @@ const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+// --- 新增：页脚所需的 SVG 图标 ---
+const Facebook = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" >
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+const Twitter = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 1.4 3.3 4.9 3 7.1 0 .2-.1 .4-.2 .5-.2 .2-.5 .3-.8 .3H3.3c-.3 0-.6-.1-.8-.3-.2-.2-.3-.4-.3-.5 0-2.2 1.4-5.7 3-7.1-1.3-1.3-2-3.4-2-3.4s.8 2.4 3 4.3c1.9-1.3 4.2-2.1 6.5-2.1.3 0 .6.1.8.1.3 0 .6 0 .9-.1 2.3 0 4.6.8 6.5 2.1 2.2-1.9 3-4.3 3-4.3z" />
+  </svg>
+);
+const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
+const Linkedin = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
+const Sun = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
+  </svg>
+);
+const Moon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+  </svg>
+);
+
 
 // --- 通用 UI 组件 ---
 const buttonVariants = cva(
@@ -91,6 +129,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        // 保持 page.tsx 原有的 variant 定义
         default: "bg-black text-white hover:bg-black/90",
         destructive: "bg-red-500 text-white hover:bg-red-600",
         outline: "border border-gray-300 bg-transparent hover:bg-gray-100 text-black",
@@ -145,6 +184,45 @@ function Badge({ className, variant, ...props }: BadgeProps) {
     <div className={cn(badgeVariants({ variant }), className)} {...props} />
   );
 }
+
+// --- 新增：页脚所需的 UI 组件 (Label, Switch) ---
+const labelVariants = cva(
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+);
+const Label = forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
+    VariantProps<typeof labelVariants>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(labelVariants(), className)}
+    {...props}
+  />
+));
+Label.displayName = LabelPrimitive.Root.displayName;
+
+const Switch = forwardRef<
+  React.ElementRef<typeof SwitchPrimitives.Root>,
+  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
+>(({ className, ...props }, ref) => (
+  <SwitchPrimitives.Root
+    className={cn(
+      "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-gray-200",
+      className
+    )}
+    {...props}
+    ref={ref}
+  >
+    <SwitchPrimitives.Thumb
+      className={cn(
+        "pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+      )}
+    />
+  </SwitchPrimitives.Root>
+));
+Switch.displayName = SwitchPrimitives.Root.displayName;
+
 
 // --- 页面组件 ---
 // ... (ComponentOne, ComponentTwo, etc. anchanged)
@@ -878,6 +956,150 @@ function ComponentTestimonialsMarquee() {
 }
 // --- END: 用户评价跑马灯组件 ---
 
+// --- START: 新增的页脚组件 ---
+function FooterWithQRCode() {
+  const [isDarkMode, setIsDarkMode] = useState(false); // 默认设置为浅色模式以匹配页面
+
+  useEffect(() => {
+    // 这个 useEffect 负责动态注入颜色变量，并根据 isDarkMode 状态切换主题。
+    // 在一个完整的 Next.js 应用中，推荐使用 next-themes 等库来管理主题。
+    // 但对于这个独立组件，这种方法可以确保其在任何环境中都能自适应地显示。
+    const root = document.documentElement;
+    if (isDarkMode) {
+        root.classList.add("dark-footer");
+    } else {
+        root.classList.remove("dark-footer");
+    }
+
+    const styleId = "footer-theme-styles";
+    let style = document.getElementById(styleId);
+    if (!style) {
+        style = document.createElement('style');
+        style.id = styleId;
+        style.innerHTML = `
+          :root {
+            --footer-background: 255 100% 100%;
+            --footer-foreground: 222.2 84% 4.9%;
+            --footer-primary: 222.2 47.4% 11.2%;
+            --footer-primary-foreground: 210 40% 98%;
+            --footer-muted-foreground: 215.4 16.3% 46.9%;
+            --footer-input: 214.3 31.8% 91.4%;
+            --footer-accent: 210 40% 96.1%;
+          }
+          .dark-footer {
+            --footer-background: 222.2 84% 4.9%;
+            --footer-foreground: 210 40% 98%;
+            --footer-primary: 210 40% 98%;
+            --footer-primary-foreground: 222.2 47.4% 11.2%;
+            --footer-muted-foreground: 215 20.2% 65.1%;
+            --footer-input: 217.2 32.6% 17.5%;
+            --footer-accent: 217.2 32.6% 17.5%;
+          }
+          .footer-bg-background { background-color: hsl(var(--footer-background)); }
+          .footer-text-foreground { color: hsl(var(--footer-foreground)); }
+          .footer-text-primary { color: hsl(var(--footer-primary)); }
+          .footer-bg-primary { background-color: hsl(var(--footer-primary)); }
+          .footer-text-primary-foreground { color: hsl(var(--footer-primary-foreground)); }
+          .footer-text-muted-foreground { color: hsl(var(--footer-muted-foreground)); }
+          .footer-border-input { border-color: hsl(var(--footer-input)); }
+          .footer-hover\\:bg-accent:hover { background-color: hsl(var(--footer-accent)); }
+          .footer-data-\\[state\\=unchecked\\]\\:bg-input[data-state=unchecked] { background-color: hsl(var(--footer-input)); }
+           .footer-data-\\[state\\=checked\\]\\:bg-primary[data-state=checked] { background-color: hsl(var(--footer-primary)); }
+        `;
+        document.head.appendChild(style);
+    }
+  }, [isDarkMode]);
+
+  return (
+    <footer className="relative w-full border-t footer-bg-background footer-text-foreground transition-colors duration-300">
+      <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+          <div className="relative">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight">保持联系</h2>
+            <p className="mb-4 footer-text-muted-foreground">
+              扫描下方二维码，关注我们获取最新动态。
+            </p>
+            <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-200">
+               {/* 使用标准 <img> 标签以提高可移植性 */}
+               <img 
+                src="https://placehold.co/128x128/e2e8f0/334155?text=QR+Code" 
+                alt="二维码占位符" 
+                className="h-full w-full rounded-md object-cover"
+              />
+            </div>
+          </div>
+          <div>
+            <h3 className="mb-4 text-lg font-semibold">快速链接</h3>
+            <nav className="space-y-2 text-sm">
+              <a href="#" className="block transition-colors hover:text-gray-500">首页</a>
+              <a href="#" className="block transition-colors hover:text-gray-500">关于我们</a>
+              <a href="#" className="block transition-colors hover:text-gray-500">服务</a>
+              <a href="#" className="block transition-colors hover:text-gray-500">产品</a>
+              <a href="#" className="block transition-colors hover:text-gray-500">联系我们</a>
+            </nav>
+          </div>
+          <div>
+            <h3 className="mb-4 text-lg font-semibold">联系我们</h3>
+            <address className="space-y-2 text-sm not-italic footer-text-muted-foreground">
+              <p>创新大街123号</p>
+              <p>科技城, TC 12345</p>
+              <p>电话: (123) 456-7890</p>
+              <p>邮箱: hello@example.com</p>
+            </address>
+          </div>
+          <div className="relative">
+            <h3 className="mb-4 text-lg font-semibold">关注我们</h3>
+            <div className="mb-6 flex space-x-4">
+               {/* 复用 page.tsx 的 Button 组件 */}
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Facebook className="h-4 w-4" />
+                <span className="sr-only">Facebook</span>
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Twitter className="h-4 w-4" />
+                <span className="sr-only">Twitter</span>
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Instagram className="h-4 w-4" />
+                <span className="sr-only">Instagram</span>
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Linkedin className="h-4 w-4" />
+                <span className="sr-only">LinkedIn</span>
+              </Button>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Sun className="h-4 w-4" />
+              <Switch
+                id="dark-mode"
+                checked={isDarkMode}
+                onCheckedChange={setIsDarkMode}
+                aria-readonly
+              />
+              <Moon className="h-4 w-4" />
+              <Label htmlFor="dark-mode" className="sr-only">
+                切换深色模式
+              </Label>
+            </div>
+          </div>
+        </div>
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t pt-4 text-center md:flex-row">
+          <p className="text-sm footer-text-muted-foreground">
+            © 2024 Apex. 版权所有.
+          </p>
+          <nav className="flex gap-4 text-sm">
+            <a href="#" className="transition-colors hover:text-gray-500">隐私政策</a>
+            <a href="#" className="transition-colors hover:text-gray-500">服务条款</a>
+            <a href="#" className="transition-colors hover:text-gray-500">Cookie 设置</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+  );
+}
+// --- END: 页脚组件 ---
+
+
 type SectionId = 'home' | 'about' | 'services' | 'contact';
 
 // --- 主 App 组件 ---
@@ -891,7 +1113,6 @@ export default function ApexPage() {
         { name: "联系", id: "contact", icon: MailIcon },
     ];
 
-    // 采用类型推断，避免了显式类型注解可能导致的编译错误
     const sectionRefs = {
       home: useRef<HTMLDivElement>(null),
       about: useRef<HTMLDivElement>(null),
@@ -952,7 +1173,9 @@ export default function ApexPage() {
           <Component30 />
           <FeatureDemoComponent />
           <div id="contact" ref={sectionRefs.contact}><ComponentTestimonialsMarquee /></div>
-          {/* 页脚组件已被删除 */}
+          
+          {/* 新增的页脚组件 */}
+          <FooterWithQRCode />
         </div>
     )
 }
