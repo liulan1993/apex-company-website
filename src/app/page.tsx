@@ -471,9 +471,9 @@ const FloatingButtonWrapper = () => {
     }, [targetLink]);
     
     const actions: FloatingActionButtonItem[] = [
-        { id: "apps", label: "Apps", icon: FloatingButtonAlbumIcon, content: <PopupContent items={linkData.apps || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
-        { id: "components", label: "Components", icon: FloatingButtonCodeXml, content: <PopupContent items={linkData.components || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
-        { id: "notes", label: "Notes", icon: FloatingButtonBookText, content: <PopupContent items={linkData.notes || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
+        { id: "apps", label: "企业服务", icon: FloatingButtonAlbumIcon, content: <PopupContent items={linkData.apps || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
+        { id: "components", label: "留学教育", icon: FloatingButtonCodeXml, content: <PopupContent items={linkData.components || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
+        { id: "notes", label: "医疗健康", icon: FloatingButtonBookText, content: <PopupContent items={linkData.notes || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
     ];
 
     if (isLoading) {
