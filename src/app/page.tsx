@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback, SVGProps, HTMLAttributes, ButtonHTMLAttributes, ImgHTMLAttributes, Ref, ElementType } from 'react';
+// 注意：为了在不同环境中都能预览，我们继续使用标准的 <img> 标签。
+// 在您的实际 Next.js 项目中，可以根据需要换回 <Image> 组件以获得更好的性能优化。
+import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback, SVGProps, HTMLAttributes, ButtonHTMLAttributes, ImgHTMLAttributes, ElementType } from 'react';
 import { motion, animate, useMotionValueEvent, useScroll, AnimatePresence } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { initializeApp, FirebaseApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getFirestore, addDoc, collection, getDocs, Firestore } from "firebase/firestore";
 
 
@@ -14,7 +16,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// --- 2. 原有页面图标组件 (添加 displayName) ---
+// --- 2. 原有页面图标组件 ---
 const HomeIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -93,8 +95,6 @@ const LinkIcon = (props: SVGProps<SVGSVGElement>) => (
 
 
 // --- START: 悬浮按钮组件所需的所有代码 ---
-
-// --- 3. 新增: 悬浮按钮图标和数据 ---
 const createFloatingButtonIcon = (svgContent: string) => forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>((props, ref) => (
   <svg
     {...props}
@@ -281,6 +281,8 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
         </div>
     );
 };
+InfoCollectorModal.displayName = "InfoCollectorModal";
+
 
 interface LinkDataItem {
     name: string;
@@ -408,7 +410,6 @@ const FloatingButtonWrapper = () => {
                     const querySnapshot = await getDocs(collection(firestoreDb, "link_categories"));
                     const fetchedData: { [key: string]: LinkDataItem[] } = { apps: [], components: [], notes: [] };
                     querySnapshot.forEach((doc) => {
-                        // Type assertion to ensure doc.data().links is treated as an array of LinkDataItem
                         fetchedData[doc.id] = doc.data().links as LinkDataItem[] || [];
                     });
                     setLinkData(fetchedData);
@@ -518,7 +519,7 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
         ) : (
           <img
             src={iconUrl}
-            alt={`${new URL(onClickUrl).hostname} icon`}
+            alt={onClickUrl ? `${new URL(onClickUrl).hostname} icon` : 'Link icon'}
             width={20}
             height={20}
             className="rounded-sm"
@@ -1467,16 +1468,16 @@ export default function ApexPage() {
         { name: "联系", id: "contact", icon: MailIcon },
     ];
 
-    const sectionRefs = {
+    const sectionRefs = useRef({
       home: useRef<HTMLDivElement>(null),
       about: useRef<HTMLDivElement>(null),
       services: useRef<HTMLDivElement>(null),
       contact: useRef<HTMLDivElement>(null),
-    };
+    });
 
     const handleNavItemClick = (id: SectionId) => {
         setActiveTab(id);
-        sectionRefs[id]?.current?.scrollIntoView({
+        sectionRefs.current[id]?.current?.scrollIntoView({
             behavior: 'smooth'
         });
     };
@@ -1498,7 +1499,7 @@ export default function ApexPage() {
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-        const refs = Object.values(sectionRefs);
+        const refs = Object.values(sectionRefs.current);
         refs.forEach(ref => {
             if (ref.current) {
                 observer.observe(ref.current);
@@ -1512,21 +1513,21 @@ export default function ApexPage() {
                 }
             });
         };
-    }, [sectionRefs]); // Added sectionRefs to dependency array
+    }, []); // Empty dependency array is correct here as sectionRefs is stable
 
     return (
         <div className="bg-white">
           <NavBar items={navItems} activeTab={activeTab} onNavItemClick={handleNavItemClick} />
           <main>
-            <div id="home" ref={sectionRefs.home}><ComponentOne /></div>
+            <div id="home" ref={sectionRefs.current.home}><ComponentOne /></div>
             <ComponentTwo />
-            <div id="about" ref={sectionRefs.about}><ComponentSix /></div>
+            <div id="about" ref={sectionRefs.current.about}><ComponentSix /></div>
             <ComponentEight />
             <ComponentTwentyMedicalHealth />
-            <div id="services" ref={sectionRefs.services}><ComponentTen /></div>
+            <div id="services" ref={sectionRefs.current.services}><ComponentTen /></div>
             <Component30 />
             <FeatureDemoComponent />
-            <div id="contact" ref={sectionRefs.contact}><ComponentTestimonialsMarquee /></div>
+            <div id="contact" ref={sectionRefs.current.contact}><ComponentTestimonialsMarquee /></div>
           </main>
           <FooterWithQRCode />
           
