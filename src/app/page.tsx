@@ -179,7 +179,7 @@ const countryCodes = [
     { name: "爱尔兰 +353", code: "+353", regex: /^8[35-9]\d{7}$/, states: ["Leinster", "Munster", "Connacht", "Ulster"] },
     { name: "葡萄牙 +351", code: "+351", regex: /^9[1-36]\d{7}$/, states: ["Aveiro", "Beja", "Braga", "Bragança", "Castelo Branco", "Coimbra", "Évora", "Faro", "Guarda", "Leiria", "Lisbon", "Portalegre", "Porto", "Santarém", "Setúbal", "Viana do Castelo", "Vila Real", "Viseu", "Azores", "Madeira"] },
     { name: "俄罗斯 +7", code: "+7", regex: /^9\d{9}$/, states: ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan", "Nizhny Novgorod", "Chelyabinsk", "Samara", "Omsk", "Rostov-on-Don"] },
-    { name: "日本 +81", code: "+81", regex: /^[7-9]0\d{8}$/, states: ["北海道", "青森", "岩手", "宮城", "秋田", "山形", "福島", "茨城", "栃木", "群馬", "埼玉", "千葉", "東京", "神奈川", "新潟", "富山", "石川", "福井", "山梨", "長野", "岐阜", "静岡", "愛知", "三重", "滋賀", "京都", "大阪", "兵庫", "奈良", "和歌山", "鳥取", "島根", "岡山", "広島", "山口", "徳島", "香川", "愛媛", "高知", "福岡", "佐賀", "長崎", "熊本", "大分", "宮崎", "鹿児島", "沖縄"] },
+    { name: "日本 +81", code: "+81", regex: /^[7-9]0\d{8}$/, states: ["北海道", "青森", "岩手", "宮城", "秋田", "山形", "福島", "茨城", "栃木", "群馬", "埼玉", "千葉", "東京", "神奈川", "新潟", "富山", "石川", "福井", "山梨", "長野", "岐阜", "静岡", "愛知", "三重", "滋賀", "京都", "大阪", "兵庫", "奈良", "和歌山", "鳥取", "島根", "岡山", "広島", "山口", "徳島", "香川", "爱媛", "高知", "福岡", "佐賀", "長崎", "熊本", "大分", "宮崎", "鹿児島", "沖縄"] },
     { name: "韩国 +82", code: "+82", regex: /^10\d{8}$/, states: ["首尔", "釜山", "大邱", "仁川", "光州", "大田", "蔚山", "世宗", "京畿道", "江原道", "忠清北道", "忠清南道", "全罗北道", "全罗南道", "庆尚北道", "庆尚南道", "济州特别自治道"] },
     { name: "新加坡 +65", code: "+65", regex: /^[689]\d{7}$/, states: ["Singapore"] },
     { name: "马来西亚 +60", code: "+60", regex: /^1\d{8,9}$/, states: ["Johor", "Kedah", "Kelantan", "Malacca", "Negeri Sembilan", "Pahang", "Penang", "Perak", "Perlis", "Sabah", "Sarawak", "Selangor", "Terengganu", "Kuala Lumpur", "Labuan", "Putrajaya"] },
@@ -254,7 +254,6 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
                 state: selectedState,
                 submittedAt: new Date()
             });
-            // BUG FIX 4: Set flag in localStorage after successful submission
             localStorage.setItem('hasSubmittedInfo', 'true');
             onInfoSubmit();
         } catch (err) {
@@ -279,7 +278,6 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
                 {error && <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm text-center">{error}</p>}
                 
                 <div className="space-y-4">
-                    {/* BUG FIX 3: Add text-black class */}
                     <input type="text" placeholder="姓名" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
                     <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
                         <option value="" disabled>请选择服务领域</option>
@@ -338,7 +336,7 @@ const PopupContent = ({ items, onItemClick }: { items: LinkDataItem[]; onItemCli
 
     return (
         <div className="flex flex-col items-center p-4 text-gray-800 max-h-80 overflow-y-auto">
-            {items.map((item, index) => { // Added index for a unique key
+            {items.map((item, index) => {
                 const IconComponent = iconMap[item.icon] || FloatingButtonBookOpenTextIcon;
                 return (
                     <div key={`${item.name}-${index}`} onClick={() => onItemClick(item.href)} className="flex w-[95%] cursor-pointer items-center gap-4 rounded-2xl p-3 duration-300 hover:bg-gray-100">
@@ -375,23 +373,20 @@ const DynamicActionBar = forwardRef<HTMLDivElement, { actions: FloatingActionBut
     const activeAction = activeIndex !== null ? actions[activeIndex] : null;
     const BUTTON_BAR_HEIGHT = 56;
     
-    // BUG FIX 1: Dynamically calculate width based on actions' labels
     const buttonBarWidth = useMemo(() => {
-        // Create a temporary element to measure text width
-        if (typeof document === 'undefined') return 410; // Default for SSR
+        if (typeof document === 'undefined') return 410;
         const totalWidth = actions.reduce((acc, action) => {
             const span = document.createElement('span');
-            span.style.font = 'bold 1rem sans-serif'; // Rough approximation of font
+            span.style.font = 'bold 1rem sans-serif';
             span.style.visibility = 'hidden';
             span.style.position = 'absolute';
             span.innerText = action.label;
             document.body.appendChild(span);
             const textWidth = span.offsetWidth;
             document.body.removeChild(span);
-            // width = icon(24px) + gap(8px) + text + padding(32px) + gap-between-buttons(8px)
             return acc + 24 + 8 + textWidth + 32 + 8; 
-        }, 16); // Initial padding
-        return Math.max(totalWidth, 410); // Ensure a minimum width
+        }, 16);
+        return Math.max(totalWidth, 410);
     }, [actions]);
 
     const containerAnimate = activeAction
@@ -421,7 +416,6 @@ const DynamicActionBar = forwardRef<HTMLDivElement, { actions: FloatingActionBut
             {actions.map((action, index) => {
               const Icon = action.icon;
               return (
-                // BUG FIX 1: Add whitespace-nowrap and flexible padding
                 <button key={action.id} onMouseEnter={() => setActiveIndex(index)} className="flex items-center justify-center gap-2 rounded-2xl py-3 px-4 text-gray-700 transition-colors duration-300 hover:bg-gray-200 hover:text-gray-900 whitespace-nowrap">
                   <Icon className="size-6 shrink-0" />
                   <span className="font-bold">{action.label}</span>
@@ -443,12 +437,10 @@ const FloatingButtonWrapper = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
     const [targetLink, setTargetLink] = useState('');
-    // BUG FIX 4: Add state for submission status
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
     useEffect(() => {
-        // BUG FIX 4: Check localStorage on initial load
-        if (localStorage.getItem('hasSubmittedInfo') === 'true') {
+        if (typeof window !== 'undefined' && localStorage.getItem('hasSubmittedInfo') === 'true') {
             setHasSubmitted(true);
         }
 
@@ -471,7 +463,6 @@ const FloatingButtonWrapper = () => {
                     const querySnapshot = await getDocs(collection(firestoreDb, "link_categories"));
                     const fetchedData: { [key: string]: LinkDataItem[] } = { apps: [], components: [], notes: [] };
                     querySnapshot.forEach((doc) => {
-                        // BUG FIX 2: Iterate over all fields and merge arrays
                         const docData = doc.data();
                         let allLinks: LinkDataItem[] = [];
                         for (const key in docData) {
@@ -498,7 +489,6 @@ const FloatingButtonWrapper = () => {
     }, []);
 
     const handleItemClick = useCallback((href: string) => {
-        // BUG FIX 4: Check submission status before opening modal
         if (hasSubmitted) {
             window.open(href, '_blank', 'noopener,noreferrer');
         } else {
@@ -509,7 +499,7 @@ const FloatingButtonWrapper = () => {
     
     const handleInfoSubmit = useCallback(() => {
         setModalOpen(false);
-        setHasSubmitted(true); // BUG FIX 4: Update state after submission
+        setHasSubmitted(true);
         if (targetLink) {
             window.open(targetLink, '_blank', 'noopener,noreferrer');
             setTargetLink('');
@@ -876,10 +866,12 @@ function ComponentSix() {
               <Badge>Apex</Badge>
             </div>
             <div className="flex gap-2 flex-col">
-              <h2 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-regular text-left text-black whitespace-nowrap">
+              {/* Typography Change Request 1 */}
+              <h2 className="text-4xl md:text-5xl font-bold text-black text-left">
                 企业服务 (Corporate Services)
               </h2>
-              <p className="text-lg max-w-xl lg:max-w-lg leading-relaxed tracking-tight text-gray-600 text-left">
+              {/* Typography Change Request 2 */}
+              <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-lg text-left">
                 我们提供一站式企业后台支持，让您专注于核心业务。服务覆盖公司注册、秘书、会计税务及工作准证申请等企业运营全周期。我们以高效严谨的服务，确保您的企业合规运营，成为您最可靠的业务后盾。
               </p>
             </div>
@@ -904,8 +896,12 @@ function ComponentSix() {
                 <div className="relative z-10 p-6 flex justify-between flex-col h-full">
                     <UserIcon className="w-8 h-8 stroke-1 text-white" />
                     <div className="flex flex-col">
-                      <h3 className="text-xl tracking-tight text-white font-semibold">{feature.title}</h3>
-                      <p className="text-gray-200 max-w-xs text-base">
+                      {/* Typography Change Request 3 */}
+                      <h3 className="text-xl md:text-2xl font-semibold text-white">
+                        {feature.title}
+                      </h3>
+                      {/* Typography Change Request 2 */}
+                      <p className="text-md sm:text-xl font-medium text-gray-200 max-w-xs">
                         {feature.description}
                       </p>
                     </div>
@@ -1012,6 +1008,7 @@ function ComponentEight() {
                     <span className={`text-${primaryColor}-500 font-semibold text-sm uppercase tracking-wider`}>
                         Apex
                     </span>
+                    {/* Reference Style for Request 1 */}
                     <h2 className="text-4xl md:text-5xl font-bold text-black mt-4 mb-6">
                         留学教育 (Study Abroad Education)
                     </h2>
@@ -1028,10 +1025,12 @@ function ComponentEight() {
                                             <Icon size={24} />
                                         </div>
                                         <div className="flex-1">
-                                            <h3 className={cn("text-lg md:mt-4 lg:mt-0 font-semibold mb-2 transition-colors duration-300 text-black")}>
+                                            {/* Typography Change Request 3 */}
+                                            <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                                                 {feature.title}
                                             </h3>
-                                            <p className={cn("transition-colors duration-300 text-sm text-gray-600")}>
+                                            {/* Typography Change Request 2 */}
+                                            <p className={cn("transition-colors duration-300 text-md sm:text-xl font-medium text-gray-600")}>
                                                 {feature.description}
                                             </p>
                                             <div className="mt-4 bg-gray-200 rounded-sm h-1 overflow-hidden">
@@ -1097,10 +1096,12 @@ function ComponentTwentyMedicalHealth() {
             <Badge>Apex</Badge>
           </div>
           <div className="flex gap-2 flex-col">
-            <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular text-black">
+            {/* Typography Change Request 1 */}
+            <h2 className="text-4xl md:text-5xl font-bold text-black">
               医疗健康 (Medical Health)
             </h2>
-            <p className="text-lg max-w-xl lg:max-w-xl leading-relaxed tracking-tight text-gray-500">
+            {/* Typography Change Request 2 */}
+            <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">
               我们利用新加坡顶级的医疗资源，为海内外客户提供无缝对接的尊享健康服务。通过与顶尖医院的紧密合作，为您预约权威专家、安排深度体检，并提供全程陪同翻译，让您和家人高效悦享世界一流的医疗保障。
             </p>
           </div>
@@ -1220,10 +1221,12 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
               {icon}
             </div>
             <div className="space-y-3">
+              {/* Reference Style for Request 3 */}
               <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                 {title}
               </h3>
-              <h2 className="font-sans text-sm leading-[1.125rem] md:text-base md:leading-[1.375rem] text-gray-600">
+              {/* Typography Change Request 2 */}
+              <h2 className="text-md sm:text-xl font-medium text-gray-600">
                 {description}
               </h2>
             </div>
@@ -1239,7 +1242,8 @@ function ComponentTen() {
   return (
     <div className="bg-white text-black w-full py-16 lg:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">我们的核心优势</h2>
+            {/* Typography Change Request 1 */}
+            <h2 className="text-4xl md:text-5xl font-bold text-black text-center mb-12">我们的核心优势</h2>
             <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
               <GridItem area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]" icon={<Box className="h-4 w-4" />} title="以正确的方式做事" description="我们的所有服务都以合规和专业为基础，确保您的业务安全稳健。" />
               <GridItem area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]" icon={<SettingsIcon className="h-4 w-4" />} title="最顶尖的AI辅助工具" description="我们利用最先进的人工智能技术，为您提供高效、精准的解决方案。" />
@@ -1290,10 +1294,12 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
         <div className="max-w-2xl">
           {content.map((item, index) => (
             <div key={item.title + index} className="my-20">
-              <motion.h2 initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-2xl font-bold text-black">
+              {/* Typography Change Request 3 */}
+              <motion.h2 initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                 {item.title}
               </motion.h2>
-              <motion.p initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-lg text-gray-800 max-w-sm mt-10">
+              {/* Typography Change Request 2 */}
+              <motion.p initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-md sm:text-xl font-medium text-gray-600 max-w-sm mt-10">
                 {item.description}
               </motion.p>
             </div>
@@ -1333,17 +1339,19 @@ function Feature() {
         <div className="flex gap-4 py-16 lg:py-24 flex-col items-start">
           <div><Badge>Platform</Badge></div>
           <div className="flex gap-2 flex-col">
-            <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular">Something new!</h2>
-            <p className="text-lg max-w-xl lg:max-w-xl leading-relaxed tracking-tight text-gray-800">Managing a small business today is already tough.</p>
+            {/* Typography Change Request 1 */}
+            <h2 className="text-4xl md:text-5xl font-bold text-black">Something new!</h2>
+            {/* Typography Change Request 2 */}
+            <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">Managing a small business today is already tough.</p>
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
             <div className="grid grid-cols-2 items-start lg:grid-cols-3 gap-10">
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-gray-700 text-sm">We&apos;ve made it easy to use and understand.</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-gray-700 text-sm">We&apos;ve made it fast and reliable.</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Beautiful and modern</p><p className="text-gray-700 text-sm">We&apos;ve made it beautiful and modern.</p></div></div>
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-gray-700 text-sm">We&apos;ve made it easy to use and understand.</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-gray-700 text-sm">We&apos;ve made it fast and reliable.</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Beautiful and modern</p><p className="text-gray-700 text-sm">We&apos;ve made it beautiful and modern.</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it easy to use and understand.</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it fast and reliable.</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Beautiful and modern</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it beautiful and modern.</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it easy to use and understand.</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it fast and reliable.</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Beautiful and modern</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it beautiful and modern.</p></div></div>
             </div>
           </div>
         </div>
@@ -1419,9 +1427,11 @@ function ComponentTestimonialsMarquee() {
       <MarqueeStyles />
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-center sm:gap-16">
         <div className="flex flex-col items-center gap-4 px-4 sm:gap-8">
-          <h2 className="max-w-[720px] text-3xl font-semibold leading-tight sm:text-5xl sm:leading-tight text-black">
+          {/* Typography Change Request 1 */}
+          <h2 className="max-w-[720px] text-4xl md:text-5xl font-bold leading-tight text-black">
             全球开发者信赖
           </h2>
+          {/* Reference Style for Request 2 */}
           <p className="text-md max-w-[600px] font-medium text-gray-600 sm:text-xl">
             加入成千上万的开发者行列，使用我们的 AI 平台构建未来
           </p>
@@ -1472,7 +1482,8 @@ function FooterWithQRCode() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
             <h2 className="mb-4 text-3xl font-bold tracking-tight">保持联系</h2>
-            <p className="mb-4 text-gray-600">
+            {/* Typography Change Request 2 */}
+            <p className="mb-4 text-md sm:text-xl font-medium text-gray-600">
               扫描下方二维码，关注我们获取最新动态。
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
@@ -1487,7 +1498,8 @@ function FooterWithQRCode() {
           </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">快速链接</h3>
-            <nav className="space-y-2 text-sm">
+            {/* Typography Change Request 2 */}
+            <nav className="space-y-2 text-md sm:text-xl font-medium">
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">首页</a>
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">关于我们</a>
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">服务</a>
@@ -1497,7 +1509,8 @@ function FooterWithQRCode() {
           </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">联系我们</h3>
-            <address className="space-y-2 text-sm not-italic text-gray-600">
+            {/* Typography Change Request 2 */}
+            <address className="space-y-2 text-md sm:text-xl font-medium not-italic text-gray-600">
               <p>创新大街123号</p>
               <p>科技城, TC 12345</p>
               <p>电话: (123) 456-7890</p>
