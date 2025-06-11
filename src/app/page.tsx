@@ -1,7 +1,5 @@
 "use client";
 
-// 注意：为了在不同环境中都能预览，我们继续使用标准的 <img> 标签。
-// 在您的实际 Next.js 项目中，可以根据需要换回 <Image> 组件以获得更好的性能优化。
 import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback, SVGProps, HTMLAttributes, ButtonHTMLAttributes, ImgHTMLAttributes, ElementType } from 'react';
 import { motion, animate, useMotionValueEvent, useScroll, AnimatePresence } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
@@ -519,7 +517,7 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
         ) : (
           <img
             src={iconUrl}
-            alt={onClickUrl ? `${new URL(onClickUrl).hostname} icon` : 'Link icon'}
+            alt={onClickUrl && new URL(onClickUrl).hostname ? `${new URL(onClickUrl).hostname} icon` : 'Link icon'}
             width={20}
             height={20}
             className="rounded-sm"
@@ -1513,7 +1511,7 @@ export default function ApexPage() {
                 }
             });
         };
-    }, []); // Empty dependency array is correct here as sectionRefs is stable
+    }, []); 
 
     return (
         <div className="bg-white">
@@ -1531,7 +1529,6 @@ export default function ApexPage() {
           </main>
           <FooterWithQRCode />
           
-          {/* 将悬浮按钮组件放置在此处 */}
           <FloatingButtonWrapper />
         </div>
     );
