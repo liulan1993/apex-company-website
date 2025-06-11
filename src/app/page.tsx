@@ -150,7 +150,7 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 // ... (ComponentOne, ComponentTwo, etc. anchanged)
 interface NavItem {
     name: string;
-    id: string; 
+    id: string;
     icon: React.ElementType;
 }
 
@@ -165,7 +165,7 @@ function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavIte
             <a
               key={item.name}
               href={`#${item.id}`}
-              onClick={(e) => { 
+              onClick={(e) => {
                 e.preventDefault();
                 onNavItemClick(item.id as SectionId);
               }}
@@ -334,15 +334,15 @@ function ComponentSix() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={cn(
                   "relative rounded-md aspect-square overflow-hidden",
                   feature.isLarge && "lg:col-span-2 lg:aspect-auto"
                 )}
               >
-                <img 
-                    src={feature.imageUrl} 
+                <img
+                    src={feature.imageUrl}
                     alt={feature.title}
                     width={800}
                     height={600}
@@ -406,7 +406,7 @@ function ComponentEight() {
 
     const primaryColor = "sky";
     const progressGradientLight = "bg-gradient-to-r from-sky-400 to-sky-500";
-    
+
     useEffect(() => {
         const startProgress = () => {
             clearInterval(intervalRef.current);
@@ -878,161 +878,6 @@ function ComponentTestimonialsMarquee() {
 }
 // --- END: 用户评价跑马灯组件 ---
 
-
-// --- START: 新增的二维码按钮组件 ---
-
-/**
- * QrCodeIcon 组件
- * 这是一个内联的 SVG 图标，仅用作按钮上的视觉提示。
- */
-const QrCodeIcon = ({ size = 24, strokeWidth = 2, className = "" }: { size?: number, strokeWidth?: number, className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={strokeWidth}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <rect width="5" height="5" x="3" y="3" rx="1" />
-    <rect width="5" height="5" x="16" y="3" rx="1" />
-    <rect width="5" height="5" x="3" y="16" rx="1" />
-    <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
-    <path d="M21 21v.01" />
-    <path d="M12 7v3a2 2 0 0 1-2 2H7" />
-    <path d="M3 12h.01" />
-    <path d="M12 3h.01" />
-    <path d="M12 16h.01" />
-    <path d="M16 12h.01" />
-    <path d="M21 12h.01" />
-  </svg>
-);
-
-
-/**
- * NeonQrButton 组件
- * 包含一个带有柔和黑光效果的圆形按钮，
- * 当鼠标悬停时，会弹出一个显示真实二维码的卡片。
- */
-const NeonQrButton = ({ qrCodeValue = "https://www.google.com" }: { qrCodeValue?: string }) => {
-  const [hovered, setHovered] = useState(false);
-  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(qrCodeValue)}&qzone=1&margin=0`;
-
-  return (
-    <div
-      className="relative inline-block"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <button
-        aria-label="显示二维码"
-        className="
-          relative rounded-full w-14 h-14 bg-white border-2 border-gray-200
-          shadow-[0_0_15px_4px_rgba(0,0,0,0.1)] flex items-center justify-center
-          text-gray-700 hover:text-black hover:border-gray-400
-          transition-all duration-300 ease-in-out
-          focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-100
-          cursor-pointer select-none
-        "
-      >
-        <QrCodeIcon size={28} strokeWidth={2} />
-      </button>
-      <div
-        className={`
-          absolute left-1/2 bottom-full mb-4 w-52 h-52 -translate-x-1/2
-          rounded-2xl bg-white border border-gray-200
-          shadow-[0_0_30px_8px_rgba(0,0,0,0.1)]
-          flex items-center justify-center transform origin-bottom
-          transition-all duration-300 ease-in-out
-          ${hovered ? "opacity-100 scale-100 visible" : "opacity-0 scale-75 invisible pointer-events-none"}
-        `}
-      >
-        <div className="bg-white rounded-xl p-4 flex items-center justify-center">
-          <img 
-            src={qrApiUrl} 
-            alt="QR Code" 
-            width="140" 
-            height="140" 
-            onError={(e) => { const target = e.target as HTMLImageElement; target.onerror = null; target.src='https://placehold.co/140x140/f8f8f8/e0e0e0?text=Error'; }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-NeonQrButton.displayName = "NeonQrButton";
-// --- END: 新增的二维码按钮组件 ---
-
-
-// --- START: 网站页脚组件 ---
-const footerData = {
-  logo: { src: "https://www.shadcnblocks.com/images/block/block-1.svg", alt: "Apex Logo", title: "Apex", url: "#", },
-  tagline: "让未来，即刻发生。",
-  menuItems: [
-    { title: "产品", links: [ { text: "概览", url: "#" }, { text: "定价", url: "#" }, { text: "市场", url: "#" }, { text: "特性", url: "#" }, { text: "集成", url: "#" }, ], },
-    { title: "公司", links: [ { text: "关于我们", url: "#" }, { text: "团队", url: "#" }, { text: "博客", url: "#" }, { text: "招聘", url: "#" }, { text: "联系我们", url: "#" }, { text: "隐私", url: "#" }, ], },
-    { title: "资源", links: [ { text: "帮助中心", url: "#" }, { text: "销售", url: "#" }, { text: "广告", url: "#" }, ], },
-    { title: "社交媒体", links: [ { text: "Twitter", url: "#" }, { text: "Instagram", url: "#" }, { text: "LinkedIn", url: "#" }, ], },
-  ],
-  copyright: "© 2024 Apex. 保留所有权利。",
-  bottomLinks: [ { text: "条款与条件", url: "#" }, { text: "隐私政策", url: "#" }, ],
-};
-
-const SiteFooter = ({ logo, tagline, menuItems, copyright, bottomLinks, }: typeof footerData) => {
-  return (
-    <section className="py-16 sm:py-24 bg-white text-black">
-      <div className="container mx-auto px-4">
-        <footer className="border-t border-gray-200 pt-16">
-          <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
-            <div className="col-span-2 mb-8 lg:mb-0">
-              <div className="flex items-center gap-2 lg:justify-start">
-                <a href={logo.url}>
-                  <img src={logo.src} alt={logo.alt} title={logo.title} className="h-10" />
-                </a>
-                <p className="text-xl font-semibold text-black">{logo.title}</p>
-              </div>
-              <p className="mt-4 font-bold text-gray-800">{tagline}</p>
-            </div>
-            {menuItems.map((section, sectionIdx) => (
-              <div key={sectionIdx}>
-                <h3 className="mb-4 font-bold text-black">{section.title}</h3>
-                <ul className="space-y-4 text-gray-600">
-                  {section.links.map((link, linkIdx) => (
-                    <li key={linkIdx} className="font-medium hover:text-blue-600 transition-colors">
-                      <a href={link.url}>{link.text}</a>
-                    </li>
-                  ))}
-                </ul>
-                {/* 在“社交媒体”部分下方添加二维码按钮 */}
-                {section.title === "社交媒体" && (
-                  <div className="mt-4">
-                    <NeonQrButton qrCodeValue="https://www.apex.com" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="mt-24 flex flex-col justify-between gap-4 border-t border-gray-200 pt-8 text-sm font-medium text-gray-600 md:flex-row md:items-center">
-            <p>{copyright}</p>
-            <ul className="flex gap-4">
-              {bottomLinks.map((link, linkIdx) => (
-                <li key={linkIdx} className="underline hover:text-blue-600 transition-colors">
-                  <a href={link.url}>{link.text}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </footer>
-      </div>
-    </section>
-  );
-};
-// --- END: 网站页脚组件 ---
-
 type SectionId = 'home' | 'about' | 'services' | 'contact';
 
 // --- 主 App 组件 ---
@@ -1045,7 +890,7 @@ export default function ApexPage() {
         { name: "服务", id: "services", icon: SettingsIcon },
         { name: "联系", id: "contact", icon: MailIcon },
     ];
-    
+
     // 采用类型推断，避免了显式类型注解可能导致的编译错误
     const sectionRefs = {
       home: useRef<HTMLDivElement>(null),
@@ -1104,10 +949,10 @@ export default function ApexPage() {
           <ComponentEight />
           <ComponentTwentyMedicalHealth />
           <div id="services" ref={sectionRefs.services}><ComponentTen /></div>
-          <Component30 /> 
+          <Component30 />
           <FeatureDemoComponent />
           <div id="contact" ref={sectionRefs.contact}><ComponentTestimonialsMarquee /></div>
-          <SiteFooter {...footerData} />
+          {/* 页脚组件已被删除 */}
         </div>
     )
 }
