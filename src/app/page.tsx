@@ -17,7 +17,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 // --- 2. 原有页面图标组件 ---
-// ... (此部分图标组件代码与您提供的完全相同，为了简洁此处省略)
+// (此部分图标组件代码与您提供的完全相同，为了简洁此处省略)
 const HomeIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -259,7 +259,6 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
             onInfoSubmit();
         } catch (err) {
             setError("信息提交失败，请稍后再试。");
-            console.error("Error adding document: ", err);
         } finally {
             setIsLoading(false);
         }
@@ -269,7 +268,6 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
-            {/* 优化：为弹窗增加内边距 p-4，确保在小屏幕上内容不会紧贴边缘 */}
             <div className="relative bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-lg">
                 <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-800">
                     <FloatingButtonXIcon className="h-6 w-6" />
@@ -286,7 +284,6 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
                         {services.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
 
-                    {/* 优化：将并排的输入框在小屏幕(sm)上改为垂直堆叠，大屏幕上恢复并排 */}
                     <div className="flex flex-col sm:flex-row gap-2">
                         <select value={selectedEmailProvider} onChange={(e) => setSelectedEmailProvider(e.target.value)} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
                             <option value="" disabled>请选择邮箱服务商</option>
@@ -341,18 +338,15 @@ const PopupContent = ({ items, onItemClick }: { items: LinkDataItem[]; onItemCli
 
     return (
         <div className="flex flex-col items-center p-2 sm:p-4 text-gray-800 max-h-80 overflow-y-auto">
-             {/* 优化：调整内边距在小屏幕上更紧凑 */}
             {items.map((item, index) => {
                 const IconComponent = iconMap[item.icon] || FloatingButtonBookOpenTextIcon;
                 return (
-                    // 优化：在小屏幕上调整布局和间距
                     <div key={`${item.name}-${index}`} onClick={() => onItemClick(item.href)} className="flex w-full cursor-pointer items-center gap-3 rounded-2xl p-2 md:p-3 duration-300 hover:bg-gray-100">
                         <IconComponent className={cn("h-12 w-12 md:h-14 md:w-14 shrink-0 rounded-xl p-3 md:p-3.5", item.bg, item.fg)} />
                         <div className="flex w-full flex-col items-start">
                             <p className="font-bold text-gray-800 text-sm md:text-base">{item.name}</p>
                             <p className="text-xs md:text-sm text-gray-600">{item.description}</p>
                         </div>
-                        {/* 优化：在极小屏幕上隐藏标签，或使其更小 */}
                         <span className="hidden sm:block shrink-0 rounded-lg border border-gray-300 py-1 px-2 text-xs md:text-sm text-gray-500">
                             {item.tag}
                         </span>
@@ -371,7 +365,6 @@ interface FloatingActionButtonItem {
   icon: ElementType;
   content: React.ReactNode;
   dimensions: {
-    // 优化：尺寸应为最大尺寸，在小屏幕上会自动缩放
     width: number;
     height: number;
   };
@@ -382,8 +375,6 @@ const DynamicActionBar = forwardRef<HTMLDivElement, { actions: FloatingActionBut
     const activeAction = activeIndex !== null ? actions[activeIndex] : null;
     const BUTTON_BAR_HEIGHT = 56;
     
-    // 备注：此处的宽度计算在客户端进行，对于 SSR/SSG 可能不理想，但对于 "use client" 组件是可行的。
-    // 在响应式设计中，最好使用CSS来控制宽度，但鉴于当前实现，我们将保持此逻辑。
     const buttonBarWidth = useMemo(() => {
         if (typeof document === 'undefined') return 410;
         const totalWidth = actions.reduce((acc, action) => {
@@ -408,12 +399,10 @@ const DynamicActionBar = forwardRef<HTMLDivElement, { actions: FloatingActionBut
 
     return (
       <div ref={ref} className="relative" onMouseLeave={() => setActiveIndex(null)} {...props}>
-        {/* 优化：添加 max-w-full，防止在小屏幕上溢出 */}
         <motion.div
           className="flex flex-col overflow-hidden rounded-2xl bg-white/70 backdrop-blur-xl shadow-lg border border-gray-200/80 max-w-full"
           animate={containerAnimate}
           transition={transition}
-          // 优化：初始宽度设为 auto 或一个更适合移动端的尺寸，让它自然扩展
           initial={{ width: "auto", height: BUTTON_BAR_HEIGHT }}
         >
           <div className="flex-grow overflow-hidden">
@@ -429,7 +418,6 @@ const DynamicActionBar = forwardRef<HTMLDivElement, { actions: FloatingActionBut
             {actions.map((action, index) => {
               const Icon = action.icon;
               return (
-                // 优化：调整按钮内边距和文字大小以适应小屏幕
                 <button key={action.id} onMouseEnter={() => setActiveIndex(index)} className="flex items-center justify-center gap-2 rounded-2xl py-2 px-2 sm:py-3 sm:px-4 text-gray-700 transition-colors duration-300 hover:bg-gray-200 hover:text-gray-900 whitespace-nowrap">
                   <Icon className="size-5 sm:size-6 shrink-0" />
                   <span className="font-bold text-sm sm:text-base">{action.label}</span>
@@ -494,7 +482,6 @@ const FloatingButtonWrapper = () => {
                     setIsLoading(false);
                 }
             } else {
-                console.error("Firebase config is missing. Please set up your Vercel Environment Variables.");
                 setIsLoading(false);
             }
         };
@@ -521,7 +508,6 @@ const FloatingButtonWrapper = () => {
     }, [targetLink]);
     
     const actions: FloatingActionButtonItem[] = useMemo(() => [
-        // 优化：为移动端考虑，可以设置更小的尺寸或让尺寸自适应
         { id: "apps", label: "企业服务", icon: FloatingButtonAlbumIcon, content: <PopupContent items={linkData.apps || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
         { id: "components", label: "留学教育", icon: FloatingButtonCodeXml, content: <PopupContent items={linkData.components || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
         { id: "notes", label: "医疗健康", icon: FloatingButtonBookText, content: <PopupContent items={linkData.notes || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
@@ -541,7 +527,6 @@ const FloatingButtonWrapper = () => {
                 onInfoSubmit={handleInfoSubmit}
                 db={db}
             />
-            {/* 优化：调整位置以适应移动端安全区域 */}
             <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 w-[calc(100%-2rem)] sm:w-auto">
                 <DynamicActionBar actions={actions} />
             </div>
@@ -555,8 +540,6 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
   const [hovered, setHovered] = useState(false);
   const [iconHasError, setIconHasError] = useState(false);
   
-  // 优化：在移动设备上，hover效果不佳，可以考虑点击触发或其他交互
-  // 此处保持原有逻辑，但提示这是一个可以优化的点
   const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
   const iconUrl = useMemo(() => {
@@ -564,7 +547,6 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
       const domain = new URL(onClickUrl).hostname;
       return `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
     } catch { 
-      console.error("Invalid URL for favicon:", onClickUrl);
       return '';
     }
   }, [onClickUrl]);
@@ -578,7 +560,7 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
       className="relative inline-block"
       onMouseEnter={() => !isTouchDevice && setHovered(true)}
       onMouseLeave={() => !isTouchDevice && setHovered(false)}
-      onClick={() => isTouchDevice && setHovered(h => !h)} // 移动端点击切换
+      onClick={() => isTouchDevice && setHovered(h => !h)}
     >
       <a
         href={onClickUrl || '#'}
@@ -598,7 +580,7 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
           cursor-pointer
           select-none
         "
-        onClick={(e) => { if(isTouchDevice) e.preventDefault(); }} // 移动端阻止默认跳转，交由父级div处理
+        onClick={(e) => { if(isTouchDevice) e.preventDefault(); }}
       >
         {iconHasError || !iconUrl ? (
           <LinkIcon className="h-5 w-5" />
@@ -713,7 +695,6 @@ interface NavItem {
 
 function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavItem[], activeTab: string, onNavItemClick: (id: SectionId) => void, className?: string }) {
   return (
-    // 优化：在小屏幕上，导航栏宽度适应屏幕，并增加左右安全边距
     <div className={cn("fixed top-0 left-1/2 -translate-x-1/2 z-50 mt-4 w-full px-4 sm:w-auto sm:px-0", className)}>
       <div className="flex w-full sm:w-auto items-center justify-center gap-1 bg-white/50 border border-gray-200 backdrop-blur-lg p-1 rounded-full shadow-lg">
         {items.map((item) => {
@@ -727,19 +708,25 @@ function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavIte
                 e.preventDefault();
                 onNavItemClick(item.id as SectionId);
               }}
-              // 优化：调整内边距，使移动端点击区域更合理
-              className={cn("relative cursor-pointer text-sm font-semibold px-3 py-2 sm:px-6 sm:py-2 rounded-full transition-colors flex-1 sm:flex-none text-center", "text-black/60 hover:text-black", isActive && "text-black")}
+              // FIX: Changed to flex layout for proper centering of content (icon/text).
+              // Using flex-1 on mobile to distribute space evenly.
+              // Changed breakpoint for icon/text switch to `sm` for better tablet experience.
+              className={cn(
+                  "relative flex flex-1 cursor-pointer items-center justify-center rounded-full px-3 py-2 text-sm font-semibold transition-colors sm:flex-none",
+                  "text-black/60 hover:text-black",
+                  isActive ? "text-black" : ""
+              )}
             >
-              <span className="hidden md:inline">{item.name}</span>
-              {/* 优化：在md及以下尺寸显示图标，确保平板和手机视图一致 */}
-              <span className="md:hidden"><Icon size={18} strokeWidth={2.5} /></span>
+              <span className="hidden sm:inline">{item.name}</span>
+              <span className="sm:hidden"><Icon className="h-5 w-5" strokeWidth={2.5} /></span>
               {isActive && (
                 <motion.div
                   layoutId="lamp"
-                  className="absolute inset-0 w-full bg-black/5 rounded-full -z-10"
+                  className="absolute inset-0 bg-black/5 rounded-full -z-10"
                   initial={false}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
+                  {/* This "lamp" effect is now correctly centered because its parent `a` tag centers its content. */}
                   <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-black rounded-t-full">
                     <div className="absolute w-12 h-6 bg-black/20 rounded-full blur-md -top-2 -left-2" />
                     <div className="absolute w-8 h-6 bg-black/20 rounded-full blur-md -top-1" />
@@ -791,7 +778,6 @@ function ComponentOne({ title = "Apex" }: { title?: string }) {
             <div className="absolute inset-0"><FloatingPaths position={1} /><FloatingPaths position={-1} /></div>
             <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2 }} className="max-w-4xl mx-auto">
-                    {/* 字体大小已做响应式处理，无需修改 */}
                     <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter">
                         {words.map((word, wordIndex) => (
                             <span key={wordIndex} className="inline-block mr-4 last:mr-0">
@@ -826,16 +812,13 @@ function ComponentTwo() {
 
   return (
     <div className="w-full text-black bg-white">
-        {/* 优化：调整 py-12 / lg:py-20 使移动端垂直间距更舒适 */}
       <div className="container mx-auto px-4">
         <div className="flex gap-8 py-12 lg:py-20 items-center justify-center flex-col">
           <div className="flex gap-4 flex-col items-center">
-             {/* 优化：调整移动端标题字号 text-4xl，md断点及以上为 text-5xl/7xl */}
             <h1 className="text-4xl md:text-5xl lg:text-7xl tracking-tighter text-center font-regular flex flex-col items-center">
               <span className="text-black whitespace-nowrap">不止梳理万象，更与您共创未来</span>
               <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 pt-4 md:pt-6 h-16 md:h-20 items-center">
                 {titles.map((title, index) => (
-                   // 优化：调整移动端动画标题字号 text-4xl，md断点及以上为 text-6xl
                   <motion.span
                     key={index}
                     className="absolute font-semibold text-black text-4xl md:text-6xl"
@@ -846,7 +829,6 @@ function ComponentTwo() {
                 ))}
               </span>
             </h1>
-            {/* 字体大小已做响应式处理，无需修改 */}
             <p className="text-lg md:text-xl leading-relaxed tracking-tight text-gray-600 max-w-4xl text-center">
               Apex是一家总部位于新加坡的综合性专业服务机构。我们深刻理解全球高净值人士与出海企业所面临的机遇与挑战，矢志成为您在新加坡的首席合作伙伴，提供从商业顶层设计、子女教育规划到主动式健康管理的无缝衔接解决方案。
             </p>
@@ -888,7 +870,6 @@ function ComponentSix() {
   ];
 
   return (
-    // 优化：调整 py-16 / lg:py-24 使垂直间距响应式
     <div className="w-full py-16 lg:py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-10">
@@ -897,17 +878,14 @@ function ComponentSix() {
               <Badge>Apex</Badge>
             </div>
             <div className="flex gap-2 flex-col">
-              {/* 优化：调整移动端标题字号 text-3xl */}
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black text-left">
                 企业服务 (Corporate Services)
               </h2>
-              {/* 字体大小已做响应式处理，无需修改 */}
               <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-lg text-left">
                 我们提供一站式企业后台支持，让您专注于核心业务。服务覆盖公司注册、秘书、会计税务及工作准证申请等企业运营全周期。我们以高效严谨的服务，确保您的企业合规运营，成为您最可靠的业务后盾。
               </p>
             </div>
           </div>
-          {/* 网格布局已做响应式处理 (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3)，无需修改 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <div
@@ -928,11 +906,9 @@ function ComponentSix() {
                 <div className="relative z-10 p-4 md:p-6 flex justify-between flex-col h-full">
                     <UserIcon className="w-8 h-8 stroke-1 text-white" />
                     <div className="flex flex-col">
-                      {/* 字体大小已做响应式处理，无需修改 */}
                       <h3 className="text-xl md:text-2xl font-semibold text-white">
                         {feature.title}
                       </h3>
-                       {/* 字体大小已做响应式处理，无需修改 */}
                       <p className="text-md sm:text-xl font-medium text-gray-200 max-w-xs">
                         {feature.description}
                       </p>
@@ -1014,21 +990,6 @@ function ComponentEight() {
         }
     }, [progress, sampleFeatures.length]);
 
-    useEffect(() => {
-        const activeFeatureElement = featureRefs.current[currentFeature];
-        const container = containerRef.current;
-        if (activeFeatureElement && container) {
-            const containerRect = container.getBoundingClientRect();
-            const elementRect = activeFeatureElement.getBoundingClientRect();
-            if (container.scrollLeft !== undefined) {
-                container.scrollTo({
-                    left: activeFeatureElement.offsetLeft - (containerRect.width - elementRect.width) / 2,
-                    behavior: "smooth",
-                });
-            }
-        }
-    }, [currentFeature]);
-
     const handleFeatureClick = (index: number) => {
         setCurrentFeature(index);
     };
@@ -1040,29 +1001,41 @@ function ComponentEight() {
                     <span className={`text-${primaryColor}-500 font-semibold text-sm uppercase tracking-wider`}>
                         Apex
                     </span>
-                    {/* 优化：调整移动端标题字号 text-3xl */}
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mt-4 mb-6">
                         留学教育 (Study Abroad Education)
                     </h2>
                 </div>
-                {/* 该网格布局已做响应式 (lg:grid-cols-2)，小屏幕自动堆叠，无需修改 */}
                 <div className="grid lg:grid-cols-2 lg:gap-16 gap-8 items-center">
-                    <div ref={containerRef} className="lg:space-y-8 md:space-x-6 lg:space-x-0 overflow-x-auto overflow-hidden no-scrollbar lg:overflow-visible flex lg:flex-col flex-row order-1 pb-4 scroll-smooth">
+                    {/* FIX: Changed order for mobile to show image first */}
+                    <div className="relative order-1 lg:order-2 max-w-lg mx-auto h-full">
+                        <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative w-full aspect-video">
+                            <img
+                                className="rounded-2xl border border-gray-100 shadow-lg object-cover w-full h-full"
+                                src={sampleFeatures[currentFeature].image}
+                                alt={sampleFeatures[currentFeature].title}
+                                width={600}
+                                height={400}
+                            />
+                        </motion.div>
+                    </div>
+                    {/* FIX: Changed from horizontal row to vertical column on mobile for better readability and accessibility. */}
+                    <div ref={containerRef} className="flex flex-col gap-6 lg:gap-8 order-2 lg:order-1">
                         {sampleFeatures.map((feature, index) => {
                             const Icon = feature.icon;
                             const isActive = currentFeature === index;
                             return (
-                                <div key={feature.id} ref={(el) => { if (el) featureRefs.current[index] = el; }} className="relative cursor-pointer flex-shrink-0 w-full sm:w-auto" onClick={() => handleFeatureClick(index)}>
-                                    <div className={cn("flex lg:flex-row flex-col items-start space-x-0 sm:space-x-4 p-3 max-w-sm md:max-w-sm lg:max-w-2xl transition-all duration-300", isActive ? "bg-gray-100 shadow-xl rounded-xl border border-gray-200" : "")}>
-                                        <div className={cn("p-3 mb-2 sm:mb-0 block rounded-full transition-all duration-300", isActive ? `bg-${primaryColor}-500 text-white` : `bg-gray-200 text-${primaryColor}-500`)}>
+                                <div key={feature.id} ref={(el) => { if (el) featureRefs.current[index] = el; }} className="relative cursor-pointer" onClick={() => handleFeatureClick(index)}>
+                                    <div className={cn(
+                                        "flex items-start space-x-4 p-4 rounded-xl transition-all duration-300 w-full",
+                                        isActive ? "bg-gray-100 shadow-lg border border-gray-200" : "border border-transparent"
+                                    )}>
+                                        <div className={cn("p-3 block rounded-full transition-all duration-300", isActive ? `bg-${primaryColor}-500 text-white` : `bg-gray-200 text-${primaryColor}-500`)}>
                                             <Icon size={24} />
                                         </div>
                                         <div className="flex-1">
-                                            {/* 优化：调整移动端标题字号 text-lg */}
                                             <h3 className="pt-0.5 text-lg leading-tight font-semibold font-sans tracking-tight md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                                                 {feature.title}
                                             </h3>
-                                             {/* 优化：调整移动端描述文本大小 text-base */}
                                             <p className={cn("transition-colors duration-300 text-base sm:text-xl font-medium text-gray-600")}>
                                                 {feature.description}
                                             </p>
@@ -1081,17 +1054,6 @@ function ComponentEight() {
                                 </div>
                             );
                         })}
-                    </div>
-                    <div className="relative order-1 max-w-lg mx-auto lg:order-2 h-full">
-                        <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative w-full aspect-video">
-                            <img
-                                className="rounded-2xl border border-gray-100 shadow-lg object-cover w-full h-full"
-                                src={sampleFeatures[currentFeature].image}
-                                alt={sampleFeatures[currentFeature].title}
-                                width={600}
-                                height={400}
-                            />
-                        </motion.div>
                     </div>
                 </div>
             </div>
@@ -1122,7 +1084,6 @@ function ComponentTwentyMedicalHealth() {
   const handleMouseUp = () => setIsDragging(false);
 
   return (
-    // 优化：调整 py-16 / lg:py-24 使垂直间距响应式
     <div className="w-full py-16 lg:py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-4">
@@ -1130,18 +1091,16 @@ function ComponentTwentyMedicalHealth() {
             <Badge>Apex</Badge>
           </div>
           <div className="flex gap-2 flex-col">
-            {/* 优化：调整移动端标题字号 text-3xl */}
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">
               医疗健康 (Medical Health)
             </h2>
-            {/* 字体大小已做响应式处理，无需修改 */}
             <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">
               我们利用新加坡顶级的医疗资源，为海内外客户提供无缝对接的尊享健康服务。通过与顶尖医院的紧密合作，为您预约权威专家、安排深度体检，并提供全程陪同翻译，让您和家人高效悦享世界一流的医疗保障。
             </p>
           </div>
           <div className="pt-12 w-full">
             <div
-              className="relative w-full overflow-hidden rounded-2xl select-none aspect-[4/3] sm:aspect-video" // 优化：在小屏幕上使用 4:3 的比例，大屏幕恢复 16:9
+              className="relative w-full overflow-hidden rounded-2xl select-none aspect-[4/3] sm:aspect-video"
               onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}
               onTouchMove={handleMouseMove} onTouchEnd={handleMouseUp}
               onMouseDown={handleMouseDown} onTouchStart={handleMouseDown}
@@ -1255,11 +1214,9 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
               {icon}
             </div>
             <div className="space-y-3">
-               {/* 字体大小已做响应式处理，无需修改 */}
               <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                 {title}
               </h3>
-              {/* 优化：调整移动端描述文本大小 text-base */}
               <h2 className="text-base sm:text-xl font-medium text-gray-600">
                 {description}
               </h2>
@@ -1276,9 +1233,7 @@ function ComponentTen() {
   return (
     <div className="bg-white text-black w-full py-16 lg:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
-             {/* 优化：调整移动端标题字号 text-3xl */}
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black text-center mb-12">我们的核心优势</h2>
-            {/* 这里的网格布局 (grid-cols-1 md:grid-cols-12) 已经完美地实现了响应式，从小屏幕的单列堆叠到大屏幕的复杂布局，无需修改 */}
             <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
               <GridItem area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]" icon={<Box className="h-4 w-4" />} title="以正确的方式做事" description="我们的所有服务都以合规和专业为基础，确保您的业务安全稳健。" />
               <GridItem area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]" icon={<SettingsIcon className="h-4 w-4" />} title="最顶尖的AI辅助工具" description="我们利用最先进的人工智能技术，为您提供高效、精准的解决方案。" />
@@ -1324,19 +1279,14 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
   }, [activeCard]);
 
   return (
-    // 优化：高度从固定的 h-[30rem] 变为 h-[60vh] md:h-[30rem]，在移动端表现更好。
-    // 在移动端 (lg以下)，内容将水平排列并允许滚动，而不是粘性效果。
     <motion.div animate={{ backgroundColor: backgroundColors[0], }} className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" ref={ref} style={{ backgroundColor: 'white' }}>
       <div className="div relative flex items-start px-4">
-        {/* 优化：在 lg 以下，内容区域变为横向滚动，以适应移动端布局 */}
         <div className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar">
           {content.map((item, index) => (
             <div key={item.title + index} className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 lg:flex-shrink-1">
-              {/* 字体大小已做响应式处理，无需修改 */}
               <motion.h2 initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                 {item.title}
               </motion.h2>
-              {/* 字体大小已做响应式处理，无需修改 */}
               <motion.p initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-md sm:text-xl font-medium text-gray-600 max-w-sm mt-4 lg:mt-10">
                 {item.description}
               </motion.p>
@@ -1377,13 +1327,10 @@ function Feature() {
         <div className="flex gap-4 py-12 lg:py-24 flex-col items-start">
           <div><Badge>Platform</Badge></div>
           <div className="flex gap-2 flex-col">
-            {/* 优化：调整移动端标题字号 text-3xl */}
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">Something new!</h2>
-            {/* 字体大小已做响应式处理，无需修改 */}
             <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">Managing a small business today is already tough.</p>
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
-            {/* 优化：网格在默认（最小）屏幕上为1列，sm及以上为2列，lg及以上为3列 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
               <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it easy to use and understand.</p></div></div>
               <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it fast and reliable.</p></div></div>
@@ -1439,7 +1386,6 @@ function TestimonialCard({ author, text, href, className }: {author: {name:strin
   const CardComponent = href ? 'a' : 'div';
   return (
     <CardComponent {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})} 
-    // 优化：卡片宽度在小屏幕上自适应 (w-[80vw])，并设置最大宽度，sm及以上恢复固定宽度
     className={cn( "flex flex-col rounded-lg border", "bg-white", "p-4 text-start sm:p-6", "hover:bg-gray-50", "w-[80vw] max-w-[300px] sm:w-auto sm:max-w-[320px]", "transition-colors duration-300", "border-gray-200", "flex-shrink-0", className )}>
       <div className="flex items-center gap-3">
         <TestimonialAvatar>
@@ -1468,17 +1414,14 @@ function ComponentTestimonialsMarquee() {
       <MarqueeStyles />
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 sm:gap-16">
         <div className="flex flex-col items-center gap-4 px-4 sm:gap-8 text-center">
-          {/* 优化：调整移动端标题字号 text-3xl */}
           <h2 className="max-w-[720px] text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-black">
             全球开发者信赖
           </h2>
-          {/* 字体大小已做响应式处理，无需修改 */}
           <p className="text-md max-w-[600px] font-medium text-gray-600 sm:text-xl">
             加入成千上万的开发者行列，使用我们的 AI 平台构建未来
           </p>
         </div>
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
-           {/* 优化：减小 gap 使移动端更紧凑 */}
           <div className="group flex w-full overflow-hidden p-2" style={{'--gap': '1rem', '--duration': '40s'} as React.CSSProperties}>
             <div className="flex shrink-0 animate-marquee justify-around [gap:var(--gap)] group-hover:[animation-play-state:paused]">
                 {testimonialsData.map((testimonial, i) => ( <TestimonialCard key={`marquee-1-${i}`} {...testimonial} /> ))}
@@ -1520,9 +1463,7 @@ function FooterWithQRCode() {
 
   return (
     <footer className="relative w-full border-t bg-white text-black">
-      {/* 优化：调整 py-8/md:py-12，px-4/md:px-6/lg:px-8，使内外边距都具备响应式 */}
       <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8 md:py-12">
-        {/* 优化：网格布局从单列 -> md:2列 -> lg:5列，响应式良好。增加 gap-8 / md:gap-12 */}
         <div className="grid gap-8 md:gap-12 md:grid-cols-2 lg:grid-cols-5">
           <div className="relative md:col-span-2 lg:col-span-1">
             <h2 className="mb-4 text-2xl sm:text-3xl font-bold tracking-tight">保持联系</h2>
@@ -1549,7 +1490,6 @@ function FooterWithQRCode() {
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">联系我们</a>
             </nav>
           </div>
-          {/* 优化：联系我们部分在md屏幕上占据整行，在lg屏幕上占据2个网格列 */}
           <div className="md:col-span-2 lg:col-span-2">
             <h3 className="mb-4 text-lg font-semibold">联系我们</h3>
             <address className="space-y-2 text-base sm:text-xl font-medium not-italic text-gray-600">
@@ -1650,7 +1590,6 @@ export default function ApexPage() {
         <div className="bg-white">
           <NavBar items={navItems} activeTab={activeTab} onNavItemClick={handleNavItemClick} />
           <main>
-            {/* 优化：为每个section增加一个最小高度，防止快速滚动时IntersectionObserver计算错误 */}
             <div id="home" ref={sectionRefs.home} className="min-h-screen"><ComponentOne /></div>
             <ComponentTwo />
             <div id="about" ref={sectionRefs.about} className="scroll-mt-20"><ComponentSix /></div>
