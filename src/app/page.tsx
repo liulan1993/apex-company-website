@@ -1,5 +1,7 @@
 "use client";
 
+// 注意：为了在不同环境中都能预览，我们继续使用标准的 <img> 标签。
+// 在您的实际 Next.js 项目中，可以根据需要换回 <Image> 组件以获得更好的性能优化。
 import React, { useState, useEffect, useMemo, forwardRef, useRef, memo, useCallback, SVGProps, HTMLAttributes, ButtonHTMLAttributes, ImgHTMLAttributes, ElementType } from 'react';
 import { motion, animate, useMotionValueEvent, useScroll, AnimatePresence } from 'framer-motion';
 import { cva, type VariantProps } from "class-variance-authority";
@@ -20,31 +22,43 @@ const HomeIcon = (props: SVGProps<SVGSVGElement>) => (
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
   </svg>
 );
+HomeIcon.displayName = "HomeIcon";
+
 const UserIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
   </svg>
 );
+UserIcon.displayName = "UserIcon";
+
 const SettingsIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2.12l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2.12l.15.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" />
   </svg>
 );
+SettingsIcon.displayName = "SettingsIcon";
+
 const MailIcon = (props: SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
 );
+MailIcon.displayName = "MailIcon";
+
 const BrainCog = (props: SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 2a4.5 4.5 0 0 1 4.5 4.5c0 1.06-.38 2.04-.98 2.85"/><path d="M12 2a4.5 4.5 0 0 0-4.5 4.5c0 1.06.38 2.04.98 2.85"/><path d="M12 13.5a4.5 4.5 0 0 1 4.5-4.5c1.06 0 2.04.38 2.85.98"/><path d="M12 13.5a4.5 4.5 0 0 0-4.5-4.5c-1.06 0-2.04.38-2.85.98"/><path d="M3.03 16.5a4.5 4.5 0 0 0 6.42.04"/><path d="M14.55 16.54a4.5 4.5 0 0 0 6.42-.04"/><circle cx="12" cy="12" r=".5"/><path d="M21.97 16.5a4.5 4.5 0 0 1-6.42.04"/><path d="M9.45 16.54a4.5 4.5 0 0 1-6.42-.04"/><path d="M12 13.5V22"/><path d="M12 2v2.5"/><path d="M19.14 4.86 17.5 6.5"/><path d="m4.86 19.14 1.64-1.64"/><path d="m19.14 19.14-1.64-1.64"/><path d="m4.86 4.86 1.64 1.64"/>
     </svg>
 );
+BrainCog.displayName = "BrainCog";
+
 const Brain = (props: SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08A2.5 2.5 0 0 1 5 13.5V8c0-1.9.83-3.63 2.16-4.84A2.5 2.5 0 0 1 9.5 2Z" /><path d="M14.5 2a2.5 2.5 0 0 0-2.5 2.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08A2.5 2.5 0 0 0 19 13.5V8c0-1.9-.83-3.63-2.16-4.84A2.5 2.5 0 0 0 14.5 2Z" />
     </svg>
 );
+Brain.displayName = "Brain";
+
 const Box = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
@@ -52,23 +66,31 @@ const Box = (props: SVGProps<SVGSVGElement>) => (
     <line x1="12" y1="22.08" x2="12" y2="12" />
   </svg>
 );
+Box.displayName = "Box";
+
 const Lock = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
   </svg>
 );
+Lock.displayName = "Lock";
+
 const Sparkles = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
   </svg>
 );
+Sparkles.displayName = "Sparkles";
+
 const Search = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="11" cy="11" r="8" />
     <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
 );
+Search.displayName = "Search";
+
 const GripVertical = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="9" cy="12" r="1" />
@@ -79,36 +101,45 @@ const GripVertical = (props: SVGProps<SVGSVGElement>) => (
     <circle cx="15" cy="19" r="1" />
   </svg>
 );
+GripVertical.displayName = "GripVertical";
+
 const CheckIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 6 9 17l-5-5" />
   </svg>
 );
+CheckIcon.displayName = "CheckIcon";
+
 const LinkIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71" />
   </svg>
 );
-
+LinkIcon.displayName = "LinkIcon";
 
 // --- START: 悬浮按钮组件所需的所有代码 ---
-const createFloatingButtonIcon = (svgContent: string) => forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>((props, ref) => (
-  <svg
-    {...props}
-    ref={ref}
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    dangerouslySetInnerHTML={{ __html: svgContent }}
-  />
-));
+
+const createFloatingButtonIcon = (svgContent: string) => {
+  const IconComponent = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>((props, ref) => (
+    <svg
+      {...props}
+      ref={ref}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      dangerouslySetInnerHTML={{ __html: svgContent }}
+    />
+  ));
+  IconComponent.displayName = `FloatingButtonIcon`;
+  return IconComponent;
+};
 
 const FloatingButtonCodeXml = createFloatingButtonIcon('<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/>');
 const FloatingButtonBookText = createFloatingButtonIcon('<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/>');
@@ -466,7 +497,6 @@ const FloatingButtonWrapper = () => {
     );
 };
 FloatingButtonWrapper.displayName = "FloatingButtonWrapper";
-// --- END: 悬浮按钮组件所需的所有代码 ---
 
 
 const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string; onClickUrl: string; }) => {
@@ -1185,7 +1215,7 @@ const linearGradients = [
     "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
 ];
 
-const StickyScroll = ({ content, contentClassName }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
+const StickyScroll = ({ content, contentClassName, }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
   const [activeCard, setActiveCard] = React.useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ container: ref, offset: ["start start", "end start"], });
@@ -1231,6 +1261,7 @@ const StickyScroll = ({ content, contentClassName }: { content: { title: string;
     </motion.div>
   );
 };
+StickyScroll.displayName = "StickyScroll";
 
 const stickyScrollContent = [
   { title: "协同编辑", description: "与您的团队、客户和利益相关者实时协作。共同处理文档、分享想法并迅速做出决策。通过我们的平台，您可以简化工作流程并提高生产力。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFD700/000000?text=协同编辑" alt="协同编辑图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
@@ -1466,16 +1497,16 @@ export default function ApexPage() {
         { name: "联系", id: "contact", icon: MailIcon },
     ];
 
-    const sectionRefs = useRef({
-      home: useRef<HTMLDivElement>(null),
-      about: useRef<HTMLDivElement>(null),
-      services: useRef<HTMLDivElement>(null),
-      contact: useRef<HTMLDivElement>(null),
-    });
+    const sectionRefs = useMemo(() => ({
+      home: React.createRef<HTMLDivElement>(),
+      about: React.createRef<HTMLDivElement>(),
+      services: React.createRef<HTMLDivElement>(),
+      contact: React.createRef<HTMLDivElement>(),
+    }), []);
 
     const handleNavItemClick = (id: SectionId) => {
         setActiveTab(id);
-        sectionRefs.current[id]?.current?.scrollIntoView({
+        sectionRefs[id]?.current?.scrollIntoView({
             behavior: 'smooth'
         });
     };
@@ -1497,7 +1528,7 @@ export default function ApexPage() {
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-        const refs = Object.values(sectionRefs.current);
+        const refs = Object.values(sectionRefs);
         refs.forEach(ref => {
             if (ref.current) {
                 observer.observe(ref.current);
@@ -1511,21 +1542,21 @@ export default function ApexPage() {
                 }
             });
         };
-    }, []); 
+    }, [sectionRefs]);
 
     return (
         <div className="bg-white">
           <NavBar items={navItems} activeTab={activeTab} onNavItemClick={handleNavItemClick} />
           <main>
-            <div id="home" ref={sectionRefs.current.home}><ComponentOne /></div>
+            <div id="home" ref={sectionRefs.home}><ComponentOne /></div>
             <ComponentTwo />
-            <div id="about" ref={sectionRefs.current.about}><ComponentSix /></div>
+            <div id="about" ref={sectionRefs.about}><ComponentSix /></div>
             <ComponentEight />
             <ComponentTwentyMedicalHealth />
-            <div id="services" ref={sectionRefs.current.services}><ComponentTen /></div>
+            <div id="services" ref={sectionRefs.services}><ComponentTen /></div>
             <Component30 />
             <FeatureDemoComponent />
-            <div id="contact" ref={sectionRefs.current.contact}><ComponentTestimonialsMarquee /></div>
+            <div id="contact" ref={sectionRefs.contact}><ComponentTestimonialsMarquee /></div>
           </main>
           <FooterWithQRCode />
           
