@@ -259,6 +259,8 @@ const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boo
             onInfoSubmit();
         } catch (err) {
             setError("信息提交失败，请稍后再试。");
+            // FIX: Added console.error to use the 'err' variable and fix the linting error.
+            console.error("Error adding document: ", err);
         } finally {
             setIsLoading(false);
         }
@@ -708,9 +710,6 @@ function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavIte
                 e.preventDefault();
                 onNavItemClick(item.id as SectionId);
               }}
-              // FIX: Changed to flex layout for proper centering of content (icon/text).
-              // Using flex-1 on mobile to distribute space evenly.
-              // Changed breakpoint for icon/text switch to `sm` for better tablet experience.
               className={cn(
                   "relative flex flex-1 cursor-pointer items-center justify-center rounded-full px-3 py-2 text-sm font-semibold transition-colors sm:flex-none",
                   "text-black/60 hover:text-black",
@@ -726,7 +725,6 @@ function NavBar({ items, activeTab, onNavItemClick, className }: { items: NavIte
                   initial={false}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  {/* This "lamp" effect is now correctly centered because its parent `a` tag centers its content. */}
                   <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-black rounded-t-full">
                     <div className="absolute w-12 h-6 bg-black/20 rounded-full blur-md -top-2 -left-2" />
                     <div className="absolute w-8 h-6 bg-black/20 rounded-full blur-md -top-1" />
@@ -1006,7 +1004,6 @@ function ComponentEight() {
                     </h2>
                 </div>
                 <div className="grid lg:grid-cols-2 lg:gap-16 gap-8 items-center">
-                    {/* FIX: Changed order for mobile to show image first */}
                     <div className="relative order-1 lg:order-2 max-w-lg mx-auto h-full">
                         <motion.div key={currentFeature} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="relative w-full aspect-video">
                             <img
@@ -1018,7 +1015,6 @@ function ComponentEight() {
                             />
                         </motion.div>
                     </div>
-                    {/* FIX: Changed from horizontal row to vertical column on mobile for better readability and accessibility. */}
                     <div ref={containerRef} className="flex flex-col gap-6 lg:gap-8 order-2 lg:order-1">
                         {sampleFeatures.map((feature, index) => {
                             const Icon = feature.icon;
