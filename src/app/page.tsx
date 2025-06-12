@@ -1174,7 +1174,7 @@ const GlowingEffect = memo(
     return (
       <>
         <div className={cn("pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity", glow && "opacity-100", variant === "white" && "border-white", disabled && "!block")}/>
-        <div ref={containerRef} style={{ "--blur": `${blur}px`, "--spread": spread, "--start": "0", "--active": "0", "--glowingeffect-border-width": `${borderWidth}px`, "--repeating-conic-gradient-times": "5", "--gradient": `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%), radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%), radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%), repeating-conic-gradient(from 236.84deg at 50% 50%, #dd7bbb 0%, #d79f1e calc(25% / var(--repeating-conic-gradient-times)), #5a922c calc(50% / var(--repeating-conic-gradient-times)), #4c7894 calc(75% / var(--repeating-conic-gradient-times)), #dd7bbb calc(100% / var(--repeating-conic-gradient-times)))`} as React.CSSProperties} className={cn("pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity", glow && "opacity-100", blur > 0 && "blur-[var(--blur)] ", className, disabled && "!hidden")}>
+        <div ref={containerRef} style={{ "--blur": `${blur}px`, "--spread": spread, "--start": "0", "--active": "0", "--glowingeffect-border-width": `${borderWidth}px`, "--repeating-conic-gradient-times": "5", "--gradient": `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%), radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%), radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%), repeating-conic-gradient(from 236.84deg at 50% 50%, #dd7bbb 0%, #d79f1e calc(25% / var(--repeating-conic-gradient-times)), #5a922c calc(50% / var(--repeating-conic-gradient-times)), #4c7894 calc(75% / var(--repeating-conic-gradient-times)), #dd7bbb calc(100% / var(--repeating-conic-gradient-times)))`} } as React.CSSProperties className={cn("pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity", glow && "opacity-100", blur > 0 && "blur-[var(--blur)] ", className, disabled && "!hidden")}>
           <div className={cn("glow rounded-[inherit]", 'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]', "after:[border:var(--glowingeffect-border-width)_solid_transparent]", "after:[background:var(--gradient)] after:[background-attachment:fixed]", "after:opacity-[var(--active)] after:transition-opacity after:duration-300", "after:[mask-clip:padding-box,border-box]", "after:[mask-composite:intersect]", "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]")}/>
         </div>
       </>
@@ -1411,8 +1411,8 @@ function ComponentTestimonialsMarquee() {
                 {testimonialsData.map((testimonial, i) => ( <TestimonialCard key={`marquee-2-${i}`} {...testimonial} /> ))}
             </div>
           </div>
-          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-white/0 to-white sm:block" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-white/0 to-white sm:block" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-white sm:block" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-white sm:block" />
         </div>
       </div>
     </section>
@@ -1601,18 +1601,3 @@ export default function ApexPage() {
         </div>
     );
 }
-```
-
-**Key Changes:**
-
-* **`ApexPage` Component:** Removed the `bg-white` from the main container `div`. This is the crucial first step.
-* **Transparent Component Backgrounds:**
-    * The wrapper `div`s inside `ComponentTwo`, `ComponentSix`, `ComponentEight`, `ComponentTwentyMedicalHealth`, `ComponentTen`, `Component30`, `Feature`, and `ComponentTestimonialsMarquee` have had their `bg-white` class changed to `bg-transparent`.
-* **Glassmorphism Effect for Cards and Footer:**
-    * **`ComponentEight`:** The active feature card now uses `bg-white/50 backdrop-blur-lg` to create a semi-transparent frosted glass look.
-    * **`GridItem` (in `ComponentTen`):** The inner `div` now uses `bg-white/50 backdrop-blur-lg` for the same glass effect.
-    * **`TestimonialCard`:** The card background is now `bg-white/50 backdrop-blur-lg` instead of solid white.
-    * **`FooterWithQRCode`:** The footer now has a `bg-white/50 backdrop-blur-lg` background, making it blend beautifully with the animation underneath.
-* **`StickyScroll` Component:** I've updated the `backgroundColors` array to use `transparent`, ensuring the container for the sticky scroll content doesn't have a solid background.
-
-These changes should give you the exact aesthetic you were looking for. Let me know if you have any other questio
