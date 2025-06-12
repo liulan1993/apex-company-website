@@ -1537,7 +1537,7 @@ export default function ApexPage() {
     useEffect(() => {
         const observerOptions = {
             root: null,
-            rootMargin: '-50% 0px -50% 0px',
+            rootMargin: '-50% 0px -50% 0px', // 在视口中心触发
             threshold: 0,
         };
 
@@ -1569,9 +1569,20 @@ export default function ApexPage() {
 
     return (
         <div className="bg-white">
+          {/* 导航栏使用 fixed 定位和高 z-index，保持在最顶层 */}
           <NavBar items={navItems} activeTab={activeTab} onNavItemClick={handleNavItemClick} />
-          <main>
-            <div id="home" ref={sectionRefs.home} className="min-h-screen"><ComponentOne /></div>
+
+          {/* 将 ComponentOne 放入一个 fixed 定位的容器中，作为背景层。z-0 使其处于较低的堆叠层级。 */}
+          <div className="fixed top-0 left-0 w-full h-screen z-0">
+            <ComponentOne />
+          </div>
+
+          {/* 主要内容区域。使用 relative 定位并设置较高的 z-index，使其覆盖在背景动画之上。 */}
+          <main className="relative z-10">
+            {/* 这是一个占位符，高度为一个屏幕，用于初始视图显示背景动画。它也是 "home" 导航链接的目标。 */}
+            <div id="home" ref={sectionRefs.home} className="h-screen" />
+
+            {/* 其他内容组件。它们自带白色背景，因此在滚动时会自然地覆盖背景动画。 */}
             <ComponentTwo />
             <div id="about" ref={sectionRefs.about} className="scroll-mt-20"><ComponentSix /></div>
             <ComponentEight />
@@ -1580,9 +1591,12 @@ export default function ApexPage() {
             <Component30 />
             <FeatureDemoComponent />
             <div id="contact" ref={sectionRefs.contact} className="scroll-mt-20"><ComponentTestimonialsMarquee /></div>
+            
+            {/* 页脚是滚动内容的一部分 */}
+            <FooterWithQRCode />
           </main>
-          <FooterWithQRCode />
           
+          {/* 悬浮按钮同样使用 fixed 定位和高 z-index，保持在最顶层 */}
           <FloatingButtonWrapper />
         </div>
     );
