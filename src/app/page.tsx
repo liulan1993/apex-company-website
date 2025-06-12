@@ -794,7 +794,7 @@ function ComponentTwo() {
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full text-black bg-transparent">
+    <div className="w-full text-black bg-white">
       <div className="container mx-auto px-4">
         <div className="flex gap-8 py-12 lg:py-20 items-center justify-center flex-col">
           <div className="flex gap-4 flex-col items-center">
@@ -853,7 +853,7 @@ function ComponentSix() {
   ];
 
   return (
-    <div className="w-full py-16 lg:py-24 bg-transparent">
+    <div className="w-full py-16 lg:py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-10">
           <div className="flex gap-4 flex-col items-start">
@@ -978,7 +978,7 @@ function ComponentEight() {
     };
 
     return (
-        <div className="min-h-screen py-16 px-4 bg-transparent">
+        <div className="min-h-screen py-16 px-4 bg-white">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-12 md:mb-16">
                     <span className={`text-${primaryColor}-500 font-semibold text-sm uppercase tracking-wider`}>
@@ -1008,7 +1008,7 @@ function ComponentEight() {
                                 <div key={feature.id} ref={(el) => { if (el) featureRefs.current[index] = el; }} className="relative cursor-pointer" onClick={() => handleFeatureClick(index)}>
                                     <div className={cn(
                                         "flex items-start space-x-4 p-4 rounded-xl transition-all duration-300 w-full",
-                                        isActive ? "bg-white/50 backdrop-blur-lg shadow-lg border border-white/20" : "border border-transparent"
+                                        isActive ? "bg-gray-100 shadow-lg border border-gray-200" : "border border-transparent"
                                     )}>
                                         <div className={cn("p-3 block rounded-full transition-all duration-300", isActive ? `bg-${primaryColor}-500 text-white` : `bg-gray-200 text-${primaryColor}-500`)}>
                                             <Icon size={24} />
@@ -1065,7 +1065,7 @@ function ComponentTwentyMedicalHealth() {
   const handleMouseUp = () => setIsDragging(false);
 
   return (
-    <div className="w-full py-16 lg:py-24 bg-transparent">
+    <div className="w-full py-16 lg:py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-4">
           <div>
@@ -1174,19 +1174,7 @@ const GlowingEffect = memo(
     return (
       <>
         <div className={cn("pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity", glow && "opacity-100", variant === "white" && "border-white", disabled && "!block")}/>
-        <div 
-          ref={containerRef} 
-          style={{ 
-            "--blur": `${blur}px`, 
-            "--spread": spread, 
-            "--start": "0", 
-            "--active": "0", 
-            "--glowingeffect-border-width": `${borderWidth}px`, 
-            "--repeating-conic-gradient-times": "5", 
-            "--gradient": `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%), radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%), radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%), repeating-conic-gradient(from 236.84deg at 50% 50%, #dd7bbb 0%, #d79f1e calc(25% / var(--repeating-conic-gradient-times)), #5a922c calc(50% / var(--repeating-conic-gradient-times)), #4c7894 calc(75% / var(--repeating-conic-gradient-times)), #dd7bbb calc(100% / var(--repeating-conic-gradient-times)))`
-          } as React.CSSProperties} 
-          className={cn("pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity", glow && "opacity-100", blur > 0 && "blur-[var(--blur)] ", className, disabled && "!hidden")}
-        >
+        <div ref={containerRef} style={{ "--blur": `${blur}px`, "--spread": spread, "--start": "0", "--active": "0", "--glowingeffect-border-width": `${borderWidth}px`, "--repeating-conic-gradient-times": "5", "--gradient": `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%), radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%), radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%), repeating-conic-gradient(from 236.84deg at 50% 50%, #dd7bbb 0%, #d79f1e calc(25% / var(--repeating-conic-gradient-times)), #5a922c calc(50% / var(--repeating-conic-gradient-times)), #4c7894 calc(75% / var(--repeating-conic-gradient-times)), #dd7bbb calc(100% / var(--repeating-conic-gradient-times)))`} as React.CSSProperties} className={cn("pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity", glow && "opacity-100", blur > 0 && "blur-[var(--blur)] ", className, disabled && "!hidden")}>
           <div className={cn("glow rounded-[inherit]", 'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]', "after:[border:var(--glowingeffect-border-width)_solid_transparent]", "after:[background:var(--gradient)] after:[background-attachment:fixed]", "after:opacity-[var(--active)] after:transition-opacity after:duration-300", "after:[mask-clip:padding-box,border-box]", "after:[mask-composite:intersect]", "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]")}/>
         </div>
       </>
@@ -1201,7 +1189,7 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
     <li className={cn("min-h-[14rem] list-none", area)}>
       <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-gray-200 p-2 md:rounded-[1.5rem] md:p-3">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={3} />
-        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-white/20 bg-white/50 backdrop-blur-lg p-6 shadow-sm md:p-6">
+        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-gray-200 bg-white p-6 shadow-sm md:p-6">
           <div className="relative flex flex-1 flex-col justify-between gap-3">
             <div className="w-fit rounded-lg border-[0.75px] border-gray-200 bg-gray-50 p-2 text-gray-800">
               {icon}
@@ -1224,7 +1212,7 @@ GridItem.displayName = "GridItem";
 
 function ComponentTen() {
   return (
-    <div className="bg-transparent text-black w-full py-16 lg:py-24 px-4 md:px-8 lg:px-12">
+    <div className="bg-white text-black w-full py-16 lg:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black text-center mb-12">我们的核心优势</h2>
             <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
@@ -1264,7 +1252,7 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
     setActiveCard(closestBreakpointIndex);
   });
 
-  const backgroundColors = ["transparent"];
+  const backgroundColors = ["rgb(255, 255, 255)"];
   const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
 
   useEffect(() => {
@@ -1272,7 +1260,7 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
   }, [activeCard]);
 
   return (
-    <motion.div animate={{ backgroundColor: backgroundColors[activeCard % backgroundColors.length], }} className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" ref={ref}>
+    <motion.div animate={{ backgroundColor: backgroundColors[0], }} className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" ref={ref} style={{ backgroundColor: 'white' }}>
       <div className="div relative flex items-start px-4">
         <div className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar">
           {content.map((item, index) => (
@@ -1305,7 +1293,7 @@ const stickyScrollContent = [
 
 function Component30() {
   return (
-    <div className="p-4 md:p-10" style={{ backgroundColor: 'transparent' }}>
+    <div className="p-4 md:p-10" style={{ backgroundColor: 'white' }}>
       <StickyScroll content={stickyScrollContent} />
     </div>
   );
@@ -1315,7 +1303,7 @@ Component30.displayName = "Component30";
 
 function Feature() {
   return (
-    <div className="w-full py-16 lg:py-24 bg-transparent text-black">
+    <div className="w-full py-16 lg:py-24 bg-white text-black">
       <div className="container mx-auto px-4">
         <div className="flex gap-4 py-12 lg:py-24 flex-col items-start">
           <div><Badge>Platform</Badge></div>
@@ -1379,7 +1367,7 @@ function TestimonialCard({ author, text, href, className }: {author: {name:strin
   const CardComponent = href ? 'a' : 'div';
   return (
     <CardComponent {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})} 
-    className={cn( "flex flex-col rounded-lg border border-white/20", "bg-white/50 backdrop-blur-lg", "p-4 text-start sm:p-6", "hover:bg-gray-50/50", "w-[80vw] max-w-[300px] sm:w-auto sm:max-w-[320px]", "transition-colors duration-300", "flex-shrink-0", className )}>
+    className={cn( "flex flex-col rounded-lg border", "bg-white", "p-4 text-start sm:p-6", "hover:bg-gray-50", "w-[80vw] max-w-[300px] sm:w-auto sm:max-w-[320px]", "transition-colors duration-300", "border-gray-200", "flex-shrink-0", className )}>
       <div className="flex items-center gap-3">
         <TestimonialAvatar>
           <TestimonialAvatarImage src={author.avatar} alt={author.name} width={40} height={40} />
@@ -1403,7 +1391,7 @@ const testimonialsData = [
 
 function ComponentTestimonialsMarquee() {
   return (
-    <section className={cn("bg-transparent text-gray-900", "py-16 lg:py-24")}>
+    <section className={cn("bg-white text-gray-900", "py-16 lg:py-24")}>
       <MarqueeStyles />
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 sm:gap-16">
         <div className="flex flex-col items-center gap-4 px-4 sm:gap-8 text-center">
@@ -1455,7 +1443,7 @@ function FooterWithQRCode() {
   ];
 
   return (
-    <footer className="relative w-full border-t border-white/20 bg-white/50 backdrop-blur-lg text-black">
+    <footer className="relative w-full border-t bg-white text-black">
       <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8 md:py-12">
         <div className="grid gap-8 md:gap-12 md:grid-cols-2 lg:grid-cols-5">
           <div className="relative md:col-span-2 lg:col-span-1">
@@ -1549,7 +1537,7 @@ export default function ApexPage() {
     useEffect(() => {
         const observerOptions = {
             root: null,
-            rootMargin: '-50% 0px -50% 0px', // 在视口中心触发
+            rootMargin: '-50% 0px -50% 0px',
             threshold: 0,
         };
 
@@ -1580,21 +1568,10 @@ export default function ApexPage() {
     }, [sectionRefs]);
 
     return (
-        <div>
-          {/* 导航栏使用 fixed 定位和高 z-index，保持在最顶层 */}
+        <div className="bg-white">
           <NavBar items={navItems} activeTab={activeTab} onNavItemClick={handleNavItemClick} />
-
-          {/* 将 ComponentOne 放入一个 fixed 定位的容器中，作为背景层。z-0 使其处于较低的堆叠层级。 */}
-          <div className="fixed top-0 left-0 w-full h-screen z-0">
-            <ComponentOne />
-          </div>
-
-          {/* 主要内容区域。使用 relative 定位并设置较高的 z-index，使其覆盖在背景动画之上。 */}
-          <main className="relative z-10">
-            {/* 这是一个占位符，高度为一个屏幕，用于初始视图显示背景动画。它也是 "home" 导航链接的目标。 */}
-            <div id="home" ref={sectionRefs.home} className="h-screen" />
-
-            {/* 其他内容组件。它们自带白色背景，因此在滚动时会自然地覆盖背景动画。 */}
+          <main>
+            <div id="home" ref={sectionRefs.home} className="min-h-screen"><ComponentOne /></div>
             <ComponentTwo />
             <div id="about" ref={sectionRefs.about} className="scroll-mt-20"><ComponentSix /></div>
             <ComponentEight />
@@ -1603,12 +1580,9 @@ export default function ApexPage() {
             <Component30 />
             <FeatureDemoComponent />
             <div id="contact" ref={sectionRefs.contact} className="scroll-mt-20"><ComponentTestimonialsMarquee /></div>
-            
-            {/* 页脚是滚动内容的一部分 */}
-            <FooterWithQRCode />
           </main>
+          <FooterWithQRCode />
           
-          {/* 悬浮按钮同样使用 fixed 定位和高 z-index，保持在最顶层 */}
           <FloatingButtonWrapper />
         </div>
     );
