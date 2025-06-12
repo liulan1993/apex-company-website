@@ -794,7 +794,7 @@ function ComponentTwo() {
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full text-black bg-white">
+    <div className="w-full text-black bg-transparent">
       <div className="container mx-auto px-4">
         <div className="flex gap-8 py-12 lg:py-20 items-center justify-center flex-col">
           <div className="flex gap-4 flex-col items-center">
@@ -853,7 +853,7 @@ function ComponentSix() {
   ];
 
   return (
-    <div className="w-full py-16 lg:py-24 bg-white">
+    <div className="w-full py-16 lg:py-24 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-10">
           <div className="flex gap-4 flex-col items-start">
@@ -978,7 +978,7 @@ function ComponentEight() {
     };
 
     return (
-        <div className="min-h-screen py-16 px-4 bg-white">
+        <div className="min-h-screen py-16 px-4 bg-transparent">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-12 md:mb-16">
                     <span className={`text-${primaryColor}-500 font-semibold text-sm uppercase tracking-wider`}>
@@ -1008,7 +1008,7 @@ function ComponentEight() {
                                 <div key={feature.id} ref={(el) => { if (el) featureRefs.current[index] = el; }} className="relative cursor-pointer" onClick={() => handleFeatureClick(index)}>
                                     <div className={cn(
                                         "flex items-start space-x-4 p-4 rounded-xl transition-all duration-300 w-full",
-                                        isActive ? "bg-gray-100 shadow-lg border border-gray-200" : "border border-transparent"
+                                        isActive ? "bg-white/50 backdrop-blur-lg shadow-lg border border-white/20" : "border border-transparent"
                                     )}>
                                         <div className={cn("p-3 block rounded-full transition-all duration-300", isActive ? `bg-${primaryColor}-500 text-white` : `bg-gray-200 text-${primaryColor}-500`)}>
                                             <Icon size={24} />
@@ -1065,7 +1065,7 @@ function ComponentTwentyMedicalHealth() {
   const handleMouseUp = () => setIsDragging(false);
 
   return (
-    <div className="w-full py-16 lg:py-24 bg-white">
+    <div className="w-full py-16 lg:py-24 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-4">
           <div>
@@ -1189,7 +1189,7 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
     <li className={cn("min-h-[14rem] list-none", area)}>
       <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-gray-200 p-2 md:rounded-[1.5rem] md:p-3">
         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={3} />
-        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-gray-200 bg-white p-6 shadow-sm md:p-6">
+        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-[0.75px] border-white/20 bg-white/50 backdrop-blur-lg p-6 shadow-sm md:p-6">
           <div className="relative flex flex-1 flex-col justify-between gap-3">
             <div className="w-fit rounded-lg border-[0.75px] border-gray-200 bg-gray-50 p-2 text-gray-800">
               {icon}
@@ -1212,7 +1212,7 @@ GridItem.displayName = "GridItem";
 
 function ComponentTen() {
   return (
-    <div className="bg-white text-black w-full py-16 lg:py-24 px-4 md:px-8 lg:px-12">
+    <div className="bg-transparent text-black w-full py-16 lg:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black text-center mb-12">我们的核心优势</h2>
             <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
@@ -1252,7 +1252,7 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
     setActiveCard(closestBreakpointIndex);
   });
 
-  const backgroundColors = ["rgb(255, 255, 255)"];
+  const backgroundColors = ["transparent"];
   const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
 
   useEffect(() => {
@@ -1260,7 +1260,7 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
   }, [activeCard]);
 
   return (
-    <motion.div animate={{ backgroundColor: backgroundColors[0], }} className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" ref={ref} style={{ backgroundColor: 'white' }}>
+    <motion.div animate={{ backgroundColor: backgroundColors[activeCard % backgroundColors.length], }} className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" ref={ref}>
       <div className="div relative flex items-start px-4">
         <div className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar">
           {content.map((item, index) => (
@@ -1293,7 +1293,7 @@ const stickyScrollContent = [
 
 function Component30() {
   return (
-    <div className="p-4 md:p-10" style={{ backgroundColor: 'white' }}>
+    <div className="p-4 md:p-10" style={{ backgroundColor: 'transparent' }}>
       <StickyScroll content={stickyScrollContent} />
     </div>
   );
@@ -1303,7 +1303,7 @@ Component30.displayName = "Component30";
 
 function Feature() {
   return (
-    <div className="w-full py-16 lg:py-24 bg-white text-black">
+    <div className="w-full py-16 lg:py-24 bg-transparent text-black">
       <div className="container mx-auto px-4">
         <div className="flex gap-4 py-12 lg:py-24 flex-col items-start">
           <div><Badge>Platform</Badge></div>
@@ -1367,7 +1367,7 @@ function TestimonialCard({ author, text, href, className }: {author: {name:strin
   const CardComponent = href ? 'a' : 'div';
   return (
     <CardComponent {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})} 
-    className={cn( "flex flex-col rounded-lg border", "bg-white", "p-4 text-start sm:p-6", "hover:bg-gray-50", "w-[80vw] max-w-[300px] sm:w-auto sm:max-w-[320px]", "transition-colors duration-300", "border-gray-200", "flex-shrink-0", className )}>
+    className={cn( "flex flex-col rounded-lg border border-white/20", "bg-white/50 backdrop-blur-lg", "p-4 text-start sm:p-6", "hover:bg-gray-50/50", "w-[80vw] max-w-[300px] sm:w-auto sm:max-w-[320px]", "transition-colors duration-300", "flex-shrink-0", className )}>
       <div className="flex items-center gap-3">
         <TestimonialAvatar>
           <TestimonialAvatarImage src={author.avatar} alt={author.name} width={40} height={40} />
@@ -1391,7 +1391,7 @@ const testimonialsData = [
 
 function ComponentTestimonialsMarquee() {
   return (
-    <section className={cn("bg-white text-gray-900", "py-16 lg:py-24")}>
+    <section className={cn("bg-transparent text-gray-900", "py-16 lg:py-24")}>
       <MarqueeStyles />
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 sm:gap-16">
         <div className="flex flex-col items-center gap-4 px-4 sm:gap-8 text-center">
@@ -1411,8 +1411,8 @@ function ComponentTestimonialsMarquee() {
                 {testimonialsData.map((testimonial, i) => ( <TestimonialCard key={`marquee-2-${i}`} {...testimonial} /> ))}
             </div>
           </div>
-          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-white sm:block" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-white sm:block" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-white/0 to-white sm:block" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-white/0 to-white sm:block" />
         </div>
       </div>
     </section>
@@ -1443,7 +1443,7 @@ function FooterWithQRCode() {
   ];
 
   return (
-    <footer className="relative w-full border-t bg-white text-black">
+    <footer className="relative w-full border-t border-white/20 bg-white/50 backdrop-blur-lg text-black">
       <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8 md:py-12">
         <div className="grid gap-8 md:gap-12 md:grid-cols-2 lg:grid-cols-5">
           <div className="relative md:col-span-2 lg:col-span-1">
@@ -1568,7 +1568,7 @@ export default function ApexPage() {
     }, [sectionRefs]);
 
     return (
-        <div className="bg-white">
+        <div>
           {/* 导航栏使用 fixed 定位和高 z-index，保持在最顶层 */}
           <NavBar items={navItems} activeTab={activeTab} onNavItemClick={handleNavItemClick} />
 
@@ -1601,3 +1601,18 @@ export default function ApexPage() {
         </div>
     );
 }
+```
+
+**Key Changes:**
+
+* **`ApexPage` Component:** Removed the `bg-white` from the main container `div`. This is the crucial first step.
+* **Transparent Component Backgrounds:**
+    * The wrapper `div`s inside `ComponentTwo`, `ComponentSix`, `ComponentEight`, `ComponentTwentyMedicalHealth`, `ComponentTen`, `Component30`, `Feature`, and `ComponentTestimonialsMarquee` have had their `bg-white` class changed to `bg-transparent`.
+* **Glassmorphism Effect for Cards and Footer:**
+    * **`ComponentEight`:** The active feature card now uses `bg-white/50 backdrop-blur-lg` to create a semi-transparent frosted glass look.
+    * **`GridItem` (in `ComponentTen`):** The inner `div` now uses `bg-white/50 backdrop-blur-lg` for the same glass effect.
+    * **`TestimonialCard`:** The card background is now `bg-white/50 backdrop-blur-lg` instead of solid white.
+    * **`FooterWithQRCode`:** The footer now has a `bg-white/50 backdrop-blur-lg` background, making it blend beautifully with the animation underneath.
+* **`StickyScroll` Component:** I've updated the `backgroundColors` array to use `transparent`, ensuring the container for the sticky scroll content doesn't have a solid background.
+
+These changes should give you the exact aesthetic you were looking for. Let me know if you have any other questio
