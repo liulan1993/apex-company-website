@@ -50,6 +50,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: '保存客户信息失败', error: errorMessage }, { status: 500 });
   }
 }
-
-*/
-// ===================================================================================
