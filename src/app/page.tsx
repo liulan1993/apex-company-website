@@ -14,8 +14,8 @@ import { twMerge } from "tailwind-merge";
 // 您必须在您的项目中按照以下路径创建一个新文件：
 // src/app/api/save-contact/route.ts
 //
-// 然后，将下面的代码粘贴到那个新创建的文件中。
-// 这段服务器端代码将负责接收前端表单提交的数据并将其写入文件。
+// 然后，将下面的代码 *内容* (从 import 开始，到最后一个 '}' 结束) 粘贴到那个新创建的文件中。
+// *不要* 复制开头的 '/*' 和结尾的 '*/'。
 /*
 
 // 将此代码粘贴到 src/app/api/save-contact/route.ts 文件中
@@ -82,7 +82,6 @@ function cn(...inputs: ClassValue[]) {
 }
 
 // --- 2. 原有页面图标组件 ---
-// (此部分图标组件代码与您提供的完全相同，为了简洁此处省略)
 const HomeIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -1625,10 +1624,43 @@ export default function ApexPage() {
         </div>
     );
 }
-" in the document above.当然，我已经按照您的要求，在 `page-tsx-no-firebase` 这个 Canvas 中为您恢复了信息收集的功能。
-
-为了将信息保存到您指定的文件中，我进行了一些调整。现在的逻辑是，当用户提交表单时，前端页面会向一个专门的后端 API 地址发送数据。这个后端 API 接收到数据后，再执行写入文件的操作。
-
-我已经将修改后的前端代码更新到 Canvas 中了。此外，**我还将后端 API 所需的完整代码以注释的形式放在了文件的最上方**，并附上了详细的说明，指导您如何在您的项目中创建对应的 API 文件 (`src/app/api/save-contact/route.ts`)。
-
-请注意，您需要**手动创建这个 API 文件**并复制代码，这样整个功能才能正常
+ running." from the file. I want to replace the `countryCodes` object with a new object. I would like to get rid of this: 
+ `{ name: "美国 +1", code: "+1", regex: /^[2-9]\d{2}[2-9]\d{2}\d{4}$/, states: ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"] },`
+ And this:
+ `const countryCodes = [`
+ And this: 
+ `{ name: "中国 +86", code: "+86", regex: /^1[3-9]\d{9}$/, states: ["北京", "上海", "天津", "重庆", "河北", "山西", "辽宁", "吉林", "黑龙江", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北", "湖南", "广东", "海南", "四川", "贵州", "云南", "陕西", "甘肃", "青海", "台湾", "内蒙古", "广西", "西藏", "宁夏", "新疆", "香港", "澳门"] },`
+ And this:
+ `];`
+ with the following code:
+ ```
+ const countryCodes = [
+    { name: "中国 +86", code: "+86", regex: /^1[3-9]\d{9}$/, states: ["北京", "上海", "天津", "重庆", "河北", "山西", "辽宁", "吉林", "黑龙江", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北", "湖南", "广东", "海南", "四川", "贵州", "云南", "陕西", "甘肃", "青海", "台湾", "内蒙古", "广西", "西藏", "宁夏", "新疆", "香港", "澳门"] },
+    { name: "美国 +1", code: "+1", regex: /^[2-9]\d{2}[2-9]\d{2}\d{4}$/, states: ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"] },
+    { name: "加拿大 +1", code: "+1", regex: /^[2-9]\d{2}[2-9]\d{2}\d{4}$/, states: ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Northwest Territories", "Nunavut", "Yukon"] },
+    { name: "英国 +44", code: "+44", regex: /^7\d{9}$/, states: ["England", "Scotland", "Wales", "Northern Ireland"] },
+    { name: "澳大利亚 +61", code: "+61", regex: /^4\d{8}$/, states: ["New South Wales", "Victoria", "Queensland", "Western Australia", "South Australia", "Tasmania", "Australian Capital Territory", "Northern Territory"] },
+    { name: "德国 +49", code: "+49", regex: /^1[5-7]\d{8,9}$/, states: ["Baden-Württemberg", "Bavaria", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hesse", "Lower Saxony", "Mecklenburg-Vorpommern", "North Rhine-Westphalia", "Rhineland-Palatinate", "Saarland", "Saxony", "Saxony-Anhalt", "Schleswig-Holstein", "Thuringia"] },
+    { name: "法国 +33", code: "+33", regex: /^[67]\d{8}$/, states: ["Auvergne-Rhône-Alpes", "Bourgogne-Franche-Comté", "Brittany", "Centre-Val de Loire", "Corsica", "Grand Est", "Hauts-de-France", "Île-de-France", "Normandy", "Nouvelle-Aquitaine", "Occitanie", "Pays de la Loire", "Provence-Alpes-Côte d'Azur"] },
+    { name: "意大利 +39", code: "+39", regex: /^3\d{8,9}$/, states: ["Abruzzo", "Aosta Valley", "Apulia", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardy", "Marche", "Molise", "Piedmont", "Sardinia", "Sicily", "Trentino-Alto Adige/Südtirol", "Tuscany", "Umbria", "Veneto"] },
+    { name: "西班牙 +34", code: "+34", regex: /^[67]\d{8}$/, states: ["Andalusia", "Aragon", "Asturias", "Balearic Islands", "Basque Country", "Canary Islands", "Cantabria", "Castile and León", "Castilla-La Mancha", "Catalonia", "Extremadura", "Galicia", "La Rioja", "Community of Madrid", "Region of Murcia", "Navarre", "Valencian Community"] },
+    { name: "乌克兰 +380", code: "+380", regex: /^(39|50|63|66|67|68|9[1-9])\d{7}$/, states: ["Cherkasy Oblast", "Chernihiv Oblast", "Chernivtsi Oblast", "Dnipropetrovsk Oblast", "Donetsk Oblast", "Ivano-Frankivsk Oblast", "Kharkiv Oblast", "Kherson Oblast", "Khmelnytskyi Oblast", "Kyiv Oblast", "Kirovohrad Oblast", "Luhansk Oblast", "Lviv Oblast", "Mykolaiv Oblast", "Odessa Oblast", "Poltava Oblast", "Rivne Oblast", "Sumy Oblast", "Ternopil Oblast", "Vinnytsia Oblast", "Volyn Oblast", "Zakarpattia Oblast", "Zaporizhzhia Oblast", "Zhytomyr Oblast", "Kyiv City"] },
+    { name: "波兰 +48", code: "+48", regex: /^[4-8]\d{8}$/, states: ["Greater Poland", "Kuyavian-Pomeranian", "Lesser Poland", "Łódź", "Lower Silesian", "Lublin", "Lubusz", "Masovian", "Opole", "Podkarpackie", "Podlaskie", "Pomeranian", "Silesian", "Świętokrzyskie", "Warmian-Masurian", "West Pomeranian"] },
+    { name: "荷兰 +31", code: "+31", regex: /^6\d{8}$/, states: ["Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "North Brabant", "North Holland", "Overijssel", "Utrecht", "Zeeland", "South Holland"] },
+    { name: "比利时 +32", code: "+32", regex: /^4\d{8}$/, states: ["Flemish Region (Flanders)", "Walloon Region (Wallonia)", "Brussels-Capital Region"] },
+    { name: "瑞典 +46", code: "+46", regex: /^7[02369]\d{7}$/, states: ["Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping", "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro", "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"] },
+    { name: "瑞士 +41", code: "+41", regex: /^7[6-9]\d{7}$/, states: ["Aargau", "Appenzell Ausserrhoden", "Appenzell Innerrhoden", "Basel-Landschaft", "Basel-Stadt", "Bern", "Fribourg", "Geneva", "Glarus", "Grisons", "Jura", "Lucerne", "Neuchâtel", "Nidwalden", "Obwalden", "Schaffhausen", "Schwyz", "Solothurn", "St. Gallen", "Thurgau", "Ticino", "Uri", "Valais", "Vaud", "Zug", "Zürich"] },
+    { name: "奥地利 +43", code: "+43", regex: /^6\d{8,12}$/, states: ["Burgenland", "Carinthia", "Lower Austria", "Upper Austria", "Salzburg", "Styria", "Tyrol", "Vorarlberg", "Vienna"] },
+    { name: "爱尔兰 +353", code: "+353", regex: /^8[35-9]\d{7}$/, states: ["Leinster", "Munster", "Connacht", "Ulster"] },
+    { name: "葡萄牙 +351", code: "+351", regex: /^9[1-36]\d{7}$/, states: ["Aveiro", "Beja", "Braga", "Bragança", "Castelo Branco", "Coimbra", "Évora", "Faro", "Guarda", "Leiria", "Lisbon", "Portalegre", "Porto", "Santarém", "Setúbal", "Viana do Castelo", "Vila Real", "Viseu", "Azores", "Madeira"] },
+    { name: "俄罗斯 +7", code: "+7", regex: /^9\d{9}$/, states: ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan", "Nizhny Novgorod", "Chelyabinsk", "Samara", "Omsk", "Rostov-on-Don"] },
+    { name: "日本 +81", code: "+81", regex: /^[7-9]0\d{8}$/, states: ["北海道", "青森", "岩手", "宮城", "秋田", "山形", "福島", "茨城", "栃木", "群馬", "埼玉", "千葉", "東京", "神奈川", "新潟", "富山", "石川", "福井", "山梨", "長野", "岐阜", "静岡", "愛知", "三重", "滋賀", "京都", "大阪", "兵庫", "奈良", "和歌山", "鳥取", "島根", "岡山", "広島", "山口", "徳島", "香川", "爱媛", "高知", "福岡", "佐賀", "長崎", "熊本", "大分", "宮崎", "鹿児島", "沖縄"] },
+    { name: "韩国 +82", code: "+82", regex: /^10\d{8}$/, states: ["首尔", "釜山", "大邱", "仁川", "光州", "大田", "蔚山", "世宗", "京畿道", "江原道", "忠清北道", "忠清南道", "全罗北道", "全罗南道", "庆尚北道", "庆尚南道", "济州特别自治道"] },
+    { name: "新加坡 +65", code: "+65", regex: /^[689]\d{7}$/, states: ["Singapore"] },
+    { name: "马来西亚 +60", code: "+60", regex: /^1\d{8,9}$/, states: ["Johor", "Kedah", "Kelantan", "Malacca", "Negeri Sembilan", "Pahang", "Penang", "Perak", "Perlis", "Sabah", "Sarawak", "Selangor", "Terengganu", "Kuala Lumpur", "Labuan", "Putrajaya"] },
+    { name: "泰国 +66", code: "+66", regex: /^[689]\d{8}$/, states: ["Bangkok", "Chiang Mai", "Phuket", "Chon Buri", "Krabi", "Surat Thani"] },
+    { name: "越南 +84", code: "+84", regex: /^[35789]\d{8}$/, states: ["Ho Chi Minh City", "Hanoi", "Da Nang", "Can Tho", "Hai Phong"] },
+    { name: "菲律宾 +63", code: "+63", regex: /^9\d{9}$/, states: ["Metro Manila", "Calabarzon", "Central Luzon", "Central Visayas"] },
+    { name: "印度尼西亚 +62", code: "+62", regex: /^8\d{8,11}$/, states: ["Jakarta", "West Java", "East Java", "Central Java", "Bali"] }
+];
+ 
