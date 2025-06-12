@@ -8,6 +8,74 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+
+// ===================================================================================
+// --- 重要：API 路由代码 ---
+// 您必须在您的项目中按照以下路径创建一个新文件：
+// src/app/api/save-contact/route.ts
+//
+// 然后，将下面的代码粘贴到那个新创建的文件中。
+// 这段服务器端代码将负责接收前端表单提交的数据并将其写入文件。
+/*
+
+// 将此代码粘贴到 src/app/api/save-contact/route.ts 文件中
+import { NextResponse } from 'next/server';
+import fs from 'fs/promises';
+import path from 'path';
+
+export async function POST(request: Request) {
+  // --- 安全与部署提示 ---
+  // 在 Vercel 这样的无服务器 (Serverless) 环境中，文件系统是临时的（ephemeral）且通常是只读的。
+  // 这意味着通过这种方式写入文件，数据会在下次部署或服务器实例重启后丢失，不能作为可靠的数据持久化方案。
+  // 此代码主要用于本地开发环境的演示。
+  // 对于生产环境，强烈建议您将文件写入逻辑替换为更专业的服务，例如：
+  // 1. 将数据保存到数据库 (如 PlanetScale, Neon, Vercel aows KV 等)。
+  // 2. 通过邮件服务 (如 Resend, Nodemailer) 将信息作为邮件发送给自己。
+  // 3. 调用第三方表单服务 (如 Tally, Formspree)。
+
+  try {
+    const body = await request.json();
+    const { name, phone, email, service, country, state } = body;
+
+    // 基本的数据验证
+    if (!name || !phone || !email || !service || !country || !state) {
+      return NextResponse.json({ message: '缺少必填字段' }, { status: 400 });
+    }
+
+    const dataString = `
+-------------------------
+新的客户信息:
+提交时间: ${new Date().toISOString()}
+姓名: ${name}
+电话: ${phone}
+邮箱: ${email}
+咨询服务: ${service}
+国家/地区: ${country}
+省/州: ${state}
+-------------------------\n
+`;
+
+    // 按照您指定的路径构建文件路径（相对于项目根目录）
+    const filePath = path.join(process.cwd(), 'src', 'compenents', 'kehuziliap.txt');
+
+    // 确保 'src/compenents' 目录存在
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+
+    // 将数据追加到文件中
+    await fs.appendFile(filePath, dataString);
+
+    return NextResponse.json({ message: '客户信息保存成功' }, { status: 200 });
+  } catch (error) {
+    console.error('API 路由错误:', error);
+    const errorMessage = error instanceof Error ? error.message : '发生未知错误';
+    return NextResponse.json({ message: '保存客户信息失败', error: errorMessage }, { status: 500 });
+  }
+}
+
+*/
+// ===================================================================================
+
+
 // --- 1. 工具函数 ---
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -143,9 +211,167 @@ const FloatingButtonCodeXml = createFloatingButtonIcon('<path d="m18 16 4-4-4-4"
 const FloatingButtonBookText = createFloatingButtonIcon('<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/>');
 const FloatingButtonAlbumIcon = createFloatingButtonIcon('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8v8l-4-3-4 3V7z"/>');
 const FloatingButtonBookOpenTextIcon = createFloatingButtonIcon('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/><path d="M6 8h2"/><path d="M6 12h2"/><path d="M16 8h2"/><path d="M16 12h2"/>');
+const FloatingButtonXIcon = createFloatingButtonIcon('<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>');
 const FloatingButtonUsers = createFloatingButtonIcon('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>');
 const FloatingButtonMessageSquare = createFloatingButtonIcon('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>');
 const FloatingButtonLinkIcon = createFloatingButtonIcon('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/>');
+
+const services = ["医疗健康", "留学教育", "企业服务", "商务咨询", "视野拓展"];
+const emailProviders = [
+    { name: "Google 邮箱", domain: "@gmail.com" },
+    { name: "Outlook 邮箱", domain: "@outlook.com" },
+    { name: "QQ 邮箱", domain: "@qq.com" },
+    { name: "网易163 邮箱", domain: "@163.com" },
+    { name: "雅虎邮箱", domain: "@yahoo.com" },
+    { name: "其他邮箱", domain: null }
+];
+const countryCodes = [
+    { name: "中国 +86", code: "+86", regex: /^1[3-9]\d{9}$/, states: ["北京", "上海", "天津", "重庆", "河北", "山西", "辽宁", "吉林", "黑龙江", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北", "湖南", "广东", "海南", "四川", "贵州", "云南", "陕西", "甘肃", "青海", "台湾", "内蒙古", "广西", "西藏", "宁夏", "新疆", "香港", "澳门"] },
+    { name: "美国 +1", code: "+1", regex: /^[2-9]\d{2}[2-9]\d{2}\d{4}$/, states: ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"] },
+];
+
+
+const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit }: { isOpen: boolean; onClose: () => void; onInfoSubmit: () => void; }) => {
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [selectedService, setSelectedService] = useState('');
+    const [selectedEmailProvider, setSelectedEmailProvider] = useState('');
+    const [selectedCountryName, setSelectedCountryName] = useState('中国 +86'); // 默认选中中国
+    const [selectedState, setSelectedState] = useState('');
+    const [statesForCountry, setStatesForCountry] = useState<string[]>([]);
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const countryData = countryCodes.find(c => c.name === selectedCountryName);
+        setStatesForCountry(countryData ? countryData.states : []);
+        setSelectedState('');
+    }, [selectedCountryName]);
+    
+
+    const handleCountryChange = (countryName: string) => {
+        setSelectedCountryName(countryName);
+    };
+
+    const validateForm = () => {
+        if (!name || !phone || !email || !selectedService || !selectedEmailProvider || !selectedCountryName || !selectedState) {
+            setError("请填写所有字段。");
+            return false;
+        }
+        
+        const provider = emailProviders.find(p => p.name === selectedEmailProvider);
+        if (provider && provider.domain && !email.toLowerCase().endsWith(provider.domain)) {
+             if (provider.name !== '其他邮箱') {
+                setError(`邮箱地址必须是 ${provider.name}。`);
+                return false;
+            }
+        }
+
+        const country = countryCodes.find(c => c.name === selectedCountryName);
+        if (country && !country.regex.test(phone)) {
+            setError(`请输入有效的 ${country.name.split(' ')[0]} 手机号码。`);
+            return false;
+        }
+        
+        setError('');
+        return true;
+    };
+
+    const handleSubmit = async () => {
+        if (!validateForm()) return;
+        
+        setIsLoading(true);
+        const country = countryCodes.find(c => c.name === selectedCountryName);
+        if (!country) {
+            setError("无效的国家选择。");
+            setIsLoading(false);
+            return;
+        }
+
+        const contactData = {
+            name,
+            phone: `${country.code} ${phone}`,
+            email,
+            service: selectedService,
+            country: country.name.split(' ')[0],
+            state: selectedState,
+        };
+        
+        try {
+            const response = await fetch('/api/save-contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(contactData),
+            });
+
+            if (!response.ok) {
+                const errorResult = await response.json();
+                throw new Error(errorResult.message || '网络请求失败');
+            }
+
+            localStorage.setItem('hasSubmittedInfo', 'true');
+            onInfoSubmit();
+
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "信息提交失败，请稍后再试。";
+            setError(errorMessage);
+            console.error("提交错误: ", err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
+            <div className="relative bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-lg">
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-800">
+                    <FloatingButtonXIcon className="h-6 w-6" />
+                </button>
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">请留下您的联系方式</h2>
+                <p className="text-center text-gray-500 mb-6">提交后即可访问内容。</p>
+                
+                {error && <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm text-center">{error}</p>}
+                
+                <div className="space-y-4">
+                    <input type="text" placeholder="姓名" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
+                    <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
+                        <option value="" disabled>请选择服务领域</option>
+                        {services.map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
+
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <select value={selectedEmailProvider} onChange={(e) => setSelectedEmailProvider(e.target.value)} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
+                            <option value="" disabled>请选择邮箱服务商</option>
+                            {emailProviders.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
+                        </select>
+                        <input type="email" placeholder="邮箱地址" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                         <select value={selectedCountryName} onChange={(e) => handleCountryChange(e.target.value)} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
+                            <option value="" disabled>请选择国家/地区</option>
+                            {countryCodes.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
+                        </select>
+                         <select value={selectedState} onChange={(e) => setSelectedState(e.target.value)} disabled={!selectedCountryName} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-100 text-black">
+                            <option value="" disabled>请选择省/州</option>
+                            {statesForCountry.map(state => <option key={state} value={state}>{state}</option>)}
+                        </select>
+                    </div>
+
+                    <input type="tel" placeholder="手机号" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
+                </div>
+                <div className="mt-6">
+                    <button onClick={handleSubmit} disabled={isLoading} className="w-full bg-black text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-500">
+                         {isLoading ? '提交中...' : '提交并访问'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+InfoCollectorModal.displayName = "InfoCollectorModal";
 
 
 interface LinkDataItem {
@@ -267,7 +493,16 @@ DynamicActionBar.displayName = "DynamicActionBar";
 
 
 const FloatingButtonWrapper = () => {
-    // 1. 定义静态数据，替换 Firebase 数据获取
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [targetLink, setTargetLink] = useState('');
+    const [hasSubmitted, setHasSubmitted] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined' && localStorage.getItem('hasSubmittedInfo') === 'true') {
+            setHasSubmitted(true);
+        }
+    }, []);
+
     const staticLinkData: { [key: string]: LinkDataItem[] } = useMemo(() => ({
         apps: [
             { name: "企业官网模板", href: "https://www.example.com/corporate", description: "适用于各类企业的响应式官网模板", tag: "模板", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
@@ -286,23 +521,41 @@ const FloatingButtonWrapper = () => {
         ]
     }), []);
 
-    // 2. 简化点击处理，直接打开链接
     const handleItemClick = useCallback((href: string) => {
-        window.open(href, '_blank', 'noopener,noreferrer');
-    }, []);
+        if (hasSubmitted) {
+            window.open(href, '_blank', 'noopener,noreferrer');
+        } else {
+            setTargetLink(href);
+            setModalOpen(true);
+        }
+    }, [hasSubmitted]);
     
-    // 3. 使用静态数据构建 actions
+    const handleInfoSubmit = useCallback(() => {
+        setModalOpen(false);
+        setHasSubmitted(true);
+        if (targetLink) {
+            window.open(targetLink, '_blank', 'noopener,noreferrer');
+            setTargetLink('');
+        }
+    }, [targetLink]);
+    
     const actions: FloatingActionButtonItem[] = useMemo(() => [
         { id: "apps", label: "企业服务", icon: FloatingButtonAlbumIcon, content: <PopupContent items={staticLinkData.apps} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
         { id: "components", label: "留学教育", icon: FloatingButtonCodeXml, content: <PopupContent items={staticLinkData.components} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
         { id: "notes", label: "医疗健康", icon: FloatingButtonBookText, content: <PopupContent items={staticLinkData.notes} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
     ], [staticLinkData, handleItemClick]);
 
-    // 4. 移除 InfoCollectorModal 及相关逻辑，直接渲染组件
     return (
-        <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 w-[calc(100%-2rem)] sm:w-auto">
-            <DynamicActionBar actions={actions} />
-        </div>
+        <>
+            <InfoCollectorModal 
+                isOpen={isModalOpen} 
+                onClose={() => setModalOpen(false)} 
+                onInfoSubmit={handleInfoSubmit}
+            />
+            <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 w-[calc(100%-2rem)] sm:w-auto">
+                <DynamicActionBar actions={actions} />
+            </div>
+        </>
     );
 };
 FloatingButtonWrapper.displayName = "FloatingButtonWrapper";
@@ -1372,3 +1625,10 @@ export default function ApexPage() {
         </div>
     );
 }
+" in the document above.当然，我已经按照您的要求，在 `page-tsx-no-firebase` 这个 Canvas 中为您恢复了信息收集的功能。
+
+为了将信息保存到您指定的文件中，我进行了一些调整。现在的逻辑是，当用户提交表单时，前端页面会向一个专门的后端 API 地址发送数据。这个后端 API 接收到数据后，再执行写入文件的操作。
+
+我已经将修改后的前端代码更新到 Canvas 中了。此外，**我还将后端 API 所需的完整代码以注释的形式放在了文件的最上方**，并附上了详细的说明，指导您如何在您的项目中创建对应的 API 文件 (`src/app/api/save-contact/route.ts`)。
+
+请注意，您需要**手动创建这个 API 文件**并复制代码，这样整个功能才能正常
