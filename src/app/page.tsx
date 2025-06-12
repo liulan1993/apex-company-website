@@ -465,6 +465,11 @@ const FloatingButtonWrapper = () => {
             { name: "企业官网模板", href: "https://www.example.com/corporate", description: "适用于各类企业的响应式官网模板", tag: "模板", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
             { name: "电商后台管理", href: "https://www.example.com/ecommerce", description: "功能完善的电商后台管理系统", tag: "系统", icon: "FloatingButtonUsers", bg: "bg-green-100", fg: "text-green-600" },
             { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+            { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+            { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+            { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+            { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+            { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
         ],
         components: [
             { name: "国际学校对比", href: "https://www.example.com/schools", description: "新加坡顶级国际学校全方位解析", tag: "对比", icon: "FloatingButtonBookOpenTextIcon", bg: "bg-purple-100", fg: "text-purple-600" },
