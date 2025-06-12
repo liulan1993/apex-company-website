@@ -1476,8 +1476,8 @@ function FooterWithQRCode() {
             <address className="space-y-2 text-base sm:text-xl font-medium not-italic text-gray-600">
                 <p>国内地址：上海市成都市北路333号招商局大厦4楼</p>
                 <p>国际地址：5th Floor, 10 Anson Road, Singapore 077903</p>
-                <p>国内电话: +86 13585520810</p>
-                <p>国际电话: +65 97780123</p>
+                <p>国内电话: +86 16666666</p>
+                <p>国际电话: +65 16666666</p>
                 <p>通用邮箱: apex.sara.yue@gmail.com</p>
             </address>
           </div>
