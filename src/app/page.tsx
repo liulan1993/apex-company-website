@@ -7,9 +7,6 @@ import { motion, animate, useMotionValueEvent, useScroll, AnimatePresence } from
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { initializeApp } from "firebase/app";
-import { getFirestore, addDoc, collection, getDocs, Firestore } from "firebase/firestore";
-
 
 // --- 1. 工具函数 ---
 function cn(...inputs: ClassValue[]) {
@@ -146,176 +143,9 @@ const FloatingButtonCodeXml = createFloatingButtonIcon('<path d="m18 16 4-4-4-4"
 const FloatingButtonBookText = createFloatingButtonIcon('<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/>');
 const FloatingButtonAlbumIcon = createFloatingButtonIcon('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8v8l-4-3-4 3V7z"/>');
 const FloatingButtonBookOpenTextIcon = createFloatingButtonIcon('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/><path d="M6 8h2"/><path d="M6 12h2"/><path d="M16 8h2"/><path d="M16 12h2"/>');
-const FloatingButtonXIcon = createFloatingButtonIcon('<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>');
 const FloatingButtonUsers = createFloatingButtonIcon('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>');
 const FloatingButtonMessageSquare = createFloatingButtonIcon('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>');
 const FloatingButtonLinkIcon = createFloatingButtonIcon('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/>');
-
-const services = ["医疗健康", "留学教育", "企业服务", "商务咨询", "视野拓展"];
-const emailProviders = [
-    { name: "Google 邮箱", domain: "@gmail.com" },
-    { name: "Outlook 邮箱", domain: "@outlook.com" },
-    { name: "QQ 邮箱", domain: "@qq.com" },
-    { name: "网易163 邮箱", domain: "@163.com" },
-    { name: "雅虎邮箱", domain: "@yahoo.com" },
-    { name: "其他邮箱", domain: null }
-];
-const countryCodes = [
-    { name: "中国 +86", code: "+86", regex: /^1[3-9]\d{9}$/, states: ["北京", "上海", "天津", "重庆", "河北", "山西", "辽宁", "吉林", "黑龙江", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北", "湖南", "广东", "海南", "四川", "贵州", "云南", "陕西", "甘肃", "青海", "台湾", "内蒙古", "广西", "西藏", "宁夏", "新疆", "香港", "澳门"] },
-    { name: "美国 +1", code: "+1", regex: /^[2-9]\d{2}[2-9]\d{2}\d{4}$/, states: ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"] },
-    { name: "加拿大 +1", code: "+1", regex: /^[2-9]\d{2}[2-9]\d{2}\d{4}$/, states: ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Northwest Territories", "Nunavut", "Yukon"] },
-    { name: "英国 +44", code: "+44", regex: /^7\d{9}$/, states: ["England", "Scotland", "Wales", "Northern Ireland"] },
-    { name: "澳大利亚 +61", code: "+61", regex: /^4\d{8}$/, states: ["New South Wales", "Victoria", "Queensland", "Western Australia", "South Australia", "Tasmania", "Australian Capital Territory", "Northern Territory"] },
-    { name: "德国 +49", code: "+49", regex: /^1[5-7]\d{8,9}$/, states: ["Baden-Württemberg", "Bavaria", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hesse", "Lower Saxony", "Mecklenburg-Vorpommern", "North Rhine-Westphalia", "Rhineland-Palatinate", "Saarland", "Saxony", "Saxony-Anhalt", "Schleswig-Holstein", "Thuringia"] },
-    { name: "法国 +33", code: "+33", regex: /^[67]\d{8}$/, states: ["Auvergne-Rhône-Alpes", "Bourgogne-Franche-Comté", "Brittany", "Centre-Val de Loire", "Corsica", "Grand Est", "Hauts-de-France", "Île-de-France", "Normandy", "Nouvelle-Aquitaine", "Occitanie", "Pays de la Loire", "Provence-Alpes-Côte d'Azur"] },
-    { name: "意大利 +39", code: "+39", regex: /^3\d{8,9}$/, states: ["Abruzzo", "Aosta Valley", "Apulia", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardy", "Marche", "Molise", "Piedmont", "Sardinia", "Sicily", "Trentino-Alto Adige/Südtirol", "Tuscany", "Umbria", "Veneto"] },
-    { name: "西班牙 +34", code: "+34", regex: /^[67]\d{8}$/, states: ["Andalusia", "Aragon", "Asturias", "Balearic Islands", "Basque Country", "Canary Islands", "Cantabria", "Castile and León", "Castilla-La Mancha", "Catalonia", "Extremadura", "Galicia", "La Rioja", "Community of Madrid", "Region of Murcia", "Navarre", "Valencian Community"] },
-    { name: "乌克兰 +380", code: "+380", regex: /^(39|50|63|66|67|68|9[1-9])\d{7}$/, states: ["Cherkasy Oblast", "Chernihiv Oblast", "Chernivtsi Oblast", "Dnipropetrovsk Oblast", "Donetsk Oblast", "Ivano-Frankivsk Oblast", "Kharkiv Oblast", "Kherson Oblast", "Khmelnytskyi Oblast", "Kyiv Oblast", "Kirovohrad Oblast", "Luhansk Oblast", "Lviv Oblast", "Mykolaiv Oblast", "Odessa Oblast", "Poltava Oblast", "Rivne Oblast", "Sumy Oblast", "Ternopil Oblast", "Vinnytsia Oblast", "Volyn Oblast", "Zakarpattia Oblast", "Zaporizhzhia Oblast", "Zhytomyr Oblast", "Kyiv City"] },
-    { name: "波兰 +48", code: "+48", regex: /^[4-8]\d{8}$/, states: ["Greater Poland", "Kuyavian-Pomeranian", "Lesser Poland", "Łódź", "Lower Silesian", "Lublin", "Lubusz", "Masovian", "Opole", "Podkarpackie", "Podlaskie", "Pomeranian", "Silesian", "Świętokrzyskie", "Warmian-Masurian", "West Pomeranian"] },
-    { name: "荷兰 +31", code: "+31", regex: /^6\d{8}$/, states: ["Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "North Brabant", "North Holland", "Overijssel", "Utrecht", "Zeeland", "South Holland"] },
-    { name: "比利时 +32", code: "+32", regex: /^4\d{8}$/, states: ["Flemish Region (Flanders)", "Walloon Region (Wallonia)", "Brussels-Capital Region"] },
-    { name: "瑞典 +46", code: "+46", regex: /^7[02369]\d{7}$/, states: ["Stockholm", "Uppsala", "Södermanland", "Östergötland", "Jönköping", "Kronoberg", "Kalmar", "Gotland", "Blekinge", "Skåne", "Halland", "Västra Götaland", "Värmland", "Örebro", "Västmanland", "Dalarna", "Gävleborg", "Västernorrland", "Jämtland", "Västerbotten", "Norrbotten"] },
-    { name: "瑞士 +41", code: "+41", regex: /^7[6-9]\d{7}$/, states: ["Aargau", "Appenzell Ausserrhoden", "Appenzell Innerrhoden", "Basel-Landschaft", "Basel-Stadt", "Bern", "Fribourg", "Geneva", "Glarus", "Grisons", "Jura", "Lucerne", "Neuchâtel", "Nidwalden", "Obwalden", "Schaffhausen", "Schwyz", "Solothurn", "St. Gallen", "Thurgau", "Ticino", "Uri", "Valais", "Vaud", "Zug", "Zürich"] },
-    { name: "奥地利 +43", code: "+43", regex: /^6\d{8,12}$/, states: ["Burgenland", "Carinthia", "Lower Austria", "Upper Austria", "Salzburg", "Styria", "Tyrol", "Vorarlberg", "Vienna"] },
-    { name: "爱尔兰 +353", code: "+353", regex: /^8[35-9]\d{7}$/, states: ["Leinster", "Munster", "Connacht", "Ulster"] },
-    { name: "葡萄牙 +351", code: "+351", regex: /^9[1-36]\d{7}$/, states: ["Aveiro", "Beja", "Braga", "Bragança", "Castelo Branco", "Coimbra", "Évora", "Faro", "Guarda", "Leiria", "Lisbon", "Portalegre", "Porto", "Santarém", "Setúbal", "Viana do Castelo", "Vila Real", "Viseu", "Azores", "Madeira"] },
-    { name: "俄罗斯 +7", code: "+7", regex: /^9\d{9}$/, states: ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan", "Nizhny Novgorod", "Chelyabinsk", "Samara", "Omsk", "Rostov-on-Don"] },
-    { name: "日本 +81", code: "+81", regex: /^[7-9]0\d{8}$/, states: ["北海道", "青森", "岩手", "宮城", "秋田", "山形", "福島", "茨城", "栃木", "群馬", "埼玉", "千葉", "東京", "神奈川", "新潟", "富山", "石川", "福井", "山梨", "長野", "岐阜", "静岡", "愛知", "三重", "滋賀", "京都", "大阪", "兵庫", "奈良", "和歌山", "鳥取", "島根", "岡山", "広島", "山口", "徳島", "香川", "爱媛", "高知", "福岡", "佐賀", "長崎", "熊本", "大分", "宮崎", "鹿児島", "沖縄"] },
-    { name: "韩国 +82", code: "+82", regex: /^10\d{8}$/, states: ["首尔", "釜山", "大邱", "仁川", "光州", "大田", "蔚山", "世宗", "京畿道", "江原道", "忠清北道", "忠清南道", "全罗北道", "全罗南道", "庆尚北道", "庆尚南道", "济州特别自治道"] },
-    { name: "新加坡 +65", code: "+65", regex: /^[689]\d{7}$/, states: ["Singapore"] },
-    { name: "马来西亚 +60", code: "+60", regex: /^1\d{8,9}$/, states: ["Johor", "Kedah", "Kelantan", "Malacca", "Negeri Sembilan", "Pahang", "Penang", "Perak", "Perlis", "Sabah", "Sarawak", "Selangor", "Terengganu", "Kuala Lumpur", "Labuan", "Putrajaya"] },
-    { name: "泰国 +66", code: "+66", regex: /^[689]\d{8}$/, states: ["Bangkok", "Chiang Mai", "Phuket", "Chon Buri", "Krabi", "Surat Thani"] },
-    { name: "越南 +84", code: "+84", regex: /^[35789]\d{8}$/, states: ["Ho Chi Minh City", "Hanoi", "Da Nang", "Can Tho", "Hai Phong"] },
-    { name: "菲律宾 +63", code: "+63", regex: /^9\d{9}$/, states: ["Metro Manila", "Calabarzon", "Central Luzon", "Central Visayas"] },
-    { name: "印度尼西亚 +62", code: "+62", regex: /^8\d{8,11}$/, states: ["Jakarta", "West Java", "East Java", "Central Java", "Bali"] }
-];
-
-
-const InfoCollectorModal = ({ isOpen, onClose, onInfoSubmit, db }: { isOpen: boolean; onClose: () => void; onInfoSubmit: () => void; db: Firestore | null }) => {
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const [selectedService, setSelectedService] = useState('');
-    const [selectedEmailProvider, setSelectedEmailProvider] = useState('');
-    const [selectedCountryName, setSelectedCountryName] = useState('');
-    const [selectedState, setSelectedState] = useState('');
-    const [statesForCountry, setStatesForCountry] = useState<string[]>([]);
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    
-    if (!db) return null;
-
-    const handleCountryChange = (countryName: string) => {
-        setSelectedCountryName(countryName);
-        const countryData = countryCodes.find(c => c.name === countryName);
-        setStatesForCountry(countryData ? countryData.states : []);
-        setSelectedState('');
-    };
-
-    const validateForm = () => {
-        if (!name || !phone || !email || !selectedService || !selectedEmailProvider || !selectedCountryName || !selectedState) {
-            setError("请填写所有字段。");
-            return false;
-        }
-        
-        const provider = emailProviders.find(p => p.name === selectedEmailProvider);
-        if (provider && provider.domain && !email.toLowerCase().endsWith(provider.domain)) {
-            setError(`邮箱地址必须是 ${provider.name}。`);
-            return false;
-        }
-
-        const country = countryCodes.find(c => c.name === selectedCountryName);
-        if (country && !country.regex.test(phone)) {
-            setError(`请输入有效的 ${country.name.split(' ')[0]} 手机号码。`);
-            return false;
-        }
-        
-        setError('');
-        return true;
-    };
-
-    const handleSubmit = async () => {
-        if (!validateForm()) return;
-        
-        setIsLoading(true);
-        const country = countryCodes.find(c => c.name === selectedCountryName);
-        if (!country) {
-            setError("无效的国家选择。");
-            setIsLoading(false);
-            return;
-        }
-        
-        try {
-            await addDoc(collection(db, "contacts"), {
-                name,
-                phone: `${country.code} ${phone}`,
-                email,
-                service: selectedService,
-                country: country.name.split(' ')[0],
-                state: selectedState,
-                submittedAt: new Date()
-            });
-            localStorage.setItem('hasSubmittedInfo', 'true');
-            onInfoSubmit();
-        } catch (err) {
-            setError("信息提交失败，请稍后再试。");
-            // FIX: Added console.error to use the 'err' variable and fix the linting error.
-            console.error("Error adding document: ", err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-    
-    if (!isOpen) return null;
-
-    return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
-            <div className="relative bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-lg">
-                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-800">
-                    <FloatingButtonXIcon className="h-6 w-6" />
-                </button>
-                <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">请留下您的联系方式</h2>
-                <p className="text-center text-gray-500 mb-6">提交后即可访问内容。</p>
-                
-                {error && <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm text-center">{error}</p>}
-                
-                <div className="space-y-4">
-                    <input type="text" placeholder="姓名" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
-                    <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
-                        <option value="" disabled>请选择服务领域</option>
-                        {services.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
-
-                    <div className="flex flex-col sm:flex-row gap-2">
-                        <select value={selectedEmailProvider} onChange={(e) => setSelectedEmailProvider(e.target.value)} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
-                            <option value="" disabled>请选择邮箱服务商</option>
-                            {emailProviders.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
-                        </select>
-                        <input type="email" placeholder="邮箱地址" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                         <select value={selectedCountryName} onChange={(e) => handleCountryChange(e.target.value)} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black">
-                            <option value="" disabled>请选择国家/地区</option>
-                            {countryCodes.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
-                        </select>
-                         <select value={selectedState} onChange={(e) => setSelectedState(e.target.value)} disabled={!selectedCountryName} className="w-full sm:w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-100 text-black">
-                            <option value="" disabled>请选择省/州</option>
-                            {statesForCountry.map(state => <option key={state} value={state}>{state}</option>)}
-                        </select>
-                    </div>
-
-                    <input type="tel" placeholder="手机号" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"/>
-                </div>
-                <div className="mt-6">
-                    <button onClick={handleSubmit} disabled={isLoading} className="w-full bg-black text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-500">
-                         {isLoading ? '提交中...' : '提交并访问'}
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
-InfoCollectorModal.displayName = "InfoCollectorModal";
 
 
 interface LinkDataItem {
@@ -335,7 +165,8 @@ const PopupContent = ({ items, onItemClick }: { items: LinkDataItem[]; onItemCli
         FloatingButtonMessageSquare,
         FloatingButtonLinkIcon,
         FloatingButtonCodeXml,
-        FloatingButtonBookText
+        FloatingButtonBookText,
+        FloatingButtonAlbumIcon,
     };
 
     return (
@@ -436,103 +267,42 @@ DynamicActionBar.displayName = "DynamicActionBar";
 
 
 const FloatingButtonWrapper = () => {
-    const [db, setDb] = useState<Firestore | null>(null);
-    const [linkData, setLinkData] = useState<{ [key: string]: LinkDataItem[] }>({ apps: [], components: [], notes: [] });
-    const [isLoading, setIsLoading] = useState(true);
-    const [isModalOpen, setModalOpen] = useState(false);
-    const [targetLink, setTargetLink] = useState('');
-    const [hasSubmitted, setHasSubmitted] = useState(false);
+    // 1. 定义静态数据，替换 Firebase 数据获取
+    const staticLinkData: { [key: string]: LinkDataItem[] } = useMemo(() => ({
+        apps: [
+            { name: "企业官网模板", href: "https://www.example.com/corporate", description: "适用于各类企业的响应式官网模板", tag: "模板", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
+            { name: "电商后台管理", href: "https://www.example.com/ecommerce", description: "功能完善的电商后台管理系统", tag: "系统", icon: "FloatingButtonUsers", bg: "bg-green-100", fg: "text-green-600" },
+            { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+        ],
+        components: [
+            { name: "国际学校对比", href: "https://www.example.com/schools", description: "新加坡顶级国际学校全方位解析", tag: "对比", icon: "FloatingButtonBookOpenTextIcon", bg: "bg-purple-100", fg: "text-purple-600" },
+            { name: "AEIS备考策略", href: "https://www.example.com/aeis", description: "助力学生顺利通过政府学校入学考试", tag: "备考", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
+            { name: "大学申请规划", href: "https://www.example.com/uni-app", description: "从背景提升到文书写作的全程指导", tag: "规划", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
+        ],
+        notes: [
+            { name: "高端体检套餐", href: "https://www.example.com/health-check", description: "深度定制体检，早期发现健康风险", tag: "体检", icon: "FloatingButtonBookText", bg: "bg-red-100", fg: "text-red-600" },
+            { name: "就医绿色通道", href: "https://www.example.com/medical-vip", description: "快速预约顶尖专科医生，全程陪同", tag: "预约", icon: "FloatingButtonUsers", bg: "bg-indigo-100", fg: "text-indigo-600" },
+            { name: "家庭健康管理", href: "https://www.example.com/family-health", description: "为您全家建立健康档案与管理计划", tag: "管理", icon: "FloatingButtonMessageSquare", bg: "bg-pink-100", fg: "text-pink-600" },
+        ]
+    }), []);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined' && localStorage.getItem('hasSubmittedInfo') === 'true') {
-            setHasSubmitted(true);
-        }
-
-        const initFirebase = async () => {
-            const firebaseConfig = {
-              apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-              authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-              projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-              storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-              messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-              appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
-            };
-
-            if (firebaseConfig.apiKey) {
-                try {
-                    const app = initializeApp(firebaseConfig);
-                    const firestoreDb = getFirestore(app);
-                    setDb(firestoreDb);
-
-                    const querySnapshot = await getDocs(collection(firestoreDb, "link_categories"));
-                    const fetchedData: { [key: string]: LinkDataItem[] } = { apps: [], components: [], notes: [] };
-                    querySnapshot.forEach((doc) => {
-                        const docData = doc.data();
-                        let allLinks: LinkDataItem[] = [];
-                        for (const key in docData) {
-                            if (Array.isArray(docData[key])) {
-                                allLinks = allLinks.concat(docData[key]);
-                            }
-                        }
-                        fetchedData[doc.id] = allLinks;
-                    });
-                    setLinkData(fetchedData);
-                    
-                } catch (e) {
-                    console.error("Firebase initialization or data fetching error:", e);
-                } finally {
-                    setIsLoading(false);
-                }
-            } else {
-                setIsLoading(false);
-            }
-        };
-        
-        initFirebase();
-    }, []);
-
+    // 2. 简化点击处理，直接打开链接
     const handleItemClick = useCallback((href: string) => {
-        if (hasSubmitted) {
-            window.open(href, '_blank', 'noopener,noreferrer');
-        } else {
-            setTargetLink(href);
-            setModalOpen(true);
-        }
-    }, [hasSubmitted]);
+        window.open(href, '_blank', 'noopener,noreferrer');
+    }, []);
     
-    const handleInfoSubmit = useCallback(() => {
-        setModalOpen(false);
-        setHasSubmitted(true);
-        if (targetLink) {
-            window.open(targetLink, '_blank', 'noopener,noreferrer');
-            setTargetLink('');
-        }
-    }, [targetLink]);
-    
+    // 3. 使用静态数据构建 actions
     const actions: FloatingActionButtonItem[] = useMemo(() => [
-        { id: "apps", label: "企业服务", icon: FloatingButtonAlbumIcon, content: <PopupContent items={linkData.apps || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
-        { id: "components", label: "留学教育", icon: FloatingButtonCodeXml, content: <PopupContent items={linkData.components || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
-        { id: "notes", label: "医疗健康", icon: FloatingButtonBookText, content: <PopupContent items={linkData.notes || []} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 350 } },
-    ], [linkData, handleItemClick]);
+        { id: "apps", label: "企业服务", icon: FloatingButtonAlbumIcon, content: <PopupContent items={staticLinkData.apps} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
+        { id: "components", label: "留学教育", icon: FloatingButtonCodeXml, content: <PopupContent items={staticLinkData.components} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
+        { id: "notes", label: "医疗健康", icon: FloatingButtonBookText, content: <PopupContent items={staticLinkData.notes} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
+    ], [staticLinkData, handleItemClick]);
 
-    if (isLoading) {
-        return <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 text-xs text-gray-500">加载悬浮窗...</div>;
-    }
-    
-    if (!db) return null;
-
+    // 4. 移除 InfoCollectorModal 及相关逻辑，直接渲染组件
     return (
-        <>
-            <InfoCollectorModal 
-                isOpen={isModalOpen} 
-                onClose={() => setModalOpen(false)} 
-                onInfoSubmit={handleInfoSubmit}
-                db={db}
-            />
-            <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 w-[calc(100%-2rem)] sm:w-auto">
-                <DynamicActionBar actions={actions} />
-            </div>
-        </>
+        <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 w-[calc(100%-2rem)] sm:w-auto">
+            <DynamicActionBar actions={actions} />
+        </div>
     );
 };
 FloatingButtonWrapper.displayName = "FloatingButtonWrapper";
