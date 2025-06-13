@@ -1092,7 +1092,7 @@ function ComponentTwentyMedicalHealth() {
                 </div>
               </div>
               <img
-                src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75" alt="处理后效果" width={1920} height={1080}
+                src="https://www.twblocks.com/_next/image?url=%2Fdarkmode-feature8.png&w=3840&q=75" alt="处理后效果" width={1920} height={1080}
                 className="absolute left-0 top-0 z-10 w-full h-full object-cover rounded-2xl select-none border"
                 style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }} draggable={false}
               />
