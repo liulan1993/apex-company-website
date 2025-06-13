@@ -827,26 +827,26 @@ ComponentTwo.displayName = "ComponentTwo";
 function ComponentSix() {
   const features = [
     {
-      title: "秘书与合规",
-      description: "委任经验丰富的法定秘书，处理所有向ACRA（会计与企业管制局）的年度申报与合规事宜，确保您的企业运营完全合法合规。",
+      title: "公司注册 (Company Incorporation)",
+      description: "提供一站式的公司注册“创始包”，涵盖战略架构、银行开户与主动式秘书服务，为您稳固事业的第一步。",
       isLarge: true,
       imageUrl: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
-      title: "银行开户协助",
-      description: "凭借广泛的银行合作网络，专业指导并协助您高效开设企业银行账户。",
+      title: "准证申请 (Pass Application)",
+      description: "为创始人、高管及家人量身定制整体准证方案（EP、DP等），通过深度评估与战略规划，极大化成功率，提供核心身份保障。",
       isLarge: false,
       imageUrl: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
-      title: "准证办理",
-      description: "为您的外籍高管与专业人才，精准办理就业准证（EP）与S准证（SP）。",
+      title: "财务税务合规 (Financial & Tax Compliance)",
+      description: "提供专业的年度财税申报、财税合规与规划服务，我们不仅确保您的企业稳健合规，更助力您充分享受新加坡的政策优势。",
       isLarge: false,
       imageUrl: "https://images.unsplash.com/photo-1628182478318-64ab62372545?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
-      title: "注册新加坡公司",
-      description: "为您快速、合规地完成新加坡私人有限公司的注册流程，为您的亚洲业务奠定坚实的法律基础。",
+      title: "人力资源支持 (Human Resources Support)",
+      description: "提供从核心人才招聘、名义雇主（EOR）到跨境薪酬合规的一站式人力资源解决方案，助您在新加坡高效、合规地组建并管理顶尖团队。",
       isLarge: true,
       imageUrl: "https://images.unsplash.com/photo-1525625293386-668f4238d312?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     }
@@ -865,7 +865,7 @@ function ComponentSix() {
                 企业服务 (Corporate Services)
               </h2>
               <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-lg text-left">
-                我们提供一站式企业后台支持，让您专注于核心业务。服务覆盖公司注册、秘书、会计税务及工作准证申请等企业运营全周期。我们以高效严谨的服务，确保您的企业合规运营，成为您最可靠的业务后盾。
+                我们深知，在新加坡设立公司，是您全球战略的关键一步，而非一次简单的流程代办。Apex提供的，是从顶层视角出发，为您的商业大厦搭建最稳固、合规且具前瞻性的战略基石，并为后续的持续运营保驾护航。
               </p>
             </div>
           </div>
