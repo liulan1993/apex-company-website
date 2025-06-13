@@ -1092,12 +1092,12 @@ function ComponentTwentyMedicalHealth() {
                 </div>
               </div>
               <img
-                src="https://raw.githubusercontent.com/liulan1993/apex-company-website/refs/heads/main/public/%E5%8C%BB%E7%96%97%E5%81%A5%E5%BA%B7.gif" alt="处理后效果" width={1920} height={1080}
+                src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75" alt="处理后效果" width={1920} height={1080}
                 className="absolute left-0 top-0 z-10 w-full h-full object-cover rounded-2xl select-none border"
                 style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }} draggable={false}
               />
               <img
-                src="https://raw.githubusercontent.com/liulan1993/apex-company-website/refs/heads/main/public/%E5%8C%BB%E7%96%97%E5%81%A5%E5%BA%B7.gif" alt="处理前原图" width={1920} height={1080}
+                src="https://www.twblocks.com/_next/image?url=%2Ffeature8.png&w=3840&q=75" alt="处理前原图" width={1920} height={1080}
                 className="absolute left-0 top-0 w-full h-full object-cover rounded-2xl select-none border" draggable={false}
               />
             </div>
