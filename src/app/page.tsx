@@ -1425,19 +1425,19 @@ function FooterWithQRCode() {
   
   const socialButtons = [
     {
-      href: "https://www.apex-elite-service.com/",
+      href: "https://www.zhihu.com/",
       qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.apex-elite-service.com/"
     },
     {
-      href: "https://www.twitter.com",
+      href: "https://weibo.com/",
       qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.twitter.com"
     },
     {
-      href: "https://www.instagram.com",
+      href: "https://www.douyin.com/",
       qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.instagram.com"
     },
     {
-      href: "https://www.linkedin.com",
+      href: "https://www.bilibili.com/",
       qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.linkedin.com"
     },
   ];
@@ -1464,21 +1464,21 @@ function FooterWithQRCode() {
           <div>
             <h3 className="mb-4 text-lg font-semibold">快速链接</h3>
             <nav className="space-y-2 text-base sm:text-xl font-medium">
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">首页</a>
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">关于我们</a>
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">服务</a>
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">产品</a>
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">联系我们</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">返回首页</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
+              <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
             </nav>
           </div>
           <div className="md:col-span-2 lg:col-span-2">
             <h3 className="mb-4 text-lg font-semibold">联系我们</h3>
             <address className="space-y-2 text-base sm:text-xl font-medium not-italic text-gray-600">
-                <p>国内地址：上海市成都市北路333号招商局大厦4楼</p>
-                <p>国际地址：5th Floor, 10 Anson Road, Singapore 077903</p>
-                <p>国内电话: +86 16666666</p>
-                <p>国际电话: +65 16666666</p>
-                <p>通用邮箱: apex.sara.yue@gmail.com</p>
+                <p>待定</p>
+                <p>待定</p>
+                <p>待定</p>
+                <p>待定</p>
+                <p>待定</p>
             </address>
           </div>
           <div className="relative">
