@@ -463,8 +463,8 @@ const FloatingButtonWrapper = () => {
     const staticLinkData: { [key: string]: LinkDataItem[] } = useMemo(() => ({
         apps: [
             { name: "Apex文章", href: "https://sara.apex-elite-service.com/", description: "适用于各类企业的响应式官网模板", tag: "模板", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
-            { name: "电商后台管理", href: "https://info.apex-elite-service.com/", description: "功能完善的电商后台管理系统", tag: "系统", icon: "FloatingButtonUsers", bg: "bg-green-100", fg: "text-green-600" },
-            { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+            { name: "Apex文章", href: "https://info.apex-elite-service.com/", description: "功能完善的电商后台管理系统", tag: "系统", icon: "FloatingButtonUsers", bg: "bg-green-100", fg: "text-green-600" },
+            { name: "资料上传", href: "https://zl.apex-elite-service.com/", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
             { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
             { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
             { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
@@ -472,12 +472,12 @@ const FloatingButtonWrapper = () => {
             { name: "客户关系管理", href: "https://www.example.com/crm", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
         ],
         components: [
-            { name: "国际学校对比", href: "https://www.example.com/schools", description: "新加坡顶级国际学校全方位解析", tag: "对比", icon: "FloatingButtonBookOpenTextIcon", bg: "bg-purple-100", fg: "text-purple-600" },
-            { name: "AEIS备考策略", href: "https://www.example.com/aeis", description: "助力学生顺利通过政府学校入学考试", tag: "备考", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
-            { name: "大学申请规划", href: "https://www.example.com/uni-app", description: "从背景提升到文书写作的全程指导", tag: "规划", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
+            { name: "客户反馈", href: "https://listen.apex-elite-service.com/", description: "新加坡顶级国际学校全方位解析", tag: "对比", icon: "FloatingButtonBookOpenTextIcon", bg: "bg-purple-100", fg: "text-purple-600" },
+            { name: "汇率", href: "https://hl.apex-elite-service.com/", description: "助力学生顺利通过政府学校入学考试", tag: "备考", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
+            { name: "个税计算器", href: "https://jsq.apex-elite-service.com/", description: "从背景提升到文书写作的全程指导", tag: "规划", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
         ],
         notes: [
-            { name: "高端体检套餐", href: "https://www.example.com/health-check", description: "深度定制体检，早期发现健康风险", tag: "体检", icon: "FloatingButtonBookText", bg: "bg-red-100", fg: "text-red-600" },
+            { name: "问卷调查", href: "https://wenjuan.apex-elite-service.com/", description: "深度定制体检，早期发现健康风险", tag: "体检", icon: "FloatingButtonBookText", bg: "bg-red-100", fg: "text-red-600" },
             { name: "就医绿色通道", href: "https://www.example.com/medical-vip", description: "快速预约顶尖专科医生，全程陪同", tag: "预约", icon: "FloatingButtonUsers", bg: "bg-indigo-100", fg: "text-indigo-600" },
             { name: "家庭健康管理", href: "https://www.example.com/family-health", description: "为您全家建立健康档案与管理计划", tag: "管理", icon: "FloatingButtonMessageSquare", bg: "bg-pink-100", fg: "text-pink-600" },
         ]
