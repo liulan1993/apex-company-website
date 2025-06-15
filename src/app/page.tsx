@@ -1214,13 +1214,13 @@ function ComponentTen() {
   return (
     <div className="bg-white text-black w-full py-16 lg:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black text-center mb-12">我们的核心优势</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black text-center mb-12">Apex五大核心优势</h2>
             <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
-              <GridItem area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]" icon={<Box className="h-4 w-4" />} title="以正确的方式做事" description="我们的所有服务都以合规和专业为基础，确保您的业务安全稳健。" />
-              <GridItem area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]" icon={<SettingsIcon className="h-4 w-4" />} title="最顶尖的AI辅助工具" description="我们利用最先进的人工智能技术，为您提供高效、精准的解决方案。" />
-              <GridItem area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]" icon={<Lock className="h-4 w-4" />} title="您的数据，绝对安全" description="我们采用银行级的安全措施，确保您的数据和隐私得到最高级别的保护。" />
-              <GridItem area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]" icon={<Sparkles className="h-4 w-4" />} title="持续创新，追求卓越" description="我们的团队不断探索新技术，致力于为您提供超越期待的卓越服务。" />
-              <GridItem area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]" icon={<Search className="h-4 w-4" />} title="深度洞察，抢占先机" description="我们为您提供深入的市场分析和前瞻性的战略建议，助您在竞争中脱颖而出。" />
+              <GridItem area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]" icon={<Box className="h-4 w-4" />} title="信赖承诺，坚实保障" description="我们承诺以高效、透明的方案，全程护航您的新加坡之旅，使命必达。" />
+              <GridItem area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]" icon={<SettingsIcon className="h-4 w-4" />} title="中新双核，无缝衔接" description="植根新加坡，兼具中国基因。中新团队双语服务，沟通无碍，执行高效。" />
+              <GridItem area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]" icon={<Lock className="h-4 w-4" />} title="AI赋能，专家护航" description="AI引擎保障流程效率与透明，资深专家为个性化难题提供战略解决方案。" />
+              <GridItem area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]" icon={<Sparkles className="h-4 w-4" />} title="一站整合，首席合伙" description="覆盖商业、教育到健康的一站式服务，Apex是您唯一的首席合伙人。" />
+              <GridItem area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]" icon={<Search className="h-4 w-4" />} title="健康基石，生命护航" description="链接稀缺医疗资源，深谙中新体系，为您的家庭健康构筑坚实护城河。" />
             </ul>
         </div>
     </div>
