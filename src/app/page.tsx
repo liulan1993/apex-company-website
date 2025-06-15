@@ -848,7 +848,7 @@ function ComponentSix() {
       title: "人力资源支持",
       description: "提供从核心人才招聘、名义雇主（EOR）到跨境薪酬合规的一站式人力资源解决方案，助您在新加坡高效、合规地组建并管理顶尖团队。",
       isLarge: true,
-      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/renliziyuan.jpg",
+      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/caishui.jpg",
     }
   ];
 
