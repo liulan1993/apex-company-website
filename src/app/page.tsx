@@ -147,7 +147,7 @@ const FloatingButtonUsers = createFloatingButtonIcon('<path d="M16 21v-2a4 4 0 0
 const FloatingButtonMessageSquare = createFloatingButtonIcon('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>');
 const FloatingButtonLinkIcon = createFloatingButtonIcon('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.71"/>');
 
-const services = ["企业落地", "准证申请", "战略发展", "子女教育", "健康管理"];
+const services = ["企业落地", "准证申请", "战略发展", "子女教育", "溯源体检", "健康管理"];
 const emailProviders = [
     { name: "Google 邮箱", domain: "@gmail.com" },
     { name: "Outlook 邮箱", domain: "@outlook.com" },
@@ -785,7 +785,7 @@ ComponentOne.displayName = "ComponentOne";
 
 function ComponentTwo() {
   const [titleNumber, setTitleNumber] = useState(0);
-  const titles = useMemo(() => ["医疗健康", "商务咨询", "企业服务", "视野拓展", "留学教育"],[]);
+  const titles = useMemo(() => ["企业落地", "准证申请", "战略发展", "子女教育", "溯源体检", "健康管理"],[]);
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setTitleNumber((prev) => (prev === titles.length - 1 ? 0 : prev + 1));
