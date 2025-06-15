@@ -921,23 +921,23 @@ function ComponentEight() {
         {
             id: 1,
             icon: BrainCog,
-            title: "留学规划与申请",
-            description: "资深顾问团队通过深度背景评估与数据分析，为申请人精准定位院校，并策略性打造全套申请文书及面试辅导，全面提升世界名校的录取竞争力。",
-            image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            title: "教育路径规划(Education Pathway Design)",
+            description: "我们提供超越择校咨询的长期教育路径规划。通过深度评估家庭理念与孩子特质，为您量身定制从当前到世界名校的清晰成长路线图。",
+            image: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/111.jpg",
         },
         {
             id: 2,
             icon: BrainCog,
-            title: "教育成长陪伴",
-            description: "提供长期、个性化的导师服务，通过建立成长档案与引导实践，系统性培养学生的批判性思维、领导力与全球胜任力，规划并陪伴其全方位成长。",
-            image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=3542&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            title: "学校申请支持(School Application Support)",
+            description: "我们提供精准、高效的全流程申请支持，关注的不仅是文书与面试技巧，更是如何将您孩子最独特的闪光点呈现给招生官，赢得理想的录取通知。",
+            image: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/222.jpg",
         },
         {
             id: 3,
             icon: Brain,
-            title: "落地安顿与学术支持",
-            description: "提供从生活安顿到学业规划的一站式海外服务，涵盖住宿、课程辅导及低龄监护，确保学生无缝衔接、快速融入全新的学习与生活环境。",
-            image: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            title: "长期成长陪伴(Long-term Growth Companion)",
+            description: "我们提供超越申请的长期陪伴服务。作为您与学校间的沟通桥梁，我们协助处理从家长会到升学指导的各项事务，确保孩子无缝融入并持续进步。",
+            image: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/333.jpg",
         },
     ],[]);
     const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
