@@ -830,13 +830,13 @@ function ComponentSix() {
       title: "公司注册",
       description: "提供一站式的公司注册“创始包”，涵盖战略架构、银行开户与主动式秘书服务，为您稳固事业的第一步。",
       isLarge: true,
-      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/gongsi.avif",
+      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/gongsi.jpg",
     },
     {
       title: "准证申请",
       description: "为创始人、高管及家人量身定制整体准证方案（EP、DP等），通过深度评估与战略规划，极大化成功率，提供核心身份保障。",
       isLarge: false,
-      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/zhunzheng.avif",
+      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/zhunzheng.jpg",
     },
     {
       title: "财务税务合规",
