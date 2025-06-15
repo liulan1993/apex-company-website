@@ -827,25 +827,25 @@ ComponentTwo.displayName = "ComponentTwo";
 function ComponentSix() {
   const features = [
     {
-      title: "公司注册 (Company Incorporation)",
+      title: "公司注册",
       description: "提供一站式的公司注册“创始包”，涵盖战略架构、银行开户与主动式秘书服务，为您稳固事业的第一步。",
       isLarge: true,
-      imageUrl: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imageUrl: "https://0uzjwzindy9kx8rd.public.blob.vercel-storage.com/NyELcpr1TF-%E5%85%AC%E5%8F%B8%E6%B3%A8%E5%86%8C.avif",
     },
     {
-      title: "准证申请 (Pass Application)",
+      title: "准证申请",
       description: "为创始人、高管及家人量身定制整体准证方案（EP、DP等），通过深度评估与战略规划，极大化成功率，提供核心身份保障。",
       isLarge: false,
-      imageUrl: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imageUrl: "https://0uzjwzindy9kx8rd.public.blob.vercel-storage.com/lh4btN9bPB-%E5%87%86%E8%AF%81%E7%94%B3%E8%AF%B7.avif",
     },
     {
-      title: "财务税务合规 (Financial & Tax Compliance)",
+      title: "财务税务合规",
       description: "提供专业的年度财税申报、财税合规与规划服务，我们不仅确保您的企业稳健合规，更助力您充分享受新加坡的政策优势。",
       isLarge: false,
       imageUrl: "https://images.unsplash.com/photo-1628182478318-64ab62372545?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
-      title: "人力资源支持 (Human Resources Support)",
+      title: "人力资源支持",
       description: "提供从核心人才招聘、名义雇主（EOR）到跨境薪酬合规的一站式人力资源解决方案，助您在新加坡高效、合规地组建并管理顶尖团队。",
       isLarge: true,
       imageUrl: "https://images.unsplash.com/photo-1525625293386-668f4238d312?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
