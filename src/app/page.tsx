@@ -1308,17 +1308,17 @@ function Feature() {
         <div className="flex gap-4 py-12 lg:py-24 flex-col items-start">
           <div><Badge>Platform</Badge></div>
           <div className="flex gap-2 flex-col">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">Something new!</h2>
-            <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">Managing a small business today is already tough.</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">为您而来，不止于此</h2>
+            <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">我们深知您在新加坡的每一步都至关重要。</p>
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it easy to use and understand.</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it fast and reliable.</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Beautiful and modern</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it beautiful and modern.</p></div></div>
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Easy to use</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it easy to use and understand.</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Fast and reliable</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it fast and reliable.</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>Beautiful and modern</p><p className="text-md sm:text-xl font-medium text-gray-600">We&apos;ve made it beautiful and modern.</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>企业落地</p><p className="text-md sm:text-xl font-medium text-gray-600">我们让公司设立和运营变得简单。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>子女教育</p><p className="text-md sm:text-xl font-medium text-gray-600">我们为您的孩子规划最优方案。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>核心准证</p><p className="text-md sm:text-xl font-medium text-gray-600">我们高效处理您团队的工作准证。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>溯源健检</p><p className="text-md sm:text-xl font-medium text-gray-600">我们探寻健康本源，不止于表面。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>战略发展</p><p className="text-md sm:text-xl font-medium text-gray-600">我们链接本地资源助您快速发展。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>健康管理</p><p className="text-md sm:text-xl font-medium text-gray-600">我们链接全科与专科名医网络。</p></div></div>
             </div>
           </div>
         </div>
