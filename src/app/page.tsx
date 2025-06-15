@@ -107,6 +107,35 @@ const CheckIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 CheckIcon.displayName = "CheckIcon";
 
+// --- 新增：国内社交媒体图标 ---
+const ZhihuIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20.253 17.532H24V24h-3.747v-4.144h-2.115v4.144H14.4V11.91l7.06-7.06h-5.466V0H24v6.864l-6.864 6.864h3.117v3.804zm-12.427-4.14L3.72 17.532H0V24h3.72v-4.143h2.115V24h3.746V11.91L2.523 4.85h5.466V0H0v6.864l6.864 6.864H3.72v3.664h4.106v-4.14z"></path>
+  </svg>
+);
+ZhihuIcon.displayName = "ZhihuIcon";
+
+const WeiboIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20.29 8.95c.29-.63.44-1.3.44-1.97 0-2.28-1.85-4.13-4.13-4.13-1.03 0-2.02.39-2.77.95-.53.42-1.12.8-1.92.8-.79 0-1.39-.38-1.92-.8C9.24 3.23 8.25 2.84 7.22 2.84c-2.28 0-4.13 1.85-4.13 4.14 0 .67.15 1.34.44 1.97C2.17 11.12 1 12.83 1 14.67c0 1.85 1.36 3.4 3.14 3.86.29.63.44 1.3.44 1.97 0 2.28 1.85 4.13 4.13 4.13 1.03 0 2.02-.39 2.77-.95.53-.42 1.12-.8 1.92-.8.79 0 1.39.38 1.92.8.75.56 1.74.95 2.77.95 2.28 0 4.13-1.85 4.13-4.13 0-.67-.15-1.34-.44-1.97 1.78-.46 3.14-2.01 3.14-3.86 0-1.84-1.17-3.55-2.71-4.72zM15.1 17.88c-1.3.8-2.92.8-4.2 0-1.33-.82-2.1-2.12-2.1-3.53 0-1.42.77-2.72 2.1-3.54 1.28-.8 2.9-.8 4.2 0 1.33.82 2.1 2.12 2.1 3.54 0 1.41-.77 2.7-2.1 3.53z"></path>
+  </svg>
+);
+WeiboIcon.displayName = "WeiboIcon";
+
+const DouyinIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16.44 3.48a6.38 6.38 0 0 1 4.54 4.54h-3.03a3.35 3.35 0 0 0-3.35-3.35V3.48zm-5.01 0v11.77a3.1 3.1 0 0 1-3.09 3.09c-1.72 0-3.1-1.39-3.1-3.1s1.38-3.1 3.1-3.1c.2 0 .38.02.56.06V8.18A6.13 6.13 0 0 1 8.24 2c.2 0 .4.01.6.03l.06-2.03A9.2 9.2 0 0 0 3.1 3.1a9.2 9.2 0 0 0 9.2 9.2V3.48z"></path>
+  </svg>
+);
+DouyinIcon.displayName = "DouyinIcon";
+
+const BilibiliIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M13.25 11.25c0-.69-.56-1.25-1.25-1.25s-1.25.56-1.25 1.25.56 1.25 1.25 1.25 1.25-.56 1.25-1.25zM22 6.5H2v11h20v-11zM11 14H9v3H7.5v-3H5.5V8.5h4V6h1.5v2.5h4V14H13v-1.5h-2V14zm5-2.75c0-.69-.56-1.25-1.25-1.25S13.5 10.56 13.5 11.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25zM21.5 4H2.5C2.22 4 2 4.22 2 4.5v.5H22v-.5c0-.28-.22-.5-.5-.5zM2.5 19h19c.28 0 .5-.22.5-.5v-.5H2v.5c0 .28.22.5.5.5z"></path>
+  </svg>
+);
+BilibiliIcon.displayName = "BilibiliIcon";
+
 const LinkIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
@@ -523,24 +552,10 @@ const FloatingButtonWrapper = () => {
 FloatingButtonWrapper.displayName = "FloatingButtonWrapper";
 
 
-const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string; onClickUrl: string; }) => {
+// --- 修改后的页脚图标按钮 ---
+const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl, Icon }: { imageUrl: string; onClickUrl: string; Icon: ElementType; }) => {
   const [hovered, setHovered] = useState(false);
-  const [iconHasError, setIconHasError] = useState(false);
-  
   const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-
-  const iconUrl = useMemo(() => {
-    try {
-      const domain = new URL(onClickUrl).hostname;
-      return `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
-    } catch { 
-      return '';
-    }
-  }, [onClickUrl]);
-
-  useEffect(() => {
-    setIconHasError(false);
-  }, [iconUrl]);
 
   return (
     <div
@@ -569,18 +584,7 @@ const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl }: { imageUrl: string
         "
         onClick={(e) => { if(isTouchDevice) e.preventDefault(); }}
       >
-        {iconHasError || !iconUrl ? (
-          <LinkIcon className="h-5 w-5" />
-        ) : (
-          <img
-            src={iconUrl}
-            alt={onClickUrl && new URL(onClickUrl).hostname ? `${new URL(onClickUrl).hostname} icon` : 'Link icon'}
-            width={20}
-            height={20}
-            className="rounded-sm"
-            onError={() => setIconHasError(true)}
-          />
-        )}
+        <Icon className="h-5 w-5" />
       </a>
 
       <div
@@ -1426,19 +1430,23 @@ function FooterWithQRCode() {
   const socialButtons = [
     {
       href: "https://www.zhihu.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.apex-elite-service.com/"
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.zhihu.com",
+      Icon: ZhihuIcon,
     },
     {
       href: "https://weibo.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.twitter.com"
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://weibo.com",
+      Icon: WeiboIcon,
     },
     {
       href: "https://www.douyin.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.instagram.com"
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.douyin.com",
+      Icon: DouyinIcon,
     },
     {
       href: "https://www.bilibili.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.linkedin.com"
+      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.bilibili.com",
+      Icon: BilibiliIcon,
     },
   ];
 
@@ -1484,8 +1492,8 @@ function FooterWithQRCode() {
           <div className="relative">
             <h3 className="mb-4 text-lg font-semibold">关注我们</h3>
             <div className="mb-6 flex space-x-4">
-              {socialButtons.map(({ href, qrUrl }) => (
-                <CustomLinkAndQrHoverButton key={href} imageUrl={qrUrl} onClickUrl={href} />
+              {socialButtons.map(({ href, qrUrl, Icon }) => (
+                <CustomLinkAndQrHoverButton key={href} imageUrl={qrUrl} onClickUrl={href} Icon={Icon} />
               ))}
             </div>
           </div>
