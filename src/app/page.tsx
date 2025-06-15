@@ -861,14 +861,11 @@ function ComponentSix() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-10">
           <div className="flex gap-4 flex-col items-start">
-            <div>
-              <Badge>Apex</Badge>
-            </div>
             <div className="flex gap-2 flex-col">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black text-left">
                 企业服务 (Corporate Services)
               </h2>
-              <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-lg text-left">
+              <p className="text-base sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-lg text-left">
                 我们深知，在新加坡设立公司，是您全球战略的关键一步，而非一次简单的流程代办。Apex提供的，是从顶层视角出发，为您的商业大厦搭建最稳固、合规且具前瞻性的战略基石，并为后续的持续运营保驾护航。
               </p>
             </div>
@@ -896,7 +893,7 @@ function ComponentSix() {
                       <h3 className="text-xl md:text-2xl font-semibold text-white">
                         {feature.title}
                       </h3>
-                      <p className="text-md sm:text-xl font-medium text-gray-200 max-w-xs">
+                      <p className="text-base sm:text-xl font-medium text-gray-200 max-w-xs">
                         {feature.description}
                       </p>
                     </div>
@@ -1072,14 +1069,11 @@ function ComponentTwentyMedicalHealth() {
     <div className="w-full py-16 lg:py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-4">
-          <div>
-            <Badge>Apex</Badge>
-          </div>
           <div className="flex gap-2 flex-col">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">
               医疗健康 (Medical Health)
             </h2>
-            <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">
+            <p className="text-base sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">
               我们利用新加坡顶级的医疗资源，为海内外客户提供无缝对接的尊享健康服务。通过与顶尖医院的紧密合作，为您预约权威专家、安排深度体检，并提供全程陪同翻译，让您和家人高效悦享世界一流的医疗保障。
             </p>
           </div>
@@ -1199,7 +1193,7 @@ const GridItem = ({ area, icon, title, description }: GridItemProps) => {
               {icon}
             </div>
             <div className="space-y-3">
-              <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2l md:leading-[1.875rem] text-balance text-gray-900">
+              <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                 {title}
               </h3>
               <h2 className="text-base sm:text-xl font-medium text-gray-600">
@@ -1272,7 +1266,7 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
               <motion.h2 initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                 {item.title}
               </motion.h2>
-              <motion.p initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-md sm:text-xl font-medium text-gray-600 max-w-sm mt-4 lg:mt-10">
+              <motion.p initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-base sm:text-xl font-medium text-gray-600 max-w-sm mt-4 lg:mt-10">
                 {item.description}
               </motion.p>
             </div>
@@ -1310,19 +1304,18 @@ function Feature() {
     <div className="w-full py-16 lg:py-24 bg-white text-black">
       <div className="container mx-auto px-4">
         <div className="flex gap-4 py-12 lg:py-24 flex-col items-start">
-          <div><Badge>Platform</Badge></div>
           <div className="flex gap-2 flex-col">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">为您而来，不止于此</h2>
-            <p className="text-md sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">我们深知您在新加坡的每一步都至关重要。</p>
+            <p className="text-base sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">我们深知您在新加坡的每一步都至关重要。</p>
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>企业落地</p><p className="text-md sm:text-xl font-medium text-gray-600">我们让公司设立和运营变得简单。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>子女教育</p><p className="text-md sm:text-xl font-medium text-gray-600">我们为您的孩子规划最优方案。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>核心准证</p><p className="text-md sm:text-xl font-medium text-gray-600">我们高效处理您团队的工作准证。</p></div></div>
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>溯源健检</p><p className="text-md sm:text-xl font-medium text-gray-600">我们探寻健康本源，不止于表面。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>战略发展</p><p className="text-md sm:text-xl font-medium text-gray-600">我们链接本地资源助您快速发展。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><p>健康管理</p><p className="text-md sm:text-xl font-medium text-gray-600">我们链接全科与专科名医网络。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们让公司设立和运营变得简单。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们为您的孩子规划最优方案。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们高效处理您团队的工作准证。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们探寻健康本源，不止于表面。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接本地资源助您快速发展。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接全科与专科名医网络。</p></div></div>
             </div>
           </div>
         </div>
