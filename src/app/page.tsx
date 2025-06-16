@@ -495,13 +495,13 @@ const FloatingButtonWrapper = () => {
             { name: "Apex文章", href: "https://info.apex-elite-service.com/", description: "功能完善的电商后台管理系统", tag: "系统", icon: "FloatingButtonUsers", bg: "bg-green-100", fg: "text-green-600" },
         ],
         components: [
-            { name: "汇率", href: "https://hl.apex-elite-service.com/", description: "助力学生顺利通过政府学校入学考试", tag: "备考", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
-            { name: "个税计算器", href: "https://jsq.apex-elite-service.com/", description: "从背景提升到文书写作的全程指导", tag: "规划", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
+            { name: "汇率", href: "https://hl.apex-elite-service.com/", description: "助力学生顺利通过政府学校入学考试", tag: "货币", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
+            { name: "个税计算器", href: "https://jsq.apex-elite-service.com/", description: "从背景提升到文书写作的全程指导", tag: "计算", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
         ],
         notes: [
-            { name: "问卷调查", href: "https://wenjuan.apex-elite-service.com/", description: "深度定制体检，早期发现健康风险", tag: "体检", icon: "FloatingButtonBookText", bg: "bg-red-100", fg: "text-red-600" },
-            { name: "资料上传", href: "https://zl.apex-elite-service.com/", description: "高效管理您的客户信息与互动", tag: "CRM", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
-            { name: "客户反馈", href: "https://listen.apex-elite-service.com/", description: "新加坡顶级国际学校全方位解析", tag: "对比", icon: "FloatingButtonBookOpenTextIcon", bg: "bg-purple-100", fg: "text-purple-600" },
+            { name: "问卷调查", href: "https://wenjuan.apex-elite-service.com/", description: "深度定制体检，早期发现健康风险", tag: "调查", icon: "FloatingButtonBookText", bg: "bg-red-100", fg: "text-red-600" },
+            { name: "资料上传", href: "https://zl.apex-elite-service.com/", description: "高效管理您的客户信息与互动", tag: "核验", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+            { name: "客户反馈", href: "https://listen.apex-elite-service.com/", description: "新加坡顶级国际学校全方位解析", tag: "倾听", icon: "FloatingButtonBookOpenTextIcon", bg: "bg-purple-100", fg: "text-purple-600" },
         ]
     }), []);
 
@@ -1421,17 +1421,17 @@ function FooterWithQRCode() {
     },
     {
       href: "https://weibo.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://weibo.com",
+      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/sara.png",
       Icon: WeiboIcon,
     },
     {
       href: "https://www.douyin.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.douyin.com",
+      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/梦辰.png",
       Icon: DouyinIcon,
     },
     {
       href: "https://www.bilibili.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.bilibili.com",
+      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/文静.png",
       Icon: BilibiliIcon,
     },
   ];
