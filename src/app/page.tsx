@@ -1395,19 +1395,12 @@ const testimonialsData = [
   { author: { name: "一颗柠檬", handle: "活在当下。", avatar: "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=150&h=150&fit=crop&crop=face" }, text: "Apex的健康管理服务太棒了！从预约高端体检到报告解读，都有专人负责，让我对自己的健康状况了如指掌。" },
   { author: { name: "快乐小狗", handle: "慢慢来比较快。", avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face" }, text: "公司发展遇到瓶颈，Apex的战略发展咨询服务给我们提供了全新的思路和市场分析，非常有价值。" },
   { author: { name: "云朵有点甜", handle: "但行好事。", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face" }, text: "家人来新加坡需要就医，通过Apex联系了顶尖的医疗资源，全程陪同翻译，让人在异国他乡感到非常温暖。" },
-  { author: { name: "爱吃鱼的猫", handle: "莫问前程。", avatar: "https://images.unsplash.com/photo-1529626455594-4ff029ccfa3e?w=150&h=150&fit=crop&crop=face" }, text: "Apex不仅帮我们注册了公司，还提供了一系列企业落地服务，包括办公室租赁和银行开户，真正的一站式解决。" },
-  { author: { name: "风继续吹", handle: "追逐光。", avatar: "https://images.unsplash.com/photo-1500648767791-00d5622513b6?w=150&h=150&fit=crop&crop=face" }, text: "在Apex的帮助下，我成功申请到了NUS的硕士项目，文书指导和背景提升建议都非常关键，感谢！" },
   { author: { name: "奔跑的蜗牛", handle: "成为更好的自己。", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face" }, text: "我们公司的税务和核心员工的准证申请都全权委托给了Apex，非常省心，团队专业可靠，是企业出海新加坡的好伙伴。" },
   { author: { name: "芝士就是力量", handle: "永远年轻。", avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=150&h=150&fit=crop&crop=face" }, text: "年度体检选的Apex推荐的机构，环境好服务优，预约流程也比自己弄方便多了。" },
   { author: { name: "数字漫游者", handle: "永远热泪盈眶。", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop&crop=face" }, text: "选择Apex是我做过最正确的决定之一，无论是公司业务还是个人健康管理，都提供了无微不至的专业服务。" },
   { author: { name: "深海的派大星", handle: "专注且坚定。", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" }, text: "孩子的小学留学办得非常顺利，Apex的顾问老师全程跟进，让我们家长特别放心。" },
   { author: { name: "打代码的文艺青年", handle: "简单且快乐。", avatar: "https://images.unsplash.com/photo-1618641986557-1ecd230959aa?w=150&h=150&fit=crop&crop=face" }, text: "公司注册和银行开户，Apex一条龙服务，速度快，效率高，收费也透明合理。" },
-  { author: { name: "可乐加冰", handle: "随心而去。", avatar: "https://images.unsplash.com/photo-1568602471322-7826d3a3f8a2?w=150&h=150&fit=crop&crop=face" }, text: "Apex的税务代理帮我们规避了很多潜在风险，会计师的专业建议非常有价值。" },
-  { author: { name: "长岛冰茶", handle: "时间的朋友。", avatar: "https://images.unsplash.com/photo-1547425260-76bc494f6f87?w=150&h=150&fit=crop&crop=face" }, text: "PR申请成功获批！非常感谢Apex团队的专业指导，材料准备得滴水不漏，面试辅导也很到位。" },
-  { author: { name: "七秒记忆的鱼", handle: "认知破局。", avatar: "https://images.unsplash.com/photo-1499952127939-9bbf5861c094?w=150&h=150&fit=crop&crop=face" }, text: "Apex的健康管理服务非常人性化，根据我的体检报告给出了详细的调理建议，很贴心。" },
   { author: { name: "暴躁的土豆", handle: "持续进化。", avatar: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=150&h=150&fit=crop&crop=face" }, text: "在Apex的战略发展建议下，我们公司成功开拓了新的市场，业绩增长显著。" },
-  { author: { name: "贩卖日落", handle: "向阳而生。", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4763b36e?w=150&h=150&fit=crop&crop=face" }, text: "Apex的医疗服务网络很广，能快速预约到专家门诊，解决了我的燃眉之急。" },
-  { author: { name: "甜味拾荒者", handle: "无畏西东。", avatar: "https://images.unsplash.com/photo-1555952517-2e8e729bcaaf?w=150&h=150&fit=crop&crop=face" }, text: "企业落地服务很全面，Apex甚至帮我们对接了本地的供应商资源，太给力了。" },
   { author: { name: "迷路的星星", handle: "保持好奇。", avatar: "https://images.unsplash.com/photo-1549351512-c5e12b11e283?w=150&h=150&fit=crop&crop=face" }, text: "孩子拿到了NTU的offer，离不开Apex留学团队的努力，从选专业到文书都给了很多专业意见。" },
   { author: { name: "一个有趣的灵魂", handle: "日拱一卒。", avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face" }, text: "我们外籍高管的准证申请都是委托Apex处理的，每次都很顺利，省去了我们HR很多精力。" },
   { author: { name: "骑着扫帚的少女", handle: "知行合一。", avatar: "https://images.unsplash.com/photo-1531123414780-f74242c2b052?w=150&h=150&fit=crop&crop=face" }, text: "Apex安排的体检套餐很全面，价格也比自己去预约要优惠，服务很满意。" },
@@ -1416,8 +1409,7 @@ const testimonialsData = [
   { author: { name: "故事收藏家", handle: "乐观积极。", avatar: "https://images.unsplash.com/photo-1521119989659-a83eee488004?w=150&h=150&fit=crop&crop=face" }, text: "Apex帮我们处理复杂的跨境税务问题，他们的专业能力让我们非常放心。" },
   { author: { name: "梦想派送员", handle: "凡事发生皆好事。", avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face" }, text: "从公司选址到装修建议，Apex的企业落地服务真是做到了极致，考虑得比我们还周到。" },
   { author: { name: "今天有点困", handle: "不负韶华。", avatar: "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=150&h=150&fit=crop&crop=face" }, text: "通过Apex申请EntrePass成功了！他们的方案设计和材料准备都非常专业，大大提高了成功率。" },
-  { author: { name: "会飞的猪", handle: "自在如风。", avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&h=150&fit=crop&crop=face" }, text: "Apex的战略咨询不仅是纸上谈兵，还协助我们对接资源，帮助我们把规划落到了实处。" },
-  { author: { name: "咸鱼翻个身", handle: "人生是旷野。", avatar: "https://images.unsplash.com/photo-1633332755192-727a05c3fd3d?w=150&h=150&fit=crop&crop=face" }, text: "Apex的医疗服务响应很迅速，半夜家人不舒服，也很快联系上了值班顾问，提供了及时的帮助和指引。" }
+  { author: { name: "会飞的猪", handle: "自在如风。", avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&h=150&fit=crop&crop=face" }, text: "Apex的战略咨询不仅是纸上谈兵，还协助我们对接资源，帮助我们把规划落到了实处。" }
 ];
 
 function ComponentTestimonialsMarquee() {
