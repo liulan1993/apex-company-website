@@ -1492,7 +1492,7 @@ function FooterWithQRCode() {
             <h3 className="mb-4 text-lg font-semibold">快速链接</h3>
             <nav className="space-y-2 text-base sm:text-xl font-medium">
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">返回首页</a>
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
+              <a href="www.baidu.com" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
