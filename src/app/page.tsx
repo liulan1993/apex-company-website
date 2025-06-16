@@ -117,7 +117,7 @@ ZhihuIcon.displayName = "ZhihuIcon";
 
 const WeiboIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20.29 8.95c.29-.63.44-1.3.44-1.97 0-2.28-1.85-4.13-4.13-4.13-1.03 0-2.02.39-2.77.95-.53.42-1.12.8-1.92.8-.79 0-1.39-.38-1.92-.8C9.24 3.23 8.25 2.84 7.22 2.84c-2.28 0-4.13 1.85-4.13 4.14 0 .67.15 1.34.44 1.97C2.17 11.12 1 12.83 1 14.67c0 1.85 1.36 3.4 3.14 3.86.29.63.44 1.3.44 1.97 0 2.28 1.85 4.13 4.13 4.13 1.03 0 2.02-.39 2.77-.95.53-.42 1.12-.8 1.92-.8.79 0 1.39.38 1.92.8.75.56 1.74.95 2.77.95 2.28 0 4.13-1.85 4.13-4.13 0-.67-.15-1.34-.44-1.97 1.78-.46 3.14-2.01 3.14-3.86 0-1.84-1.17-3.55-2.71-4.72zM15.1 17.88c-1.3.8-2.92.8-4.2 0-1.33-.82-2.1-2.12-2.1-3.53 0-1.42.77-2.72 2.1-3.54 1.28-.8 2.9-.8 4.2 0 1.33.82 2.1 2.12 2.1 3.54 0 1.41-.77 2.7-2.1 3.53z"></path>
+    <path d="M20.29 8.95c.29-.63.44-1.3.44-1.97 0-2.28-1.85-4.13-4.13-4.13-1.03 0-2.02.39-2.77.95-.53.42-1.12.8-1.92.8-.79 0-1.39-.38-1.92-.8C9.24 3.23 8.25 2.84 7.22 2.84c-2.28 0-4.13 1.85-4.13 4.14 0 .67.15 1.34.44 1.97C2.17 11.12 1 12.83 1 14.67c0 1.85 1.36 3.4 3.14 3.86.29.63.44 1.3.44 1.97 0 2.28 1.85 4.13 4.13 4.13 1.03 0 2.02-.39 2.77-.95.53-.42 1.12.8 1.92-.8.79 0 1.39.38 1.92.8.75.56 1.74.95 2.77.95 2.28 0 4.13-1.85 4.13-4.13 0-.67-.15-1.34-.44-1.97 1.78-.46 3.14-2.01 3.14-3.86 0-1.84-1.17-3.55-2.71-4.72zM15.1 17.88c-1.3.8-2.92.8-4.2 0-1.33-.82-2.1-2.12-2.1-3.53 0-1.42.77-2.72 2.1-3.54 1.28-.8 2.9-.8 4.2 0 1.33.82 2.1 2.12 2.1 3.54 0 1.41-.77 2.7-2.1 3.53z"></path>
   </svg>
 );
 WeiboIcon.displayName = "WeiboIcon";
@@ -783,36 +783,47 @@ function ComponentOne({ title = "Apex" }: { title?: string }) {
 }
 ComponentOne.displayName = "ComponentOne";
 
+// --- START: 优化后的 ComponentTwo ---
 function ComponentTwo() {
   const [titleNumber, setTitleNumber] = useState(0);
-  const titles = useMemo(() => ["企业落地", "准证申请", "战略发展", "子女教育", "溯源体检", "健康管理"],[]);
+  const titles = useMemo(() => ["企业落地", "准证申请", "战略发展", "子女教育", "溯源体检", "健康管理"], []);
+
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setTitleNumber((prev) => (prev === titles.length - 1 ? 0 : prev + 1));
-    }, 2000);
-    return () => clearTimeout(timeoutId);
-  }, [titleNumber, titles]);
+    // 使用 setInterval 实现更简洁的循环定时器
+    const intervalId = setInterval(() => {
+      setTitleNumber((prev) => (prev + 1) % titles.length);
+    }, 2500); // 适当增加间隔时间，让用户有足够时间阅读
+    return () => clearInterval(intervalId);
+  }, [titles.length]);
 
   return (
     <div className="w-full text-black bg-white">
       <div className="container mx-auto px-4">
-        <div className="flex gap-8 py-12 lg:py-20 items-center justify-center flex-col">
-          <div className="flex gap-4 flex-col items-center">
-            <h1 className="text-4xl md:text-5xl lg:text-7xl tracking-tighter text-center font-regular flex flex-col items-center">
-              <span className="text-black whitespace-nowrap">不止梳理万象，更与您共创未来</span>
-              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 pt-4 md:pt-6 h-16 md:h-20 items-center">
-                {titles.map((title, index) => (
+        {/* 优化了内边距和元素间距，使其在不同设备上更和谐 */}
+        <div className="flex flex-col items-center justify-center gap-8 py-16 sm:py-20 lg:py-24">
+          <div className="flex flex-col items-center gap-6 text-center">
+            {/* 优化了标题字体大小，使其在移动端显示更佳 */}
+            <h1 className="text-4xl font-bold tracking-tighter text-black sm:text-5xl md:text-6xl lg:text-7xl">
+              {/* 使用 text-balance (需要较新的Tailwind版本) 来优化标题换行，避免单字成行 */}
+              <span className="block text-balance">不止梳理万象，更与您共创未来</span>
+              {/* 优化了动画文本容器的高度和字体大小，并重构动画 */}
+              <div className="relative mt-4 flex h-14 w-full items-center justify-center overflow-hidden text-center sm:h-16 md:h-20">
+                <AnimatePresence mode="wait">
                   <motion.span
-                    key={index}
-                    className="absolute font-semibold text-black text-4xl md:text-6xl"
-                    initial={{ opacity: 0, y: -100 }}
-                    transition={{ type: "spring", stiffness: 50 }}
-                    animate={ titleNumber === index ? { y: 0, opacity: 1 } : { y: titleNumber > index ? -150 : 150, opacity: 0 }}
-                  >{title}</motion.span>
-                ))}
-              </span>
+                    key={titleNumber} // Key 的改变会触发进入和退出动画
+                    className="absolute bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-3xl font-semibold text-transparent sm:text-4xl md:text-5xl lg:text-6xl"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                  >
+                    {titles[titleNumber]}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
             </h1>
-            <p className="text-lg md:text-xl leading-relaxed tracking-tight text-gray-600 max-w-4xl text-center">
+            {/* 优化了段落文本大小和最大宽度，提高可读性 */}
+            <p className="max-w-3xl text-base leading-relaxed tracking-tight text-gray-600 sm:text-lg md:text-xl">
               Apex是一家总部位于新加坡的综合性专业服务机构。我们深刻理解全球高净值人士与出海企业所面临的机遇与挑战，矢志成为您在新加坡的首席合作伙伴，提供从商业顶层设计、子女教育规划到主动式健康管理的无缝衔接解决方案。
             </p>
           </div>
@@ -822,6 +833,7 @@ function ComponentTwo() {
   );
 }
 ComponentTwo.displayName = "ComponentTwo";
+// --- END: 优化后的 ComponentTwo ---
 
 
 function ComponentSix() {
@@ -1376,8 +1388,8 @@ function TestimonialCard({ author, text, href, className }: {author: {name:strin
 }
 
 const testimonialsData = [
-  { author: { name: "Emma Thompson", handle: "@emmaai", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" }, text: "这个 AI 平台彻底改变了我们处理数据分析的方式。速度和准确性都是前所未有的。", href: "#" },
-  { author: { name: "David Park", handle: "@davidtech", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }, text: "API 集成完美无瑕。自从实施这个解决方案以来，我们的开发时间减少了 60%。", href: "#" },
+  { author: { name: "Emma Thompson", handle: "@emmaai", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" }, text: "这个 AI 平台彻底改变了我们处理数据分析的方式。速度和准确性都是前所未有的。" },
+  { author: { name: "David Park", handle: "@davidtech", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }, text: "API 集成完美无瑕。自从实施这个解决方案以来，我们的开发时间减少了 60%。" },
   { author: { name: "Sofia Rodriguez", handle: "@sofiaml", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" }, text: "终于有了一个真正理解上下文的 AI 工具！自然语言处理的准确性令人印象深刻。" },
   { author: { name: "Michael Chen", handle: "@mchen_dev", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face" }, text: "出色的客户支持和详尽的文档。我们的团队在几小时内就上手并开始运行了。" }
 ];
