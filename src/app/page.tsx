@@ -491,8 +491,10 @@ const FloatingButtonWrapper = () => {
 
     const staticLinkData: { [key: string]: LinkDataItem[] } = useMemo(() => ({
         apps: [
+            { name: "从“年度锁定ˮ到“⽆缝陪伴ˮ", href: "https://mp.weixin.qq.com/s/pkhiZGKfimltF3aZ-boSbA", description: "您必须看懂的三层“服务价值”", tag: "欢迎", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
+            { name: "Apex Elite Service", href: "https://mp.weixin.qq.com/s/Iw0kbUprjGqYUminA-5Czw", description: "我们不止梳理万象，更与您共创未来", tag: "介绍", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
             { name: "Apex文章", href: "https://sara.apex-elite-service.com/", description: "适用于各类企业的响应式官网模板", tag: "模板", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
-            { name: "Apex文章", href: "https://info.apex-elite-service.com/", description: "功能完善的电商后台管理系统", tag: "系统", icon: "FloatingButtonUsers", bg: "bg-green-100", fg: "text-green-600" },
+            { name: "Apex文章", href: "https://info.apex-elite-service.com/", description: "功能完善的电商后台管理系统", tag: "系统", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
         ],
         components: [
             { name: "汇率", href: "https://hl.apex-elite-service.com/", description: "助力学生顺利通过政府学校入学考试", tag: "货币", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
