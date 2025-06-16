@@ -1454,7 +1454,7 @@ function FooterWithQRCode() {
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
                <img
-                src="https://placehold.co/128x128/e2e8f0/334155?text=QR+Code" 
+                src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/微信公众号.png" 
                 alt="二维码占位符"
                 width={128}
                 height={128}
