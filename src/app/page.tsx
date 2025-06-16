@@ -108,12 +108,12 @@ const CheckIcon = (props: SVGProps<SVGSVGElement>) => (
 CheckIcon.displayName = "CheckIcon";
 
 // --- 新增：国内社交媒体图标 ---
-const ZhihuIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20.253 17.532H24V24h-3.747v-4.144h-2.115v4.144H14.4V11.91l7.06-7.06h-5.466V0H24v6.864l-6.864 6.864h3.117v3.804zm-12.427-4.14L3.72 17.532H0V24h3.72v-4.143h2.115V24h3.746V11.91L2.523 4.85h5.466V0H0v6.864l6.864 6.864H3.72v3.664h4.106v-4.14z"></path>
+const XiaohongshuIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19.5,2H4.5A2.5,2.5,0,0,0,2,4.5v15A2.5,2.5,0,0,0,4.5,22H19.5A2.5,2.5,0,0,0,22,19.5V4.5A2.5,2.5,0,0,0,19.5,2ZM9.5,15.5H7.25a.75.75,0,0,1,0-1.5H9.5a.75.75,0,0,1,0,1.5Zm0-4.5H7.25a.75.75,0,0,1,0-1.5H9.5a.75.75,0,0,1,0,1.5Zm7.25,4.5H12.5a.75.75,0,0,1,0-1.5h4.25a.75.75,0,0,1,0,1.5Zm0-4.5H12.5a.75.75,0,0,1,0-1.5h4.25a.75.75,0,0,1,0,1.5Z" />
   </svg>
 );
-ZhihuIcon.displayName = "ZhihuIcon";
+XiaohongshuIcon.displayName = "XiaohongshuIcon";
 
 const WeiboIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round">
@@ -1234,7 +1234,7 @@ function ComponentTen() {
 }
 ComponentTen.displayName = "ComponentTen";
 
-
+// --- START: 修复后的 StickyScroll (原 Component30) ---
 const linearGradients = [
     "linear-gradient(to bottom right, rgb(6, 182, 212), rgb(16, 185, 129))",
     "linear-gradient(to bottom right, rgb(236, 72, 153), rgb(99, 102, 241))",
@@ -1244,18 +1244,36 @@ const linearGradients = [
 
 const StickyScroll = ({ content, contentClassName, }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
   const [activeCard, setActiveCard] = React.useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ container: ref, offset: ["start start", "end start"], });
+  const desktopRef = useRef<HTMLDivElement>(null); // Ref for desktop vertical scroll
+  const mobileRef = useRef<HTMLDivElement>(null); // Ref for mobile horizontal scroll
+  
+  const { scrollYProgress } = useScroll({ container: desktopRef, offset: ["start start", "end start"], });
+  const { scrollXProgress } = useScroll({ container: mobileRef, offset: ["start start", "end end"], });
+
   const cardLength = content.length;
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  const handleProgressChange = useCallback((progress: number) => {
     const cardsBreakpoints = content.map((_, index) => index / cardLength);
     const closestBreakpointIndex = cardsBreakpoints.reduce((acc, breakpoint, index) => {
-        const distance = Math.abs(latest - breakpoint);
-        if (distance < Math.abs(latest - cardsBreakpoints[acc])) { return index; }
+        const distance = Math.abs(progress - breakpoint);
+        if (distance < Math.abs(progress - cardsBreakpoints[acc])) {
+            return index;
+        }
         return acc;
-      }, 0 );
+    }, 0);
     setActiveCard(closestBreakpointIndex);
+  }, [cardLength, content]);
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) { // lg breakpoint
+        handleProgressChange(latest);
+    }
+  });
+
+  useMotionValueEvent(scrollXProgress, "change", (latest) => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        handleProgressChange(latest);
+    }
   });
 
   const backgroundColors = ["rgb(255, 255, 255)"];
@@ -1266,9 +1284,9 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
   }, [activeCard]);
 
   return (
-    <motion.div animate={{ backgroundColor: backgroundColors[0], }} className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" ref={ref} style={{ backgroundColor: 'white' }}>
+    <motion.div animate={{ backgroundColor: backgroundColors[0] }} className="flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10 lg:h-[30rem] lg:overflow-y-auto" ref={desktopRef}>
       <div className="div relative flex items-start px-4">
-        <div className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar">
+        <div className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar" ref={mobileRef}>
           {content.map((item, index) => (
             <div key={item.title + index} className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 lg:flex-shrink-1">
               <motion.h2 initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
@@ -1297,14 +1315,15 @@ const stickyScrollContent = [
   { title: "即刻启程", description: "纸上得来终觉浅，绝知此事要躬行。立即联系我们，开启一次专属的战略性探讨，让我们为您在新加坡的成功保驾护航。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/jikeqicheng.jpg" alt="即刻启程图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
 ];
 
-function Component30() {
+function StickyScrollSection() {
   return (
-    <div className="p-4 md:p-10" style={{ backgroundColor: 'white' }}>
+    <div className="p-4 md:p-10 bg-white">
       <StickyScroll content={stickyScrollContent} />
     </div>
   );
 }
-Component30.displayName = "Component30";
+StickyScrollSection.displayName = "StickyScrollSection";
+// --- END: 修复后的 StickyScroll (原 Component30) ---
 
 
 function Feature() {
@@ -1388,8 +1407,8 @@ function TestimonialCard({ author, text, href, className }: {author: {name:strin
 }
 
 const testimonialsData = [
-  { author: { name: "Emma Thompson", handle: "@emmaai", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" }, text: "这个 AI 平台彻底改变了我们处理数据分析的方式。速度和准确性都是前所未有的。" },
-  { author: { name: "David Park", handle: "@davidtech", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }, text: "API 集成完美无瑕。自从实施这个解决方案以来，我们的开发时间减少了 60%。" },
+  { author: { name: "Emma Thompson", handle: "@emmaai", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" }, text: "这个 AI 平台彻底改变了我们处理数据分析的方式。速度和准确性都是前所未有的。", href: "#" },
+  { author: { name: "David Park", handle: "@davidtech", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }, text: "API 集成完美无瑕。自从实施这个解决方案以来，我们的开发时间减少了 60%。", href: "#" },
   { author: { name: "Sofia Rodriguez", handle: "@sofiaml", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" }, text: "终于有了一个真正理解上下文的 AI 工具！自然语言处理的准确性令人印象深刻。" },
   { author: { name: "Michael Chen", handle: "@mchen_dev", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face" }, text: "出色的客户支持和详尽的文档。我们的团队在几小时内就上手并开始运行了。" }
 ];
@@ -1427,26 +1446,31 @@ ComponentTestimonialsMarquee.displayName = "ComponentTestimonialsMarquee";
 
 
 function FooterWithQRCode() {
-  
+  const imageBaseUrl = "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/";
+
   const socialButtons = [
     {
+      label: "小红书",
       href: "https://www.xiaohongshu.com/user/profile/6624755f00000000030303c2?xsec_token=YBu0J314MzsA9PGMJZLZmcLRL3wiuAfNIZeudNRhtPvCk=&xsec_source=app_share&xhsshare=WeixinSession&appuid=6624755f00000000030303c2&apptime=1750082613&share_id=b4da624f466a4aeabb6e1e79662f092d&tab=note&subTab=note",
-      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/小红书.png",
-      Icon: ZhihuIcon,
+      qrUrl: `${imageBaseUrl}小红书.png`, // 文件名不带空格
+      Icon: XiaohongshuIcon,
     },
     {
+      label: "微博",
       href: "https://weibo.com/",
-      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/sara.png",
+      qrUrl: `${imageBaseUrl}sara.png`,
       Icon: WeiboIcon,
     },
     {
+      label: "抖音",
       href: "https://www.douyin.com/",
-      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/梦辰.png",
+      qrUrl: `${imageBaseUrl}梦辰.png`, // 文件名不带空格
       Icon: DouyinIcon,
     },
     {
+      label: "Bilibili",
       href: "https://www.bilibili.com/",
-      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/文静.png",
+      qrUrl: `${imageBaseUrl}文静.png`, // 文件名不带空格
       Icon: BilibiliIcon,
     },
   ];
@@ -1462,8 +1486,8 @@ function FooterWithQRCode() {
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
                <img
-                src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/微信公众号.png" 
-                alt="二维码占位符"
+                src={`${imageBaseUrl}微信公众号.png`}
+                alt="微信公众号二维码"
                 width={128}
                 height={128}
                 className="rounded-md object-cover"
@@ -1493,7 +1517,7 @@ function FooterWithQRCode() {
           <div className="relative">
             <h3 className="mb-4 text-lg font-semibold">关注我们</h3>
             <div className="mb-6 flex space-x-4">
-              {socialButtons.map(({ href, qrUrl, Icon }) => (
+              {socialButtons.map(({ href, qrUrl, Icon, label }) => (
                 <CustomLinkAndQrHoverButton key={href} imageUrl={qrUrl} onClickUrl={href} Icon={Icon} />
               ))}
             </div>
@@ -1586,7 +1610,7 @@ export default function ApexPage() {
             <ComponentEight />
             <ComponentTwentyMedicalHealth />
             <div id="services" ref={sectionRefs.services} className="scroll-mt-20"><ComponentTen /></div>
-            <Component30 />
+            <StickyScrollSection />
             <FeatureDemoComponent />
             <div id="contact" ref={sectionRefs.contact} className="scroll-mt-20"><ComponentTestimonialsMarquee /></div>
           </main>
