@@ -1475,11 +1475,11 @@ function FooterWithQRCode() {
           <div className="md:col-span-2 lg:col-span-2">
             <h3 className="mb-4 text-lg font-semibold">联系我们</h3>
             <address className="space-y-2 text-base sm:text-xl font-medium not-italic text-gray-600">
-                <p>待定</p>
-                <p>待定</p>
-                <p>待定</p>
-                <p>待定</p>
-                <p>待定</p>
+                <p>创始人信箱：</p>
+                <p>我们珍视每一个真诚的声音。</p>
+                <p>欢迎您将最关心的问题或建议，直接发送到创始人信箱。</p>
+                <p>founder@apex-elite-service.com</p>
+                <p>非常感谢您对我们的关注与支持！</p>
             </address>
           </div>
           <div className="relative">
