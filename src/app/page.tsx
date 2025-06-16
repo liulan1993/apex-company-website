@@ -499,6 +499,7 @@ const FloatingButtonWrapper = () => {
         components: [
             { name: "汇率", href: "https://hl.apex-elite-service.com/", description: "助力学生顺利通过政府学校入学考试", tag: "货币", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
             { name: "个税计算器", href: "https://jsq.apex-elite-service.com/", description: "从背景提升到文书写作的全程指导", tag: "计算", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
+            { name: "专属AI", href: "https://jsq.apex-elite-service.com/", description: "满血版DeepSeek，为您提供帮助", tag: "AI", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
         ],
         notes: [
             { name: "问卷调查", href: "https://wenjuan.apex-elite-service.com/", description: "深度定制体检，早期发现健康风险", tag: "调查", icon: "FloatingButtonBookText", bg: "bg-red-100", fg: "text-red-600" },
