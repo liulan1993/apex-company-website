@@ -531,9 +531,9 @@ const FloatingButtonWrapper = () => {
     }, [targetLink]);
     
     const actions: FloatingActionButtonItem[] = useMemo(() => [
-        { id: "apps", label: "企业服务", icon: FloatingButtonAlbumIcon, content: <PopupContent items={staticLinkData.apps} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
-        { id: "components", label: "留学教育", icon: FloatingButtonCodeXml, content: <PopupContent items={staticLinkData.components} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
-        { id: "notes", label: "医疗健康", icon: FloatingButtonBookText, content: <PopupContent items={staticLinkData.notes} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
+        { id: "apps", label: "商业洞察", icon: FloatingButtonAlbumIcon, content: <PopupContent items={staticLinkData.apps} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
+        { id: "components", label: "AI赋能", icon: FloatingButtonCodeXml, content: <PopupContent items={staticLinkData.components} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
+        { id: "notes", label: "客户支持", icon: FloatingButtonBookText, content: <PopupContent items={staticLinkData.notes} onItemClick={handleItemClick} />, dimensions: { width: 500, height: 300 } },
     ], [staticLinkData, handleItemClick]);
 
     return (
@@ -1422,8 +1422,8 @@ function FooterWithQRCode() {
   
   const socialButtons = [
     {
-      href: "https://www.zhihu.com/",
-      qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.zhihu.com",
+      href: "https://www.xiaohongshu.com/user/profile/6624755f00000000030303c2?xsec_token=YBu0J314MzsA9PGMJZLZmcLRL3wiuAfNIZeudNRhtPvCk=&xsec_source=app_share&xhsshare=WeixinSession&appuid=6624755f00000000030303c2&apptime=1750082613&share_id=b4da624f466a4aeabb6e1e79662f092d&tab=note&subTab=note",
+      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/小红书.png",
       Icon: ZhihuIcon,
     },
     {
