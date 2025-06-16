@@ -1492,10 +1492,10 @@ function FooterWithQRCode() {
             <h3 className="mb-4 text-lg font-semibold">快速链接</h3>
             <nav className="space-y-2 text-base sm:text-xl font-medium">
               <a href="#" className="block transition-colors text-gray-600 hover:text-black">返回首页</a>
-              <a href="https://www.baidu.com/" target="_blank" rel="noopener noreferrer" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
-              <a href="#" className="block transition-colors text-gray-600 hover:text-black">XXXX跳转链接待定</a>
+              <a href="https://data.gov.sg/" target="_blank" rel="noopener noreferrer" className="block transition-colors text-gray-600 hover:text-black">新加坡开放数据门户</a>
+              <a href="https://www.giving.sg/home" target="_blank" rel="noopener noreferrer" className="block transition-colors text-gray-600 hover:text-black">新加坡国家公益平台</a>
+              <a href="https://data.gov.sg/" target="_blank" rel="noopener noreferrer" className="block transition-colors text-gray-600 hover:text-black">新加坡开放数据门户</a>
+              <a href="https://data.gov.sg/" target="_blank" rel="noopener noreferrer" className="block transition-colors text-gray-600 hover:text-black">新加坡开放数据门户</a>
             </nav>
           </div>
           <div className="md:col-span-2 lg:col-span-2">
