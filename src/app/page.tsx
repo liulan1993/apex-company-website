@@ -1283,10 +1283,10 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
 StickyScroll.displayName = "StickyScroll";
 
 const stickyScrollContent = [
-  { title: "协同编辑", description: "与您的团队、客户和利益相关者实时协作。共同处理文档、分享想法并迅速做出决策。通过我们的平台，您可以简化工作流程并提高生产力。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFD700/000000?text=协同编辑" alt="协同编辑图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "实时更改", description: "查看实时发生的变化。通过我们的平台，您可以实时跟踪每一次修改。不再混淆项目的最新版本。告别版本控制的混乱，拥抱实时更新的简单性。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFA07A/000000?text=实时更改" alt="实时更改图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "版本控制", description: "体验实时更新，再也不用担心版本控制。我们的平台确保您始终使用项目的最新版本，无需不断手动更新。保持同步，团队协作，工作流程不中断。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/ADD8E6/000000?text=版本控制" alt="版本控制图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "内容丰富", description: "我们提供丰富的内容和功能，满足您的各种需求。无论您是需要文档管理、项目协作还是数据分析，我们的平台都能为您提供一站式解决方案。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/90EE90/000000?text=内容丰富" alt="内容丰富图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "首席伙伴", description: "我们凭借在中新两地的实体团队，真正实现了服务的无缝衔接。无论您身在国内还是已在新加坡，都能随时与我们的本地成员当面沟通，确保服务“不掉线”。作为您长期的首席合伙人，为您节省巨大的时间与沟通成本。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFD700/000000?text=协同编辑" alt="协同编辑图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "安心保障", description: "我们郑重承诺：24小时内回复，紧急事务2小时内响应。所有价格透明，无隐形消费。您将拥有一位专属项目合伙人，全程为您负责。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/FFA07A/000000?text=实时更改" alt="实时更改图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "服务流程 ", description: "我们的合作始于深度保密的咨询，以全面理解您的需求。随后，专家团队将为您量身定制方案，在执行中协调所有细节，并随时汇报进展。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/ADD8E6/000000?text=版本控制" alt="版本控制图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "即刻启程", description: "纸上得来终觉浅，绝知此事要躬行。立即联系我们，开启一次专属的战略性探讨，让我们为您在新加坡的成功保驾护航。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://placehold.co/600x400/90EE90/000000?text=内容丰富" alt="内容丰富图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
 ];
 
 function Component30() {
