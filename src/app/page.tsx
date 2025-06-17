@@ -1233,8 +1233,8 @@ const linearGradients = [
     "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
 ];
 
-// --- START: BUG修复后的 StickyScroll 组件 ---
-// 使用 CSS Scroll Snapping 优化移动端体验
+// --- START: BUG修复后的 StickyScroll 组件 V2 ---
+// 使用 CSS Scroll Snapping, 并通过 Spacer Divs 和 useEffect 确保首尾卡片居中
 const StickyScroll = ({
   content,
   contentClassName,
@@ -1251,8 +1251,6 @@ const StickyScroll = ({
   const horizontalScrollRef = useRef<HTMLDivElement>(null); // 用于移动端水平滚动的容器
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]); // 用于移动端的卡片元素
 
-  const cardLength = content.length;
-
   // 桌面端逻辑 (垂直滚动) - 无改动
   const { scrollYProgress } = useScroll({
     container: verticalScrollRef,
@@ -1260,10 +1258,8 @@ const StickyScroll = ({
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // 仅在桌面端 (lg及以上) 应用此逻辑
     if (typeof window !== "undefined" && window.innerWidth < 1024) return;
-
-    const cardsBreakpoints = content.map((_, index) => index / cardLength);
+    const cardsBreakpoints = content.map((_, index) => index / content.length);
     const closestBreakpointIndex = cardsBreakpoints.reduce(
       (acc, breakpoint, index) => {
         const distance = Math.abs(latest - breakpoint);
@@ -1277,11 +1273,8 @@ const StickyScroll = ({
     setActiveCard(closestBreakpointIndex);
   });
 
-  // 移动端逻辑 (水平滚动 Intersection Observer) - 无需改动
-  // CSS Scroll Snap 负责平滑滚动和居中对齐
-  // Intersection Observer 负责在卡片居中时（即与观察区域相交时）更新状态
+  // 移动端逻辑 (Intersection Observer for highlighting)
   useEffect(() => {
-    // 仅在移动端 (lg以下) 应用此逻辑
     if (typeof window !== "undefined" && window.innerWidth >= 1024) return;
     
     const scrollContainer = horizontalScrollRef.current;
@@ -1290,7 +1283,6 @@ const StickyScroll = ({
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-            // 当卡片与我们定义的中心区域相交时，更新 activeCard
             if (entry.isIntersecting) {
                 const cardIndex = parseInt(entry.target.getAttribute('data-index') || '0', 10);
                 setActiveCard(cardIndex);
@@ -1300,11 +1292,8 @@ const StickyScroll = ({
       },
       {
         root: scrollContainer,
-        // rootMargin 用于创建一个在容器中心的“激活区域”。
-        // 当卡片中心进入这个区域时，就会触发相交事件。
-        // 结合 scroll-snap-align: center, 这能精确地捕捉到居中的卡片。
-        rootMargin: "0px -33% 0px -33%", // 使用 -33% 表示激活区域是中间的 34%
-        threshold: 0, // 只要有1像素进入区域就触发
+        rootMargin: "0px -45% 0px -45%", // 定义一个在视口中心的狭长激活区域 (10% 宽度)
+        threshold: 0.5, // 卡片中心进入该区域超过50%时触发
       }
     );
 
@@ -1320,6 +1309,23 @@ const StickyScroll = ({
     };
   }, [content.length]);
 
+  // 【新增修复】: 在移动端视图加载时，自动将第一个卡片滚动到中心位置
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      const firstCard = cardRefs.current[0];
+      if (firstCard) {
+        // 使用 setTimeout 确保浏览器完成布局和渲染后再执行滚动
+        setTimeout(() => {
+          firstCard.scrollIntoView({
+            behavior: 'auto', // 使用 'auto' 实现无动画的瞬间跳转
+            inline: 'center',
+            block: 'nearest',
+          });
+        }, 100); // 100毫秒的延迟通常足以应对大多数情况
+      }
+    }
+  }, []); // 空依赖数组，仅在组件挂载时运行一次
+
   const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
 
   useEffect(() => {
@@ -1332,22 +1338,24 @@ const StickyScroll = ({
         className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" 
         ref={verticalScrollRef}>
       <div className="div relative flex items-start px-4">
+        {/* 【关键修改】: 将 padding 改为使用 spacer div, 避免了复杂的 calc() 和浏览器兼容性问题 */}
         <div 
             ref={horizontalScrollRef} 
-            // 【关键修改】
-            // 1. 添加 snap-x snap-mandatory 和 scroll-smooth 来启用平滑的滚动捕捉
-            // 2. 添加响应式的 px-* 来给予首尾卡片足够的空间，使其能够滚动到中心
-            // 3. 在 lg 断点及以上，禁用这些移动端专属的样式
-            className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar 
-                       scroll-smooth snap-x snap-mandatory lg:snap-none
-                       lg:px-0 px-[calc(50%-theme(space.32))] sm:px-[calc(50%-theme(space.40))]">
+            // 移除了之前的 padding 类
+            className="w-full flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar 
+                       scroll-smooth snap-x snap-mandatory lg:snap-none">
+
+          {/* 【新增修复】: 首部 Spacer, 确保第一张卡片可以居中 */}
+          {/* w-[calc(50%-8rem)] 对应 w-64 卡片的一半宽度 (16rem / 2 = 8rem) */}
+          {/* sm:w-[calc(50%-10rem)] 对应 sm:w-80 卡片的一半宽度 (20rem / 2 = 10rem) */}
+          <div className="w-[calc(50%-8rem)] sm:w-[calc(50%-10rem)] flex-shrink-0 lg:hidden" />
+
           {content.map((item, index) => (
             <div 
                 key={item.title + index} 
                 ref={(el) => { cardRefs.current[index] = el; }}
                 data-index={index}
-                // 【关键修改】
-                // 添加 snap-center 告诉浏览器将这个元素的中心与容器的中心对齐
+                // 【关键修改】: 每个卡片必须是 flex-shrink-0, 防止在 flex 布局中被压缩
                 className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 snap-center">
               <motion.h2 
                 initial={{ opacity: 0 }} 
@@ -1363,6 +1371,10 @@ const StickyScroll = ({
               </motion.p>
             </div>
           ))}
+          
+          {/* 【新增修复】: 尾部 Spacer, 确保最后一张卡片可以居中 */}
+          <div className="w-[calc(50%-8rem)] sm:w-[calc(50%-10rem)] flex-shrink-0 lg:hidden" />
+
           {/* 占位符，确保桌面端垂直滚动正常 */}
           <div className="h-40 hidden lg:block" />
         </div>
@@ -1375,7 +1387,7 @@ const StickyScroll = ({
   );
 };
 StickyScroll.displayName = "StickyScroll";
-// --- END: BUG修复后的 StickyScroll 组件 ---
+// --- END: BUG修复后的 StickyScroll 组件 V2 ---
 
 
 const stickyScrollContent = [
@@ -1406,12 +1418,12 @@ function Feature() {
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">让公司设立和运营变得简单。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">为您的孩子规划最优方案。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">高效处理您团队的工作准证。</p></div></div>
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">探寻健康本源，不止于表面。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">链接本地资源助您快速发展。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">链接全科与专科名医网络。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们让公司设立和运营变得简单。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们为您的孩子规划最优方案。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们高效处理您团队的工作准证。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们探寻健康本源，不止于表面。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接本地资源助您快速发展。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接全科与专科名医网络。</p></div></div>
             </div>
           </div>
         </div>
