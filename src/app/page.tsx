@@ -1079,10 +1079,10 @@ function ComponentTwentyMedicalHealth() {
         <div className="flex flex-col gap-4">
           <div className="flex gap-2 flex-col">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">
-              医疗健康 (Medical Health)
+              健康管理 (Health Management)
             </h2>
             <p className="text-base sm:text-xl font-medium text-gray-600 max-w-xl lg:max-w-xl">
-              我们利用新加坡顶级的医疗资源，为海内外客户提供无缝对接的尊享健康服务。通过与顶尖医院的紧密合作，为您预约权威专家、安排深度体检，并提供全程陪同翻译，让您和家人高效悦享世界一流的医疗保障。
+              我们相信，您的健康，是承载事业版图与人生品质的终极资产。Apex传承始于“生命管理”的独特基因，我们不提供诊疗，而是作为您最值得信赖的健康战略家与医疗资源导航员，致力于将您对健康的“未知”与“被动”，转化为“已知”与“主动”。
             </p>
           </div>
           <div className="pt-12 w-full">
