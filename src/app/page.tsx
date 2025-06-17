@@ -8,10 +8,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+// --- SEO优化 START ---
+// 导入元数据类型
+import type { Metadata } from 'next';
+
+// 为首页单独设置更精确、更具吸引力的元数据。
+// 这会覆盖 layout.tsx 中的默认设置。
+export const metadata: Metadata = {
+  title: 'Apex | 新加坡一站式企业服务、子女教育与健康管理',
+  description: 'Apex 作为您在新加坡的首席合作伙伴，提供公司注册、准证申请、战略发展、子女教育规划及主动式健康管理等一站式解决方案。我们以中新双核团队与AI赋能，为您和您的企业保驾护航。',
+};
+// --- SEO优化 END ---
+
+
 // --- 1. 工具函数 ---
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+// ... 您页面剩余的所有代码保持不变 ...
+// ... The rest of your page.tsx code remains exactly the same ...
 
 // --- 2. 原有页面图标组件 (无改动) ---
 const HomeIcon = (props: SVGProps<SVGSVGElement>) => (
