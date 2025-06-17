@@ -1233,8 +1233,7 @@ const linearGradients = [
     "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
 ];
 
-// --- START: BUG修复后的 StickyScroll 组件 V2 ---
-// 使用 CSS Scroll Snapping, 并通过 Spacer Divs 和 useEffect 确保首尾卡片居中
+// --- START: BUG修复后的 StickyScroll 组件 V3 ---
 const StickyScroll = ({
   content,
   contentClassName,
@@ -1247,11 +1246,11 @@ const StickyScroll = ({
   contentClassName?: string;
 }) => {
   const [activeCard, setActiveCard] = React.useState(0);
-  const verticalScrollRef = useRef<HTMLDivElement>(null); // 用于桌面端垂直滚动
-  const horizontalScrollRef = useRef<HTMLDivElement>(null); // 用于移动端水平滚动的容器
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]); // 用于移动端的卡片元素
+  const verticalScrollRef = useRef<HTMLDivElement>(null);
+  const horizontalScrollRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // 桌面端逻辑 (垂直滚动) - 无改动
+  // 桌面端逻辑 (垂直滚动)
   const { scrollYProgress } = useScroll({
     container: verticalScrollRef,
     offset: ["start start", "end start"],
@@ -1292,8 +1291,12 @@ const StickyScroll = ({
       },
       {
         root: scrollContainer,
-        rootMargin: "0px -45% 0px -45%", // 定义一个在视口中心的狭长激活区域 (10% 宽度)
-        threshold: 0.5, // 卡片中心进入该区域超过50%时触发
+        // 【关键修复】: 放宽 IntersectionObserver 的配置。
+        // rootMargin 定义了一个在视口水平中心位置，宽度为 20% 的“检测区域” (100% - 40% - 40% = 20%)。
+        // threshold: 0 表示只要卡片有任何一个像素进入这个中心区域，就会触发高亮。
+        // 结合 scroll-snap-align: center，这能确保在滚动停止时，居中的卡片被准确、可靠地检测到并高亮。
+        rootMargin: "0px -40% 0px -40%", 
+        threshold: 0,
       }
     );
 
@@ -1309,22 +1312,21 @@ const StickyScroll = ({
     };
   }, [content.length]);
 
-  // 【新增修复】: 在移动端视图加载时，自动将第一个卡片滚动到中心位置
+  // 在移动端视图加载时，自动将第一个卡片滚动到中心位置
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth < 1024) {
       const firstCard = cardRefs.current[0];
       if (firstCard) {
-        // 使用 setTimeout 确保浏览器完成布局和渲染后再执行滚动
         setTimeout(() => {
           firstCard.scrollIntoView({
-            behavior: 'auto', // 使用 'auto' 实现无动画的瞬间跳转
+            behavior: 'auto',
             inline: 'center',
             block: 'nearest',
           });
-        }, 100); // 100毫秒的延迟通常足以应对大多数情况
+        }, 100);
       }
     }
-  }, []); // 空依赖数组，仅在组件挂载时运行一次
+  }, []);
 
   const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
 
@@ -1338,16 +1340,11 @@ const StickyScroll = ({
         className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" 
         ref={verticalScrollRef}>
       <div className="div relative flex items-start px-4">
-        {/* 【关键修改】: 将 padding 改为使用 spacer div, 避免了复杂的 calc() 和浏览器兼容性问题 */}
         <div 
             ref={horizontalScrollRef} 
-            // 移除了之前的 padding 类
             className="w-full flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar 
                        scroll-smooth snap-x snap-mandatory lg:snap-none">
-
-          {/* 【新增修复】: 首部 Spacer, 确保第一张卡片可以居中 */}
-          {/* w-[calc(50%-8rem)] 对应 w-64 卡片的一半宽度 (16rem / 2 = 8rem) */}
-          {/* sm:w-[calc(50%-10rem)] 对应 sm:w-80 卡片的一半宽度 (20rem / 2 = 10rem) */}
+          
           <div className="w-[calc(50%-8rem)] sm:w-[calc(50%-10rem)] flex-shrink-0 lg:hidden" />
 
           {content.map((item, index) => (
@@ -1355,7 +1352,6 @@ const StickyScroll = ({
                 key={item.title + index} 
                 ref={(el) => { cardRefs.current[index] = el; }}
                 data-index={index}
-                // 【关键修改】: 每个卡片必须是 flex-shrink-0, 防止在 flex 布局中被压缩
                 className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 snap-center">
               <motion.h2 
                 initial={{ opacity: 0 }} 
@@ -1372,14 +1368,11 @@ const StickyScroll = ({
             </div>
           ))}
           
-          {/* 【新增修复】: 尾部 Spacer, 确保最后一张卡片可以居中 */}
           <div className="w-[calc(50%-8rem)] sm:w-[calc(50%-10rem)] flex-shrink-0 lg:hidden" />
 
-          {/* 占位符，确保桌面端垂直滚动正常 */}
           <div className="h-40 hidden lg:block" />
         </div>
       </div>
-      {/* 桌面端右侧的sticky图片/内容区域 */}
       <div style={{ background: backgroundGradient }} className={cn("hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden", contentClassName)}>
         {content[activeCard].content ?? null}
       </div>
@@ -1387,8 +1380,7 @@ const StickyScroll = ({
   );
 };
 StickyScroll.displayName = "StickyScroll";
-// --- END: BUG修复后的 StickyScroll 组件 V2 ---
-
+// --- END: BUG修复后的 StickyScroll 组件 V3 ---
 
 const stickyScrollContent = [
   { title: "首席伙伴", description: "我们凭借在中新两地的实体团队，真正实现了服务的无缝衔接。无论您身在国内还是已在新加坡，都能随时与我们的本地成员当面沟通，确保服务“不掉线”。作为您长期的首席合伙人，为您节省巨大的时间与沟通成本。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/hezuohuoban.jpg" alt="首席伙伴图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
