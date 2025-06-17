@@ -497,8 +497,8 @@ const FloatingButtonWrapper = () => {
             { name: "Apex文章", href: "https://info.apex-elite-service.com/", description: "功能完善的电商后台管理系统", tag: "系统", icon: "FloatingButtonAlbumIcon", bg: "bg-blue-100", fg: "text-blue-600" },
         ],
         components: [
-            { name: "汇率", href: "https://hl.apex-elite-service.com/", description: "助力学生顺利通过政府学校入学考试", tag: "货币", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
-            { name: "个税计算器", href: "https://jsq.apex-elite-service.com/", description: "从背景提升到文书写作的全程指导", tag: "计算", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
+            { name: "汇率", href: "https://hl.apex-elite-service.com/", description: "实时最新汇率计算", tag: "货币", icon: "FloatingButtonCodeXml", bg: "bg-yellow-100", fg: "text-yellow-600" },
+            { name: "个税计算器", href: "https://jsq.apex-elite-service.com/", description: "AI抓取个税信息", tag: "计算", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
             { name: "专属AI", href: "https://ai.apex-elite-service.com/", description: "满血版DeepSeek，支持联网，为您提供帮助", tag: "AI", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
         ],
         notes: [
