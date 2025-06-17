@@ -1328,7 +1328,7 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
           {content.map((item, index) => (
             <div 
                 key={item.title + index} 
-                ref={(el) => (cardRefs.current[index] = el)}
+                ref={(el) => { cardRefs.current[index] = el; }}
                 data-index={index}
                 className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 lg:flex-shrink-1">
               <motion.h2 
@@ -1384,12 +1384,12 @@ function Feature() {
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">让公司设立和运营变得简单。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">为您的孩子规划最优方案。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">高效处理您团队的工作准证。</p></div></div>
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">探寻健康本源，不止于表面。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">链接本地资源助您快速发展。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">链接全科与专科名医网络。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们让公司设立和运营变得简单。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们为您的孩子规划最优方案。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们高效处理您团队的工作准证。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们探寻健康本源，不止于表面。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接本地资源助您快速发展。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接全科与专科名医网络。</p></div></div>
             </div>
           </div>
         </div>
