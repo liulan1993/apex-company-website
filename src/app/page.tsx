@@ -1242,13 +1242,25 @@ const linearGradients = [
     "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
 ];
 
+// --- BUG修复：修改后的 StickyScroll 组件 ---
 const StickyScroll = ({ content, contentClassName, }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
   const [activeCard, setActiveCard] = React.useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ container: ref, offset: ["start start", "end start"], });
+  const verticalScrollRef = useRef<HTMLDivElement>(null); // 用于桌面端垂直滚动
+  const horizontalScrollRef = useRef<HTMLDivElement>(null); // 用于移动端水平滚动的容器
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]); // 用于移动端的卡片元素
+
   const cardLength = content.length;
 
+  // 桌面端逻辑 (垂直滚动)
+  const { scrollYProgress } = useScroll({
+    container: verticalScrollRef,
+    offset: ["start start", "end start"],
+  });
+
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    // 仅在桌面端 (lg及以上) 应用此逻辑
+    if (typeof window !== "undefined" && window.innerWidth < 1024) return;
+
     const cardsBreakpoints = content.map((_, index) => index / cardLength);
     const closestBreakpointIndex = cardsBreakpoints.reduce((acc, breakpoint, index) => {
         const distance = Math.abs(latest - breakpoint);
@@ -1258,7 +1270,46 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
     setActiveCard(closestBreakpointIndex);
   });
 
-  const backgroundColors = ["rgb(255, 255, 255)"];
+  // 移动端逻辑 (水平滚动 Intersection Observer)
+  useEffect(() => {
+    // 仅在移动端 (lg以下) 应用此逻辑
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) return;
+    
+    const scrollContainer = horizontalScrollRef.current;
+    if (!scrollContainer) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+            if (entry.isIntersecting) {
+                const cardIndex = parseInt(entry.target.getAttribute('data-index') || '0', 10);
+                setActiveCard(cardIndex);
+                // 理论上只有一个会居中，但为保险起见，找到第一个后即停止
+                break; 
+            }
+        }
+      },
+      {
+        root: scrollContainer,
+        // 通过负边距创建一个位于容器中心的垂直“激活线”
+        // 当卡片中心穿过此线时，它将变为 isIntersecting
+        rootMargin: "0px -49% 0px -49%",
+        threshold: 0,
+      }
+    );
+
+    const currentCardRefs = cardRefs.current;
+    currentCardRefs.forEach((card) => {
+      if (card) observer.observe(card);
+    });
+
+    return () => {
+      currentCardRefs.forEach((card) => {
+        if (card) observer.unobserve(card);
+      });
+    };
+  }, [content.length]);
+
   const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
 
   useEffect(() => {
@@ -1266,15 +1317,30 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
   }, [activeCard]);
 
   return (
-    <motion.div animate={{ backgroundColor: backgroundColors[0], }} className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" ref={ref} style={{ backgroundColor: 'white' }}>
+    <motion.div 
+        animate={{ backgroundColor: 'white' }} 
+        className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" 
+        ref={verticalScrollRef}>
       <div className="div relative flex items-start px-4">
-        <div className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar">
+        <div 
+            ref={horizontalScrollRef} 
+            className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar">
           {content.map((item, index) => (
-            <div key={item.title + index} className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 lg:flex-shrink-1">
-              <motion.h2 initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
+            <div 
+                key={item.title + index} 
+                ref={(el) => (cardRefs.current[index] = el)}
+                data-index={index}
+                className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 lg:flex-shrink-1">
+              <motion.h2 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: activeCard === index ? 1 : 0.3 }} 
+                className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
                 {item.title}
               </motion.h2>
-              <motion.p initial={{ opacity: 0, }} animate={{ opacity: activeCard === index ? 1 : 0.3, }} className="text-base sm:text-xl font-medium text-gray-600 max-w-sm mt-4 lg:mt-10">
+              <motion.p 
+                initial={{ opacity: 0, }} 
+                animate={{ opacity: activeCard === index ? 1 : 0.3, }} 
+                className="text-base sm:text-xl font-medium text-gray-600 max-w-sm mt-4 lg:mt-10">
                 {item.description}
               </motion.p>
             </div>
@@ -1318,12 +1384,12 @@ function Feature() {
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们让公司设立和运营变得简单。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们为您的孩子规划最优方案。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们高效处理您团队的工作准证。</p></div></div>
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们探寻健康本源，不止于表面。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接本地资源助您快速发展。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接全科与专科名医网络。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">让公司设立和运营变得简单。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">为您的孩子规划最优方案。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">高效处理您团队的工作准证。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">探寻健康本源，不止于表面。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">链接本地资源助您快速发展。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">链接全科与专科名医网络。</p></div></div>
             </div>
           </div>
         </div>
