@@ -13,7 +13,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// --- 2. 原有页面图标组件 ---
+// --- 2. 原有页面图标组件 (无改动) ---
 const HomeIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -107,7 +107,6 @@ const CheckIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 CheckIcon.displayName = "CheckIcon";
 
-// --- 新增：国内社交媒体图标 ---
 const ZhihuIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20.253 17.532H24V24h-3.747v-4.144h-2.115v4.144H14.4V11.91l7.06-7.06h-5.466V0H24v6.864l-6.864 6.864h3.117v3.804zm-12.427-4.14L3.72 17.532H0V24h3.72v-4.143h2.115V24h3.746V11.91L2.523 4.85h5.466V0H0v6.864l6.864 6.864H3.72v3.664h4.106v-4.14z"></path>
@@ -144,7 +143,7 @@ const LinkIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 LinkIcon.displayName = "LinkIcon";
 
-// --- START: 悬浮按钮组件所需的所有代码 ---
+// --- START: 悬浮按钮组件 (无改动) ---
 
 const createFloatingButtonIcon = (svgContent: string) => {
   const IconComponent = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>((props, ref) => (
@@ -548,7 +547,7 @@ const FloatingButtonWrapper = () => {
 FloatingButtonWrapper.displayName = "FloatingButtonWrapper";
 
 
-// --- 修改后的页脚图标按钮 ---
+// --- 页脚图标按钮 (无改动) ---
 const CustomLinkAndQrHoverButton = ({ imageUrl, onClickUrl, Icon }: { imageUrl: string; onClickUrl: string; Icon: ElementType; }) => {
   const [hovered, setHovered] = useState(false);
   const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -783,34 +782,28 @@ function ComponentOne({ title = "Apex" }: { title?: string }) {
 }
 ComponentOne.displayName = "ComponentOne";
 
-// --- START: 优化后的 ComponentTwo ---
 function ComponentTwo() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(() => ["企业落地", "准证申请", "战略发展", "子女教育", "溯源体检", "健康管理"], []);
 
   useEffect(() => {
-    // 使用 setInterval 实现更简洁的循环定时器
     const intervalId = setInterval(() => {
       setTitleNumber((prev) => (prev + 1) % titles.length);
-    }, 2500); // 适当增加间隔时间，让用户有足够时间阅读
+    }, 2500); 
     return () => clearInterval(intervalId);
   }, [titles.length]);
 
   return (
     <div className="w-full text-black bg-white">
       <div className="container mx-auto px-4">
-        {/* 优化了内边距和元素间距，使其在不同设备上更和谐 */}
         <div className="flex flex-col items-center justify-center gap-8 py-16 sm:py-20 lg:py-24">
           <div className="flex flex-col items-center gap-6 text-center">
-            {/* 优化了标题字体大小，使其在移动端显示更佳 */}
             <h1 className="text-4xl font-bold tracking-tighter text-black sm:text-5xl md:text-6xl lg:text-7xl">
-              {/* 使用 text-balance (需要较新的Tailwind版本) 来优化标题换行，避免单字成行 */}
               <span className="block text-balance">不止梳理万象，更与您共创未来</span>
-              {/* 优化了动画文本容器的高度和字体大小，并重构动画 */}
               <div className="relative mt-4 flex h-14 w-full items-center justify-center overflow-hidden text-center sm:h-16 md:h-20">
                 <AnimatePresence mode="wait">
                   <motion.span
-                    key={titleNumber} // Key 的改变会触发进入和退出动画
+                    key={titleNumber}
                     className="absolute bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-3xl font-semibold text-transparent sm:text-4xl md:text-5xl lg:text-6xl"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -822,7 +815,6 @@ function ComponentTwo() {
                 </AnimatePresence>
               </div>
             </h1>
-            {/* 优化了段落文本大小和最大宽度，提高可读性 */}
             <p className="max-w-3xl text-base leading-relaxed tracking-tight text-gray-600 sm:text-lg md:text-xl">
               Apex是一家总部位于新加坡的综合性专业服务机构。我们深刻理解全球高净值人士与出海企业所面临的机遇与挑战，矢志成为您在新加坡的首席合作伙伴，提供从商业顶层设计、子女教育规划到主动式健康管理的无缝衔接解决方案。
             </p>
@@ -833,7 +825,6 @@ function ComponentTwo() {
   );
 }
 ComponentTwo.displayName = "ComponentTwo";
-// --- END: 优化后的 ComponentTwo ---
 
 
 function ComponentSix() {
@@ -1242,8 +1233,19 @@ const linearGradients = [
     "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
 ];
 
-// --- BUG修复：修改后的 StickyScroll 组件 ---
-const StickyScroll = ({ content, contentClassName, }: { content: { title: string; description: string; content?: React.ReactNode; }[]; contentClassName?: string; }) => {
+// --- START: BUG修复后的 StickyScroll 组件 ---
+// 使用 CSS Scroll Snapping 优化移动端体验
+const StickyScroll = ({
+  content,
+  contentClassName,
+}: {
+  content: {
+    title: string;
+    description: string;
+    content?: React.ReactNode;
+  }[];
+  contentClassName?: string;
+}) => {
   const [activeCard, setActiveCard] = React.useState(0);
   const verticalScrollRef = useRef<HTMLDivElement>(null); // 用于桌面端垂直滚动
   const horizontalScrollRef = useRef<HTMLDivElement>(null); // 用于移动端水平滚动的容器
@@ -1251,7 +1253,7 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
 
   const cardLength = content.length;
 
-  // 桌面端逻辑 (垂直滚动)
+  // 桌面端逻辑 (垂直滚动) - 无改动
   const { scrollYProgress } = useScroll({
     container: verticalScrollRef,
     offset: ["start start", "end start"],
@@ -1262,15 +1264,22 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
     if (typeof window !== "undefined" && window.innerWidth < 1024) return;
 
     const cardsBreakpoints = content.map((_, index) => index / cardLength);
-    const closestBreakpointIndex = cardsBreakpoints.reduce((acc, breakpoint, index) => {
+    const closestBreakpointIndex = cardsBreakpoints.reduce(
+      (acc, breakpoint, index) => {
         const distance = Math.abs(latest - breakpoint);
-        if (distance < Math.abs(latest - cardsBreakpoints[acc])) { return index; }
+        if (distance < Math.abs(latest - cardsBreakpoints[acc])) {
+          return index;
+        }
         return acc;
-      }, 0 );
+      },
+      0
+    );
     setActiveCard(closestBreakpointIndex);
   });
 
-  // 移动端逻辑 (水平滚动 Intersection Observer)
+  // 移动端逻辑 (水平滚动 Intersection Observer) - 无需改动
+  // CSS Scroll Snap 负责平滑滚动和居中对齐
+  // Intersection Observer 负责在卡片居中时（即与观察区域相交时）更新状态
   useEffect(() => {
     // 仅在移动端 (lg以下) 应用此逻辑
     if (typeof window !== "undefined" && window.innerWidth >= 1024) return;
@@ -1281,20 +1290,21 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
+            // 当卡片与我们定义的中心区域相交时，更新 activeCard
             if (entry.isIntersecting) {
                 const cardIndex = parseInt(entry.target.getAttribute('data-index') || '0', 10);
                 setActiveCard(cardIndex);
-                // 理论上只有一个会居中，但为保险起见，找到第一个后即停止
                 break; 
             }
         }
       },
       {
         root: scrollContainer,
-        // 通过负边距创建一个位于容器中心的垂直“激活线”
-        // 当卡片中心穿过此线时，它将变为 isIntersecting
-        rootMargin: "0px -33% 0px -33%",
-        threshold: 0,
+        // rootMargin 用于创建一个在容器中心的“激活区域”。
+        // 当卡片中心进入这个区域时，就会触发相交事件。
+        // 结合 scroll-snap-align: center, 这能精确地捕捉到居中的卡片。
+        rootMargin: "0px -33% 0px -33%", // 使用 -33% 表示激活区域是中间的 34%
+        threshold: 0, // 只要有1像素进入区域就触发
       }
     );
 
@@ -1324,30 +1334,40 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
       <div className="div relative flex items-start px-4">
         <div 
             ref={horizontalScrollRef} 
-            className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar">
+            // 【关键修改】
+            // 1. 添加 snap-x snap-mandatory 和 scroll-smooth 来启用平滑的滚动捕捉
+            // 2. 添加响应式的 px-* 来给予首尾卡片足够的空间，使其能够滚动到中心
+            // 3. 在 lg 断点及以上，禁用这些移动端专属的样式
+            className="max-w-2xl flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar 
+                       scroll-smooth snap-x snap-mandatory lg:snap-none
+                       lg:px-0 px-[calc(50%-theme(space.32))] sm:px-[calc(50%-theme(space.40))]">
           {content.map((item, index) => (
             <div 
                 key={item.title + index} 
                 ref={(el) => { cardRefs.current[index] = el; }}
                 data-index={index}
-                className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 lg:flex-shrink-1">
+                // 【关键修改】
+                // 添加 snap-center 告诉浏览器将这个元素的中心与容器的中心对齐
+                className="my-0 lg:my-20 w-64 sm:w-80 lg:w-full flex-shrink-0 snap-center">
               <motion.h2 
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: activeCard === index ? 1 : 0.3 }} 
-                className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900">
+                className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-gray-900 transition-opacity duration-300">
                 {item.title}
               </motion.h2>
               <motion.p 
-                initial={{ opacity: 0, }} 
-                animate={{ opacity: activeCard === index ? 1 : 0.3, }} 
-                className="text-base sm:text-xl font-medium text-gray-600 max-w-sm mt-4 lg:mt-10">
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: activeCard === index ? 1 : 0.3 }} 
+                className="text-base sm:text-xl font-medium text-gray-600 max-w-sm mt-4 lg:mt-10 transition-opacity duration-300">
                 {item.description}
               </motion.p>
             </div>
           ))}
+          {/* 占位符，确保桌面端垂直滚动正常 */}
           <div className="h-40 hidden lg:block" />
         </div>
       </div>
+      {/* 桌面端右侧的sticky图片/内容区域 */}
       <div style={{ background: backgroundGradient }} className={cn("hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden", contentClassName)}>
         {content[activeCard].content ?? null}
       </div>
@@ -1355,6 +1375,8 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
   );
 };
 StickyScroll.displayName = "StickyScroll";
+// --- END: BUG修复后的 StickyScroll 组件 ---
+
 
 const stickyScrollContent = [
   { title: "首席伙伴", description: "我们凭借在中新两地的实体团队，真正实现了服务的无缝衔接。无论您身在国内还是已在新加坡，都能随时与我们的本地成员当面沟通，确保服务“不掉线”。作为您长期的首席合伙人，为您节省巨大的时间与沟通成本。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/hezuohuoban.jpg" alt="首席伙伴图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
@@ -1384,12 +1406,12 @@ function Feature() {
           </div>
           <div className="flex gap-10 pt-12 flex-col w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们让公司设立和运营变得简单。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们为您的孩子规划最优方案。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们高效处理您团队的工作准证。</p></div></div>
-              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们探寻健康本源，不止于表面。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接本地资源助您快速发展。</p></div></div>
-              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">我们链接全科与专科名医网络。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">企业落地</h3><p className="text-base sm:text-xl font-medium text-gray-600">让公司设立和运营变得简单。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">子女教育</h3><p className="text-base sm:text-xl font-medium text-gray-600">为您的孩子规划最优方案。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">核心准证</h3><p className="text-base sm:text-xl font-medium text-gray-600">高效处理您团队的工作准证。</p></div></div>
+              <div className="flex flex-row gap-6 w-full items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">溯源健检</h3><p className="text-base sm:text-xl font-medium text-gray-600">探寻健康本源，不止于表面。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">战略发展</h3><p className="text-base sm:text-xl font-medium text-gray-600">链接本地资源助您快速发展。</p></div></div>
+              <div className="flex flex-row gap-6 items-start"><CheckIcon className="w-4 h-4 mt-2 text-primary" /><div className="flex flex-col gap-1"><h3 className="text-xl font-semibold text-gray-900">健康管理</h3><p className="text-base sm:text-xl font-medium text-gray-600">链接全科与专科名医网络。</p></div></div>
             </div>
           </div>
         </div>
@@ -1602,7 +1624,7 @@ FooterWithQRCode.displayName = "FooterWithQRCode";
 
 type SectionId = 'home' | 'about' | 'services' | 'contact';
 
-// --- 主 App 组件 (最终整合版) ---
+// --- 主 App 组件 (无改动) ---
 export default function ApexPage() {
     const [activeTab, setActiveTab] = useState<SectionId>('home');
 
