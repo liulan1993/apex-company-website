@@ -502,9 +502,9 @@ const FloatingButtonWrapper = () => {
             { name: "专属AI", href: "https://ai.apex-elite-service.com/", description: "满血版DeepSeek，支持联网，为您提供帮助", tag: "AI", icon: "FloatingButtonLinkIcon", bg: "bg-orange-100", fg: "text-orange-600" },
         ],
         notes: [
-            { name: "问卷调查", href: "https://wenjuan.apex-elite-service.com/", description: "深度定制体检，早期发现健康风险", tag: "调查", icon: "FloatingButtonBookText", bg: "bg-red-100", fg: "text-red-600" },
-            { name: "资料上传", href: "https://zl.apex-elite-service.com/", description: "高效管理您的客户信息与互动", tag: "核验", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
-            { name: "客户反馈", href: "https://listen.apex-elite-service.com/", description: "新加坡顶级国际学校全方位解析", tag: "倾听", icon: "FloatingButtonBookOpenTextIcon", bg: "bg-purple-100", fg: "text-purple-600" },
+            { name: "问卷调查", href: "https://wenjuan.apex-elite-service.com/", description: "我们希望对您有一个深度的了解", tag: "调查", icon: "FloatingButtonBookText", bg: "bg-red-100", fg: "text-red-600" },
+            { name: "资料上传", href: "https://zl.apex-elite-service.com/", description: "资料提交可以帮您与我们进行高效的服务", tag: "核验", icon: "FloatingButtonMessageSquare", bg: "bg-teal-100", fg: "text-teal-600" },
+            { name: "客户反馈", href: "https://listen.apex-elite-service.com/", description: "感谢您的所有意见都有助于我们成长", tag: "倾听", icon: "FloatingButtonBookOpenTextIcon", bg: "bg-purple-100", fg: "text-purple-600" },
         ]
     }), []);
 
