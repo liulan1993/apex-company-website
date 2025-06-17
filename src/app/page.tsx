@@ -1293,7 +1293,7 @@ const StickyScroll = ({ content, contentClassName, }: { content: { title: string
         root: scrollContainer,
         // 通过负边距创建一个位于容器中心的垂直“激活线”
         // 当卡片中心穿过此线时，它将变为 isIntersecting
-        rootMargin: "0px -49% 0px -49%",
+        rootMargin: "0px -33% 0px -33%",
         threshold: 0,
       }
     );
