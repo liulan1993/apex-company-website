@@ -1340,9 +1340,9 @@ const StickyScroll = ({
   return (
     <motion.div 
         animate={{ backgroundColor: 'white' }} 
-        className="lg:h-[30rem] overflow-y-auto flex lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10" 
+        className="flex flex-col lg:flex-row lg:h-[30rem] lg:justify-center relative lg:space-x-10 rounded-md p-2 sm:p-4 lg:p-10 lg:overflow-y-auto" 
         ref={verticalScrollRef}>
-      <div className="div relative flex items-start px-4">
+      <div className="relative flex items-start px-4">
         <div 
             ref={horizontalScrollRef} 
             className="w-full flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-x-visible no-scrollbar 
