@@ -1233,7 +1233,6 @@ const linearGradients = [
     "linear-gradient(to bottom right, rgb(100, 116, 139), rgb(148, 163, 184))",
 ];
 
-// --- START: BUG修复后的 StickyScroll 组件 V3 ---
 const StickyScroll = ({
   content,
   contentClassName,
@@ -1291,10 +1290,6 @@ const StickyScroll = ({
       },
       {
         root: scrollContainer,
-        // 【关键修复】: 放宽 IntersectionObserver 的配置。
-        // rootMargin 定义了一个在视口水平中心位置，宽度为 20% 的“检测区域” (100% - 40% - 40% = 20%)。
-        // threshold: 0 表示只要卡片有任何一个像素进入这个中心区域，就会触发高亮。
-        // 结合 scroll-snap-align: center，这能确保在滚动停止时，居中的卡片被准确、可靠地检测到并高亮。
         rootMargin: "0px -40% 0px -40%", 
         threshold: 0,
       }
@@ -1312,20 +1307,28 @@ const StickyScroll = ({
     };
   }, [content.length]);
 
-  // 在移动端视图加载时，自动将第一个卡片滚动到中心位置
+  // 【BUG修复】在移动端视图加载时，此 effect 会将第一个卡片滚动到其水平滚动容器的中心，
+  // 而不是触发整个页面的垂直滚动。此前的实现中，`scrollIntoView` 错误地导致了页面跳转。
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      const scrollContainer = horizontalScrollRef.current;
       const firstCard = cardRefs.current[0];
-      if (firstCard) {
+
+      if (scrollContainer && firstCard) {
+        // 使用 setTimeout 确保浏览器已经完成布局和绘制
         setTimeout(() => {
-          firstCard.scrollIntoView({
-            behavior: 'auto',
-            inline: 'center',
-            block: 'nearest',
+          // 计算使卡片居中所需的滚动位置
+          const scrollLeft = firstCard.offsetLeft - (scrollContainer.offsetWidth / 2) + (firstCard.offsetWidth / 2);
+          
+          // 直接操作容器的滚动位置，避免影响页面其他部分
+          scrollContainer.scrollTo({
+            left: scrollLeft,
+            behavior: 'auto', // 使用 'auto' 以避免在加载时出现平滑滚动动画
           });
         }, 100);
       }
     }
+    // 空依赖数组确保此 effect 仅在组件挂载时运行一次
   }, []);
 
   const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
@@ -1380,7 +1383,6 @@ const StickyScroll = ({
   );
 };
 StickyScroll.displayName = "StickyScroll";
-// --- END: BUG修复后的 StickyScroll 组件 V3 ---
 
 const stickyScrollContent = [
   { title: "首席伙伴", description: "我们凭借在中新两地的实体团队，真正实现了服务的无缝衔接。无论您身在国内还是已在新加坡，都能随时与我们的本地成员当面沟通，确保服务“不掉线”。作为您长期的首席合伙人，为您节省巨大的时间与沟通成本。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/hezuohuoban.jpg" alt="首席伙伴图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
