@@ -833,25 +833,25 @@ function ComponentSix() {
       title: "公司注册",
       description: "提供一站式的公司注册“创始包”，涵盖战略架构、银行开户与主动式秘书服务，为您稳固事业的第一步。",
       isLarge: true,
-      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/gongsi.jpg",
+      imageUrl: "https://cdn.apex-elite-service.com/wangzhantupian/gongsi.jpg",
     },
     {
       title: "准证申请",
       description: "为创始人、高管及家人量身定制整体准证方案（EP、DP等），通过深度评估与战略规划，极大化成功率，提供核心身份保障。",
       isLarge: false,
-      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/zhunzheng.jpg",
+      imageUrl: "https://cdn.apex-elite-service.com/wangzhantupian/zhunzheng.jpg",
     },
     {
       title: "财务税务合规",
       description: "提供专业的年度财税申报、财税合规与规划服务，我们不仅确保您的企业稳健合规，更助力您充分享受新加坡的政策优势。",
       isLarge: false,
-      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/caishui.jpg",
+      imageUrl: "https://cdn.apex-elite-service.com/wangzhantupian/caishui.jpg",
     },
     {
       title: "人力资源支持",
       description: "提供从核心人才招聘、名义雇主（EOR）到跨境薪酬合规的一站式人力资源解决方案，助您在新加坡高效、合规地组建并管理顶尖团队。",
       isLarge: true,
-      imageUrl: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/WechatIMG2460.jpg",
+      imageUrl: "https://cdn.apex-elite-service.com/wangzhantupian/WechatIMG2460.jpg",
     }
   ];
 
@@ -923,21 +923,21 @@ function ComponentEight() {
             icon: BrainCog,
             title: "教育路径规划(Education Pathway Design)",
             description: "我们提供超越择校咨询的长期教育路径规划。通过深度评估家庭理念与孩子特质，为您量身定制从当前到世界名校的清晰成长路线图。",
-            image: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/111.jpg",
+            image: "https://cdn.apex-elite-service.com/wangzhantupian/111.jpg",
         },
         {
             id: 2,
             icon: BrainCog,
             title: "学校申请支持(School Application Support)",
             description: "我们提供精准、高效的全流程申请支持，关注的不仅是文书与面试技巧，更是如何将您孩子最独特的闪光点呈现给招生官，赢得理想的录取通知。",
-            image: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/222.jpg",
+            image: "https://cdn.apex-elite-service.com/wangzhantupian/222.jpg",
         },
         {
             id: 3,
             icon: Brain,
             title: "长期成长陪伴(Long-term Growth Companion)",
             description: "我们提供超越申请的长期陪伴服务。作为您与学校间的沟通桥梁，我们协助处理从家长会到升学指导的各项事务，确保孩子无缝融入并持续进步。",
-            image: "https://cdn.jsdelivr.net/gh/liulan1993/photo@main/333.jpg",
+            image: "https://cdn.apex-elite-service.com/wangzhantupian/333.jpg",
         },
     ],[]);
     const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -1089,12 +1089,12 @@ function ComponentTwentyMedicalHealth() {
                 </div>
               </div>
               <img
-                src="https://raw.githubusercontent.com/liulan1993/apex-company-website/refs/heads/main/public/1.png" alt="处理后效果" width={1920} height={1080}
+                src="https://cdn.apex-elite-service.com/wangzhantupian/1.png" alt="处理后效果" width={1920} height={1080}
                 className="absolute left-0 top-0 z-10 w-full h-full object-cover rounded-2xl select-none border"
                 style={{ clipPath: `inset(0 ${100 - inset}% 0 0)` }} draggable={false}
               />
               <img
-                src="https://raw.githubusercontent.com/liulan1993/apex-company-website/refs/heads/main/public/2.png" alt="处理前原图" width={1920} height={1080}
+                src="https://cdn.apex-elite-service.com/wangzhantupian/2.png" alt="处理前原图" width={1920} height={1080}
                 className="absolute left-0 top-0 w-full h-full object-cover rounded-2xl select-none border" draggable={false}
               />
             </div>
@@ -1385,10 +1385,10 @@ const StickyScroll = ({
 StickyScroll.displayName = "StickyScroll";
 
 const stickyScrollContent = [
-  { title: "首席伙伴", description: "我们凭借在中新两地的实体团队，真正实现了服务的无缝衔接。无论您身在国内还是已在新加坡，都能随时与我们的本地成员当面沟通，确保服务“不掉线”。作为您长期的首席合伙人，为您节省巨大的时间与沟通成本。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/hezuohuoban.jpg" alt="首席伙伴图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "安心保障", description: "我们郑重承诺：24小时内回复，紧急事务2小时内响应。所有价格透明，无隐形消费。您将拥有一位专属项目合伙人，全程为您负责。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/anxinbaozhang.jpg" alt="安心保障图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "服务流程 ", description: "我们的合作始于深度保密的咨询，以全面理解您的需求。随后，专家团队将为您量身定制方案，在执行中协调所有细节，并随时汇报进展。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/fuwuliucheng.jpg" alt="服务流程图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
-  { title: "即刻启程", description: "纸上得来终觉浅，绝知此事要躬行。立即联系我们，开启一次专属的战略性探讨，让我们为您在新加坡的成功保驾护航。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/jikeqicheng.jpg" alt="即刻启程图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "首席伙伴", description: "我们凭借在中新两地的实体团队，真正实现了服务的无缝衔接。无论您身在国内还是已在新加坡，都能随时与我们的本地成员当面沟通，确保服务“不掉线”。作为您长期的首席合伙人，为您节省巨大的时间与沟通成本。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.apex-elite-service.com/wangzhantupian/hezuohuoban.jpg" alt="首席伙伴图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "安心保障", description: "我们郑重承诺：24小时内回复，紧急事务2小时内响应。所有价格透明，无隐形消费。您将拥有一位专属项目合伙人，全程为您负责。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.apex-elite-service.com/wangzhantupian/anxinbaozhang.jpg" alt="安心保障图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "服务流程 ", description: "我们的合作始于深度保密的咨询，以全面理解您的需求。随后，专家团队将为您量身定制方案，在执行中协调所有细节，并随时汇报进展。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.apex-elite-service.com/wangzhantupian/fuwuliucheng.jpg" alt="服务流程图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
+  { title: "即刻启程", description: "纸上得来终觉浅，绝知此事要躬行。立即联系我们，开启一次专属的战略性探讨，让我们为您在新加坡的成功保驾护航。", content: ( <div className="h-full w-full flex items-center justify-center"><img src="https://cdn.apex-elite-service.com/wangzhantupian/jikeqicheng.jpg" alt="即刻启程图片" width={600} height={400} className="h-full w-full object-cover rounded-md"/></div>),},
 ];
 
 function Component30() {
@@ -1482,28 +1482,28 @@ function TestimonialCard({ author, text, href, className }: {author: {name:strin
 }
 
 const testimonialsData = [
-  { author: { name: "星辰大海", handle: "追梦赤子心。", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" }, text: "感谢Apex帮孩子申请到了新加坡的国际学校，从择校到办准证，全程服务特别贴心，效率超高！" },
-  { author: { name: "蓝色气泡", handle: "行胜于言。", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }, text: "通过Apex在新加坡注册公司，流程比我想象的快多了。顾问非常专业，解答了我所有关于企业落地的疑问。" },
-  { author: { name: "月亮不打烊", handle: "人间值得。", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop&crop=face" }, text: "Apex的税务代理服务简直是创业公司的救星，账目清晰，申报及时，再也不用为税务问题烦恼了。" },
-  { author: { name: "夏天的风", handle: "一切皆有可能。", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" }, text: "我的EP准证是找Apex办的，材料准备得非常充分，顾问老师经验老道，面试指导也很给力，一次就过了！" },
-  { author: { name: "一颗柠檬", handle: "活在当下。", avatar: "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=150&h=150&fit=crop&crop=face" }, text: "Apex的健康管理服务太棒了！从预约高端体检到报告解读，都有专人负责，让我对自己的健康状况了如指掌。" },
-  { author: { name: "快乐小狗", handle: "慢慢来比较快。", avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face" }, text: "公司发展遇到瓶颈，Apex的战略发展咨询服务给我们提供了全新的思路和市场分析，非常有价值。" },
-  { author: { name: "云朵有点甜", handle: "但行好事。", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face" }, text: "家人来新加坡需要就医，通过Apex联系了顶尖的医疗资源，全程陪同翻译，让人在异国他乡感到非常温暖。" },
-  { author: { name: "奔跑的蜗牛", handle: "成为更好的自己。", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face" }, text: "我们公司的税务和核心员工的准证申请都全权委托给了Apex，非常省心，团队专业可靠，是企业出海新加坡的好伙伴。" },
-  { author: { name: "芝士就是力量", handle: "永远年轻。", avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=150&h=150&fit=crop&crop=face" }, text: "年度体检选的Apex推荐的机构，环境好服务优，预约流程也比自己弄方便多了。" },
-  { author: { name: "数字漫游者", handle: "永远热泪盈眶。", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop&crop=face" }, text: "选择Apex是我做过最正确的决定之一，无论是公司业务还是个人健康管理，都提供了无微不至的专业服务。" },
-  { author: { name: "深海的派大星", handle: "专注且坚定。", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" }, text: "孩子的小学留学办得非常顺利，Apex的顾问老师全程跟进，让我们家长特别放心。" },
-  { author: { name: "打代码的文艺青年", handle: "简单且快乐。", avatar: "https://images.unsplash.com/photo-1618641986557-1ecd230959aa?w=150&h=150&fit=crop&crop=face" }, text: "公司注册和银行开户，Apex一条龙服务，速度快，效率高，收费也透明合理。" },
-  { author: { name: "暴躁的土豆", handle: "持续进化。", avatar: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=150&h=150&fit=crop&crop=face" }, text: "在Apex的战略发展建议下，我们公司成功开拓了新的市场，业绩增长显著。" },
-  { author: { name: "迷路的星星", handle: "保持好奇。", avatar: "https://images.unsplash.com/photo-1549351512-c5e12b11e283?w=150&h=150&fit=crop&crop=face" }, text: "孩子拿到了NTU的offer，离不开Apex留学团队的努力，从选专业到文书都给了很多专业意见。" },
-  { author: { name: "一个有趣的灵魂", handle: "日拱一卒。", avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face" }, text: "我们外籍高管的准证申请都是委托Apex处理的，每次都很顺利，省去了我们HR很多精力。" },
-  { author: { name: "骑着扫帚的少女", handle: "知行合一。", avatar: "https://images.unsplash.com/photo-1531123414780-f74242c2b052?w=150&h=150&fit=crop&crop=face" }, text: "Apex安排的体检套餐很全面，价格也比自己去预约要优惠，服务很满意。" },
-  { author: { name: "熬夜冠军", handle: "心有猛虎。", avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face" }, text: "Apex的服务生态很完善，从公司注册到个人健康管理，能满足多方面的需求，值得长期合作。" },
-  { author: { name: "人间观察员", handle: "细嗅蔷薇。", avatar: "https://images.unsplash.com/photo-1520466809213-7b9a56adcd45?w=150&h=150&fit=crop&crop=face" }, text: "孩子申请中学，Apex的顾问老师对新加坡的教育体系了如指掌，给的建议非常中肯。" },
-  { author: { name: "故事收藏家", handle: "乐观积极。", avatar: "https://images.unsplash.com/photo-1521119989659-a83eee488004?w=150&h=150&fit=crop&crop=face" }, text: "Apex帮我们处理复杂的跨境税务问题，他们的专业能力让我们非常放心。" },
-  { author: { name: "梦想派送员", handle: "凡事发生皆好事。", avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face" }, text: "从公司选址到装修建议，Apex的企业落地服务真是做到了极致，考虑得比我们还周到。" },
-  { author: { name: "今天有点困", handle: "不负韶华。", avatar: "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=150&h=150&fit=crop&crop=face" }, text: "通过Apex申请EntrePass成功了！他们的方案设计和材料准备都非常专业，大大提高了成功率。" },
-  { author: { name: "会飞的猪", handle: "自在如风。", avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&h=150&fit=crop&crop=face" }, text: "Apex的战略咨询不仅是纸上谈兵，还协助我们对接资源，帮助我们把规划落到了实处。" }
+  { author: { name: "星辰大海", handle: "追梦赤子心。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1544005313-94ddf0286df2.jpg" }, text: "感谢Apex帮孩子申请到了新加坡的国际学校，从择校到办准证，全程服务特别贴心，效率超高！" },
+  { author: { name: "蓝色气泡", handle: "行胜于言。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1549351512-c5e12b11e283.jpg" }, text: "通过Apex在新加坡注册公司，流程比我想象的快多了。顾问非常专业，解答了我所有关于企业落地的疑问。" },
+  { author: { name: "月亮不打烊", handle: "人间值得。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1552058544-f2b08422138a.jpg" }, text: "Apex的税务代理服务简直是创业公司的救星，账目清晰，申报及时，再也不用为税务问题烦恼了。" },
+  { author: { name: "夏天的风", handle: "一切皆有可能。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1554151228-14d9def656e4.jpg" }, text: "我的EP准证是找Apex办的，材料准备得非常充分，顾问老师经验老道，面试指导也很给力，一次就过了！" },
+  { author: { name: "一颗柠檬", handle: "活在当下。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1560250097-0b93528c311a.jpg" }, text: "Apex的健康管理服务太棒了！从预约高端体检到报告解读，都有专人负责，让我对自己的健康状况了如指掌。" },
+  { author: { name: "快乐小狗", handle: "慢慢来比较快。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1438761681033-6461ffad8d80.jpg" }, text: "公司发展遇到瓶颈，Apex的战略发展咨询服务给我们提供了全新的思路和市场分析，非常有价值。" },
+  { author: { name: "云朵有点甜", handle: "但行好事。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1488161628813-04466f872be2.jpg" }, text: "家人来新加坡需要就医，通过Apex联系了顶尖的医疗资源，全程陪同翻译，让人在异国他乡感到非常温暖。" },
+  { author: { name: "奔跑的蜗牛", handle: "成为更好的自己。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1494790108377-be9c29b29330.jpg" }, text: "我们公司的税务和核心员工的准证申请都全权委托给了Apex，非常省心，团队专业可靠，是企业出海新加坡的好伙伴。" },
+  { author: { name: "芝士就是力量", handle: "永远年轻。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1502823403499-6ccfcf4fb453.jpg" }, text: "年度体检选的Apex推荐的机构，环境好服务优，预约流程也比自己弄方便多了。" },
+  { author: { name: "数字漫游者", handle: "永远热泪盈眶。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1506794778202-cad84cf45f1d.jpg" }, text: "选择Apex是我做过最正确的决定之一，无论是公司业务还是个人健康管理，都提供了无微不至的专业服务。" },
+  { author: { name: "深海的派大星", handle: "专注且坚定。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1507003211169-0a1dd7228f2d.jpg" }, text: "孩子的小学留学办得非常顺利，Apex的顾问老师全程跟进，让我们家长特别放心。" },
+  { author: { name: "打代码的文艺青年", handle: "简单且快乐。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1517841905240-472988babdf9.jpg" }, text: "公司注册和银行开户，Apex一条龙服务，速度快，效率高，收费也透明合理。" },
+  { author: { name: "暴躁的土豆", handle: "持续进化。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1519085360753-af0119f7cbe7.jpg" }, text: "在Apex的战略发展建议下，我们公司成功开拓了新的市场，业绩增长显著。" },
+  { author: { name: "迷路的星星", handle: "保持好奇。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1520466809213-7b9a56adcd45.jpg" }, text: "孩子拿到了NTU的offer，离不开Apex留学团队的努力，从选专业到文书都给了很多专业意见。" },
+  { author: { name: "一个有趣的灵魂", handle: "日拱一卒。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1521119989659-a83eee488004.jpg" }, text: "我们外籍高管的准证申请都是委托Apex处理的，每次都很顺利，省去了我们HR很多精力。" },
+  { author: { name: "骑着扫帚的少女", handle: "知行合一。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1531123414780-f74242c2b052.jpg" }, text: "Apex安排的体检套餐很全面，价格也比自己去预约要优惠，服务很满意。" },
+  { author: { name: "熬夜冠军", handle: "心有猛虎。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1534528741775-53994a69daeb.jpg" }, text: "Apex的服务生态很完善，从公司注册到个人健康管理，能满足多方面的需求，值得长期合作。" },
+  { author: { name: "人间观察员", handle: "细嗅蔷薇。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1539571696357-5a69c17a67c6.jpg" }, text: "孩子申请中学，Apex的顾问老师对新加坡的教育体系了如指掌，给的建议非常中肯。" },
+  { author: { name: "故事收藏家", handle: "乐观积极。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1580489944761-15a19d654956.jpg" }, text: "Apex帮我们处理复杂的跨境税务问题，他们的专业能力让我们非常放心。" },
+  { author: { name: "梦想派送员", handle: "凡事发生皆好事。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1599566150163-29194dcaad36.jpg" }, text: "从公司选址到装修建议，Apex的企业落地服务真是做到了极致，考虑得比我们还周到。" },
+  { author: { name: "今天有点困", handle: "不负韶华。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1618641986557-1ecd230959aa.jpg" }, text: "通过Apex申请EntrePass成功了！他们的方案设计和材料准备都非常专业，大大提高了成功率。" },
+  { author: { name: "会飞的猪", handle: "自在如风。", avatar: "https://cdn.apex-elite-service.com/wangzhantupian/photo-1570295999919-56ceb5ecca61.jpg" }, text: "Apex的战略咨询不仅是纸上谈兵，还协助我们对接资源，帮助我们把规划落到了实处。" }
 ];
 
 function ComponentTestimonialsMarquee() {
@@ -1543,22 +1543,22 @@ function FooterWithQRCode() {
   const socialButtons = [
     {
       href: "https://www.xiaohongshu.com/user/profile/6624755f00000000030303c2?xsec_token=YBu0J314MzsA9PGMJZLZmcLRL3wiuAfNIZeudNRhtPvCk=&xsec_source=app_share&xhsshare=WeixinSession&appuid=6624755f00000000030303c2&apptime=1750082613&share_id=b4da624f466a4aeabb6e1e79662f092d&tab=note&subTab=note",
-      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/小红书.png",
+      qrUrl: "https://cdn.apex-elite-service.com/wangzhantupian/xiaohongshu.png",
       Icon: ZhihuIcon,
     },
     {
       href: "https://weibo.com/",
-      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/sara.png",
+      qrUrl: "https://cdn.apex-elite-service.com/wangzhantupian/sara.png",
       Icon: WeiboIcon,
     },
     {
       href: "https://www.douyin.com/",
-      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/梦辰.png",
+      qrUrl: "https://cdn.apex-elite-service.com/wangzhantupian/mengchen.png",
       Icon: DouyinIcon,
     },
     {
       href: "https://www.bilibili.com/",
-      qrUrl: "https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/文静.png",
+      qrUrl: "https://cdn.apex-elite-service.com/wangzhantupian/wenjing.png",
       Icon: BilibiliIcon,
     },
   ];
@@ -1574,7 +1574,7 @@ function FooterWithQRCode() {
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-md bg-gray-100">
                <img
-                src="https://cdn.jsdelivr.net/gh/liulan1993/apex-company-website@main/public/微信公众号.png" 
+                src="https://cdn.apex-elite-service.com/wangzhantupian/gongzhonghao.png" 
                 alt="二维码占位符"
                 width={128}
                 height={128}
